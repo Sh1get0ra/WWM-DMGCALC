@@ -59,7 +59,7 @@
   </div>
 
 <!-- HERO: expected DMG + probability donut -->
-<section class="hero">
+<section class="hero" onclick="toggleHero()" role="button" tabindex="0" aria-label="期待値パネルを折りたたむ">
   <div class="hero-left">
     <div class="hero-eyebrow">
       <span data-i18n="resultHero">EXPECTED · 期待値</span>
@@ -137,9 +137,6 @@
       </div>
     </div>
   </div>
-  <button class="hero-toggle" id="heroToggle" onclick="toggleHero()" aria-label="折りたたむ">
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </button>
 </section>
 </div>
 
