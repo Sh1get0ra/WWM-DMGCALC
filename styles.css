@@ -330,6 +330,13 @@ header.topbar::after {
 }
 .hcb-val.phys { color: var(--vermilion-bright); }
 .hcb-val.elem { color: var(--jade-bright); }
+.hcb-pct {
+  font-family: var(--f-mono); font-size: 9px; font-weight: 600;
+  color: var(--paper-mute); letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums; padding-bottom: 1px;
+}
+.hcb-pct.phys { color: rgba(232,81,58,0.55); }
+.hcb-pct.elem { color: rgba(168,212,180,0.55); }
 
 /* ── Collapsed state overrides ── */
 .hero--collapsed .hero-compact-bar { display: flex; }
@@ -438,6 +445,13 @@ header.topbar::after {
 }
 .hb-value.phys { color: var(--vermilion-bright); }
 .hb-value.elem { color: var(--jade-bright); }
+.hb-pct {
+  font-family: var(--f-mono); font-size: 10px; font-weight: 600;
+  color: var(--paper-mute); letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.hb-pct.phys { color: rgba(232,81,58,0.6); }
+.hb-pct.elem { color: rgba(168,212,180,0.6); }
 
 /* Donut on right */
 .hero-right {

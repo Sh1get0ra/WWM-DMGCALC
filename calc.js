@@ -236,6 +236,18 @@ function calculate() {
   if (_ce) _ce.textContent = fmt0(expected.elem);
   if (_cx) _cx.textContent = fmt0(expected.total);
 
+  // 物理/属性割合の同期（フル + コンパクト）
+  var physPct = expected.total > 0 ? (expected.phys / expected.total * 100).toFixed(1) + '%' : '—';
+  var elemPct = expected.total > 0 ? (expected.elem / expected.total * 100).toFixed(1) + '%' : '—';
+  var _pp  = document.getElementById('hbPhysPct');
+  var _ep  = document.getElementById('hbElemPct');
+  var _cpp = document.getElementById('heroCompactPhysPct');
+  var _cep = document.getElementById('heroCompactElemPct');
+  if (_pp)  _pp.textContent  = physPct;
+  if (_ep)  _ep.textContent  = elemPct;
+  if (_cpp) _cpp.textContent = physPct;
+  if (_cep) _cep.textContent = elemPct;
+
   // ── 確率分布：ドーナツ＋凡例 ─────────────────────────────────
   updateDonut(pCrit, pSympathy, pGraze, pNormal);
   document.getElementById('probCritVal').textContent     = pctStr(pCrit);
