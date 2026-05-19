@@ -879,3 +879,116 @@ html[data-theme="light"] #toast { background: #fff8e8; color: var(--paper); bord
   50%  { text-shadow: 0 0 60px rgba(232,81,58,0.7), 0 0 100px rgba(240,210,138,0.5), 0 2px 0 rgba(0,0,0,0.5); }
   100% { text-shadow: var(--hero-num-shadow); }
 }
+
+/* ─────────────────────────────────────────────────────────────────
+   MOBILE — smartphone layout (≤ 600px)
+   ───────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+
+  /* iOS: prevent auto-zoom on input focus (requires font-size ≥ 16px) */
+  .field-input,
+  select.field-input,
+  .preset-name-input,
+  .eff-max-input { font-size: 16px; }
+
+  .container { padding: 8px 10px 30px; }
+
+  /* ── Sticky header ── */
+  .sticky-header { padding: 6px 0 0; margin-bottom: 10px; }
+
+  /* ── Topbar ── */
+  header.topbar {
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  header.topbar::after { display: none; }
+  .title-block h1 { font-size: 16px; letter-spacing: 0.06em; }
+  .title-block p { display: none; }
+  .top-controls {
+    width: 100%;
+    justify-content: space-between;
+    gap: 4px;
+  }
+  .lang-switcher { flex: 1; }
+  .lang-btn { padding: 6px 8px; font-size: 10px; flex: 1; text-align: center; }
+  .icon-btn { width: 36px; height: 36px; }
+  .icon-btn.export-btn { height: 36px; padding: 0 12px; font-size: 10px; }
+
+  /* ── Preset bar ── */
+  .preset-bar {
+    flex-direction: column;
+    gap: 7px;
+    padding: 8px 10px;
+    margin-top: 6px;
+  }
+  .preset-bar-title { font-size: 10px; }
+  .preset-slots { flex-direction: column; gap: 5px; }
+  .preset-slot { min-width: 0; flex: 1 1 100%; padding: 5px 8px; }
+  .preset-btn { padding: 6px 10px; font-size: 10px; }
+
+  /* ── Hero ── */
+  .hero-left { padding: 14px 14px; }
+  .hero-right { padding: 12px 14px; }
+  .hero-eyebrow { font-size: 9px; gap: 8px; }
+  .hero-eyebrow::before { width: 14px; }
+  .hero-label-jp { font-size: 11px; letter-spacing: 0.2em; margin-top: 4px; }
+  .hero-nums { gap: 12px; margin-top: 4px; }
+  .hero-number { font-size: 60px; }
+  .hero-number .unit { font-size: 11px; padding-bottom: 10px; }
+  .hero-score-block { padding-left: 12px; padding-bottom: 8px; }
+  .hero-score-eyebrow { font-size: 8px; letter-spacing: 0.16em; }
+  .hero-score-num { font-size: 30px; }
+  .hero-breakdown { gap: 14px; margin-top: 10px; padding-top: 8px; }
+  .hb-label { font-size: 9px; }
+  .hb-value { font-size: 14px; }
+
+  /* ── Donut ── */
+  .donut { width: 100px; height: 100px; }
+  .donut-wrap { gap: 14px; }
+  .prob-row .pname { font-size: 10px; }
+  .prob-row .pval { font-size: 12px; }
+  .donut-center-label { font-size: 8px; }
+  .donut-center-val { font-size: 12px; }
+
+  /* ── Stat cards ── */
+  .grid-3, .grid-2 { gap: 8px; margin-bottom: 10px; }
+  .card { padding: 12px 12px 14px 46px; }
+  .card::before { width: 34px; }
+  .card-rail { width: 34px; }
+  .card-rail .rail-kanji { font-size: 18px; }
+  .card-rail .rail-num { font-size: 9px; padding: 2px 4px; }
+
+  .field-row { gap: 4px; padding: 4px 0; min-height: 30px; }
+  .field-label { font-size: 11px; }
+  .field-input, select.field-input { width: 86px; padding: 4px 8px; }
+  .field-auto { width: 86px; padding: 4px 8px; font-size: 12px; }
+  .pct-unit { font-size: 10px; width: 10px; }
+
+  /* Judge grid (card II) — narrow column widths for phone */
+  .judge-grid { grid-template-columns: 1fr 86px 10px 80px; gap: 3px 4px; }
+  .jg-head { font-size: 8px; }
+
+  /* ── Enemy presets note ── */
+  .enemy-presets-note { font-size: 10px; line-height: 1.6; }
+
+  /* ── Tables ── */
+  .section-header h2 { font-size: 13px; }
+  .section-header .sub { font-size: 9px; }
+  .results-section { padding: 12px 12px; }
+  .results-table th, .results-table td { padding: 4px 5px; font-size: 11px; }
+  .eff-card { padding: 12px 12px; }
+  .eff-table th, .eff-table td { padding: 4px 6px; font-size: 11px; }
+  .eff-max-input { width: 52px; font-size: 16px; }
+  .eff-note { font-size: 10px; }
+
+  /* ── Toast ── */
+  #toast {
+    bottom: 14px;
+    right: 10px;
+    left: 10px;
+    text-align: center;
+    white-space: normal;
+    font-size: 11px;
+  }
+}
