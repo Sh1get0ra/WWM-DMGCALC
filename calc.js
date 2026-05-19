@@ -227,6 +227,14 @@ function calculate() {
   countUp('hbExp',  expected.total, 0);
   countUp('hbPhys', expected.phys, 0);
   countUp('hbElem', expected.elem, 0);
+  // コンパクトバー内訳同期
+  var fmt0 = function(n){ return Math.round(n).toLocaleString(T.locale); };
+  var _cp = document.getElementById('heroCompactPhys');
+  var _ce = document.getElementById('heroCompactElem');
+  var _cx = document.getElementById('heroCompactExp');
+  if (_cp) _cp.textContent = fmt0(expected.phys);
+  if (_ce) _ce.textContent = fmt0(expected.elem);
+  if (_cx) _cx.textContent = fmt0(expected.total);
 
   // ── 確率分布：ドーナツ＋凡例 ─────────────────────────────────
   updateDonut(pCrit, pSympathy, pGraze, pNormal);
