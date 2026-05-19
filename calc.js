@@ -292,6 +292,10 @@ function calculate() {
           + sd(maxPhysATK, maxElemMain, maxElemSub, 1 + sympathyBoost) * pSympathy
           + sd(minPhysATK, minElemMain, minElemSub)         * pGraze;
     countUp('heroScore', s, 0);
+    var _cd = document.getElementById('heroCompactDmg');
+    var _cs = document.getElementById('heroCompactScore');
+    if (_cd) _cd.textContent = Math.round(expected.total).toLocaleString(T.locale);
+    if (_cs) _cs.textContent = Math.round(s).toLocaleString(T.locale);
   })();
   buildEfficiencyTable(effParams, expected.total);
 }

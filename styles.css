@@ -254,6 +254,56 @@ header.topbar::after {
   font-family: var(--f-mono); font-size: 11px; font-weight: 700;
   color: var(--gold); letter-spacing: 0.24em; text-transform: uppercase;
 }
+
+/* ── Hero collapse toggle ── */
+.hero-toggle {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--paper-mute);
+  cursor: pointer;
+  padding: 2px 4px;
+  line-height: 1;
+  opacity: 0.55;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+.hero-toggle:hover { opacity: 1; }
+.hero-toggle svg { display: block; transition: transform 0.25s ease; }
+.hero--collapsed .hero-toggle svg { transform: rotate(-90deg); }
+
+/* ── Compact bar (collapsed state) ── */
+.hero-compact-bar {
+  display: none;
+  align-items: baseline;
+  gap: 7px;
+  padding: 4px 0 6px;
+  font-family: var(--f-latin);
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--gold);
+  letter-spacing: -0.01em;
+}
+.hero-compact-unit {
+  font-family: var(--f-mono); font-size: 9px; font-weight: 700;
+  color: var(--paper-mute); letter-spacing: 0.2em; padding-bottom: 2px;
+}
+.hero-compact-sep { color: var(--ink-3); font-weight: 400; font-size: 13px; }
+.hero-compact-score-label {
+  font-family: var(--f-mono); font-size: 8px; font-weight: 700;
+  color: var(--jade); letter-spacing: 0.18em; text-transform: uppercase;
+  padding-bottom: 2px;
+}
+.hero-compact-score-val { font-size: 18px; color: var(--jade-bright); }
+
+/* ── Collapsed state overrides ── */
+.hero--collapsed .hero-compact-bar { display: flex; }
+.hero--collapsed .hero-label-jp,
+.hero--collapsed .hero-nums,
+.hero--collapsed .hero-breakdown { display: none; }
+.hero--collapsed { grid-template-columns: 1fr !important; }
+.hero--collapsed .hero-right { display: none; }
+.hero--collapsed .hero-left { border-right: none; padding-bottom: 10px; }
 .hero-eyebrow::before {
   content: ''; width: 22px; height: 1px; background: var(--gold);
 }

@@ -94,6 +94,21 @@ function bindEnemySelect() {
 }
 
 // ── ダークモード ──────────────────────────────────────────────────
+function toggleHero() {
+  var hero = document.querySelector('.hero');
+  if (!hero) return;
+  var collapsed = hero.classList.toggle('hero--collapsed');
+  try { localStorage.setItem('wwm_hero_collapsed', collapsed ? '1' : '0'); } catch(e) {}
+}
+function initHeroCollapse() {
+  try {
+    if (localStorage.getItem('wwm_hero_collapsed') === '1') {
+      var hero = document.querySelector('.hero');
+      if (hero) hero.classList.add('hero--collapsed');
+    }
+  } catch(e) {}
+}
+
 function toggleTheme() {
   const isLight = document.documentElement.getAttribute('data-theme') === 'light';
   setTheme(isLight ? 'dark' : 'light');
@@ -407,6 +422,7 @@ function exportImage() {
 // ── 起動 ──────────────────────────────────────────────────────────
 function init() {
   initTheme();
+  initHeroCollapse();
   loadInputs();
   initEffMaxVals();
   initPresets();
