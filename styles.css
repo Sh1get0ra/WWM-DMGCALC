@@ -331,7 +331,7 @@ header.topbar::after {
 .hero--collapsed .donut { width: 68px; height: 68px; }
 .hero--collapsed .donut-center-label { font-size: 7px; }
 .hero--collapsed .donut-center-val { font-size: 11px; margin-top: 1px; }
-.hero--collapsed .prob-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 6px; }
+.hero--collapsed .prob-legend { display: grid !important; grid-template-columns: 1fr 1fr; gap: 2px 6px; align-content: center; }
 .hero--collapsed .prob-row { padding: 2px 0; gap: 5px; border-bottom: none; }
 .hero--collapsed .prob-dot { width: 6px !important; height: 6px !important; }
 .hero--collapsed .pname { font-size: 9px; }
