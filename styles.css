@@ -94,8 +94,8 @@ body {
 .sticky-header {
   position: sticky; top: 0; z-index: 200;
   background: linear-gradient(180deg, var(--bg-0) 0%, var(--bg-0) 70%, rgba(7,6,10,0.0) 100%);
-  padding: 14px 0 8px;
-  margin-bottom: 14px;
+  padding: 14px 0 0;
+  margin-bottom: 18px;
 }
 
 header.topbar {
@@ -116,91 +116,6 @@ header.topbar::after {
   width: 280px; height: 1px;
   background: linear-gradient(90deg, transparent, var(--ink-3), transparent);
   pointer-events: none; opacity: 0.6;
-}
-
-.seal {
-  width: 58px; height: 58px; flex-shrink: 0; position: relative;
-  background:
-    radial-gradient(ellipse 80% 80% at 30% 25%, var(--vermilion-bright) 0%, var(--vermilion) 45%, var(--vermilion-deep) 100%);
-  border-radius: 3px;
-  transform: rotate(-3deg);
-  box-shadow:
-    inset 0 0 0 1px rgba(255,210,180,0.35),
-    inset 0 0 0 3px rgba(200,60,43,0.55),
-    inset 0 0 0 4px rgba(240,210,138,0.55),
-    inset 0 -10px 16px rgba(0,0,0,0.4),
-    inset 4px 4px 12px rgba(255,200,180,0.15),
-    0 3px 16px rgba(200, 60, 43, 0.45),
-    0 0 30px rgba(232,81,58,0.3);
-  isolation: isolate;
-}
-/* Paper grain */
-.seal::before {
-  content: ''; position: absolute; inset: 0;
-  background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1OCcgaGVpZ2h0PSc1OCc+PGZpbHRlciBpZD0nbic+PGZlVHVyYnVsZW5jZSB0eXBlPSdmcmFjdGFsTm9pc2UnIGJhc2VGcmVxdWVuY3k9JzEuNCcgbnVtT2N0YXZlcz0nMicgc2VlZD0nNScvPjxmZUNvbG9yTWF0cml4IHZhbHVlcz0nMCAwIDAgMCAwICAwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMC40NSAwJy8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9JzEwMCUnIGhlaWdodD0nMTAwJScgZmlsdGVyPSd1cmwoI24pJy8+PC9zdmc+");
-  mix-blend-mode: multiply; opacity: 0.4; border-radius: 3px;
-  z-index: 1; pointer-events: none;
-}
-/* Top-right corner notch (cut-paper triangle) */
-.seal::after {
-  content: ''; position: absolute; top: -1px; right: -1px;
-  width: 14px; height: 14px;
-  background:
-    linear-gradient(225deg, var(--bg-1) 0%, var(--bg-1) 50%, transparent 50.1%);
-  border-bottom-left-radius: 2px;
-  z-index: 3; pointer-events: none;
-}
-.seal .seal-bird {
-  position: absolute; inset: 0;
-  margin: auto;
-  width: 76%; height: auto;
-  color: var(--gold-bright);
-  filter:
-    drop-shadow(0 1px 1px rgba(0,0,0,0.7))
-    drop-shadow(0 0 6px rgba(255,220,180,0.45));
-  z-index: 2;
-  transform: rotate(3deg); /* compensate seal's -3deg so the bird flies straight */
-}
-/* Sword slash across the seal */
-.seal .seal-cut {
-  position: absolute; top: 50%; left: -8%;
-  width: 116%; height: 2px;
-  background: linear-gradient(90deg,
-    transparent 0%,
-    rgba(240,210,138,0.0) 8%,
-    rgba(240,210,138,0.95) 40%,
-    #fff 50%,
-    rgba(240,210,138,0.95) 60%,
-    rgba(240,210,138,0.0) 92%,
-    transparent 100%);
-  transform: translateY(-50%) rotate(-22deg);
-  z-index: 3;
-  filter: drop-shadow(0 0 4px rgba(255,220,180,0.85));
-  pointer-events: none;
-  opacity: 0.85;
-}
-.seal .seal-cut::after {
-  /* tiny glint travelling along the cut */
-  content: ''; position: absolute; top: -2px; left: -20%;
-  width: 20%; height: 6px;
-  background: radial-gradient(ellipse 100% 100% at 50% 50%, #fff 0%, rgba(255,220,180,0.7) 35%, transparent 70%);
-  animation: sealGlint 4.5s ease-in-out infinite;
-}
-@keyframes sealGlint {
-  0%, 100% { transform: translateX(0); opacity: 0; }
-  10%      { opacity: 0; }
-  20%      { opacity: 1; }
-  55%      { transform: translateX(550%); opacity: 1; }
-  60%      { transform: translateX(600%); opacity: 0; }
-}
-/* Subtle corner mark — bottom-left tiny gold dot */
-.seal .seal-mark {
-  position: absolute; bottom: 5px; left: 5px;
-  width: 4px; height: 4px;
-  background: var(--gold-bright);
-  border-radius: 50%;
-  box-shadow: 0 0 4px rgba(240,210,138,0.8);
-  z-index: 3;
 }
 
 .title-block { flex: 1; min-width: 0; }
@@ -315,7 +230,6 @@ header.topbar::after {
   display: grid;
   grid-template-columns: 1fr 380px;
   gap: 0;
-  margin-bottom: 18px;
   background: var(--hero-grad);
   border: 1px solid var(--ink-2);
   border-left: 3px solid var(--vermilion);
