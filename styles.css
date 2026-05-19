@@ -286,7 +286,7 @@ header.topbar::after {
 /* ── Compact bar (collapsed state) ── */
 .hero-compact-bar {
   display: none;
-  align-items: center;
+  align-items: baseline;
   gap: 7px;
   padding: 4px 0 6px;
   font-family: var(--f-latin);
@@ -319,10 +319,10 @@ header.topbar::after {
 @media (min-width: 601px) {
   .hero--collapsed .hero-compact-breakdown { display: flex; }
 }
-.hcb-item { display: flex; flex-direction: column; gap: 2px; }
+.hcb-item { display: flex; flex-direction: row; align-items: baseline; gap: 5px; }
 .hcb-label {
   font-family: var(--f-mono); font-size: 9px; font-weight: 700;
-  color: var(--paper-mute); letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--paper-mute); letter-spacing: 0.14em; text-transform: uppercase;
 }
 .hcb-val {
   font-family: var(--f-mono); font-size: 15px; font-weight: 700;
