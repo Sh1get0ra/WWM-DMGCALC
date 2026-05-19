@@ -222,10 +222,6 @@ function calculate() {
     elem:  normalAvg.elem *pNormal + critAvg.elem *pCrit + sympathyDmg.elem *pSympathy + grazeDmg.elem *pGraze,
   };
 
-  // ── STATUS SCORE（固定スキル係数で計算） ─────────────────────
-  const scoreExpected = computeExpected({...effParams, ...SCORE_FIXED});
-  countUp('heroScore', scoreExpected, 0);
-
   // ── ヒーロー：期待値カウントアップ＆内訳 ──────────────────────
   countUp('heroExpected', expected.total, 0);
   countUp('hbExp',  expected.total, 0);
@@ -277,5 +273,9 @@ function calculate() {
   };
   _lastEffParams = effParams;
   _lastBaseExpected = expected.total;
+
+  // ── STATUS SCORE（固定スキル係数で計算） ─────────────────────
+  const scoreExpected = computeExpected({...effParams, ...SCORE_FIXED});
+  countUp('heroScore', scoreExpected, 0);
   buildEfficiencyTable(effParams, expected.total);
 }
