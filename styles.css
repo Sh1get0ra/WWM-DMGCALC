@@ -279,6 +279,33 @@ header.topbar::after {
   border-bottom: 1px solid var(--gold-deep);
   padding-left: 2px; padding-right: 2px;
 }
+.hero-nums {
+  display: flex; align-items: flex-end; gap: 28px; margin-top: 4px;
+}
+.hero-score-block {
+  padding-left: 22px;
+  border-left: 1px solid var(--ink-3);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding-bottom: 14px;
+}
+.hero-score-eyebrow {
+  font-family: var(--f-mono); font-size: 10px; font-weight: 700;
+  color: var(--jade); letter-spacing: 0.22em; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.hero-score-num {
+  font-family: var(--f-latin); font-weight: 800; font-size: 48px;
+  color: var(--jade-bright); line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 20px rgba(168,212,180,0.2);
+}
+.hero-score-hint {
+  font-family: var(--f-mono); font-size: 9px; font-weight: 500;
+  color: var(--paper-mute); letter-spacing: 0.06em;
+  margin-top: 5px;
+}
+
 .hero-breakdown {
   display: flex; gap: 22px; margin-top: 18px;
   padding-top: 14px; border-top: 1px solid var(--ink-2);
