@@ -2,7 +2,7 @@
 const TRANSLATIONS = {
   ja: {
     pageTitle:'WWM DMG CALC', headerTitle:'風燕伝　ダメージ計算ツール',
-    headerSub:'Real-time damage forecast · 武侠HUD',
+    headerSub:'Real-time damage forecast',
     sec1:'基本ステータス', sec2:'判定確率', sec3:'ダメージ増加効果',
     sec4:'スキルステータス', sec5:'その他ステータス', sec6:'エネミーデータ',
     minPhysATK:'最小物理ATK', maxPhysATK:'最大物理ATK',
@@ -50,7 +50,7 @@ const TRANSLATIONS = {
   },
   en: {
     pageTitle:'WWM DMG CALC', headerTitle:'Where Winds Meet — Damage Calculator',
-    headerSub:'Real-time damage forecast · Wuxia HUD',
+    headerSub:'Real-time damage forecast',
     sec1:'Base Stats', sec2:'Hit Probability', sec3:'DMG Increase Effects',
     sec4:'Skill Stats', sec5:'Other Stats', sec6:'Enemy Data',
     minPhysATK:'Min Physical ATK', maxPhysATK:'Max Physical ATK',
@@ -98,7 +98,7 @@ const TRANSLATIONS = {
   },
   zh: {
     pageTitle:'WWM DMG CALC', headerTitle:'风燕传　伤害计算器',
-    headerSub:'Real-time damage forecast · 武侠HUD',
+    headerSub:'Real-time damage forecast',
     sec1:'基础属性', sec2:'判定概率', sec3:'伤害增加效果',
     sec4:'技能属性', sec5:'其他属性', sec6:'怪物数据',
     minPhysATK:'最小物理ATK', maxPhysATK:'最大物理ATK',
@@ -146,7 +146,7 @@ const TRANSLATIONS = {
   },
   ko: {
     pageTitle:'WWM DMG CALC', headerTitle:'풍연전　대미지 계산기',
-    headerSub:'Real-time damage forecast · 무협HUD',
+    headerSub:'Real-time damage forecast',
     sec1:'기본 스탯', sec2:'판정 확률', sec3:'대미지 증가 효과',
     sec4:'스킬 스탯', sec5:'기타 스탯', sec6:'적 데이터',
     minPhysATK:'최소 물리 ATK', maxPhysATK:'최대 물리 ATK',
