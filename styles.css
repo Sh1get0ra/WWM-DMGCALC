@@ -94,7 +94,7 @@ body {
 .sticky-header {
   position: sticky; top: 0; z-index: 200;
   background: linear-gradient(180deg, var(--bg-0) 0%, var(--bg-0) 70%, rgba(7,6,10,0.0) 100%);
-  padding: 14px 0 0;
+  padding: 0;
   margin-bottom: 18px;
 }
 
@@ -341,10 +341,15 @@ header.topbar::after {
 
 /* PC のみ: 内訳を折りたたみ時も表示 */
 @media (min-width: 601px) {
+  .hero--collapsed .hero-left {
+    justify-content: flex-start;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
   .hero--collapsed .hero-breakdown {
     display: flex !important;
-    margin-top: 8px;
-    padding-top: 6px;
+    margin-top: 10px;
+    padding-top: 8px;
     border-top: 1px solid var(--ink-2);
   }
 }
