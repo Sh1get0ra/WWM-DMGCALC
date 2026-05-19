@@ -313,7 +313,17 @@ header.topbar::after {
 .hero--collapsed .hero-nums,
 .hero--collapsed .hero-breakdown { display: none; }
 .hero--collapsed .hero-left { padding-top: 14px; padding-bottom: 14px; justify-content: center; }
-.hero--collapsed .hero-right { padding-top: 10px; padding-bottom: 10px; }
+/* 折りたたみ時は常に2カラム維持 + hero-right を強制表示 */
+.hero--collapsed {
+  grid-template-columns: 1fr 340px !important;
+}
+.hero--collapsed .hero-right {
+  display: flex !important;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-left: 1px solid var(--ink-2);
+  border-top: none !important;
+}
 .hero-eyebrow::before {
   content: ''; width: 22px; height: 1px; background: var(--gold);
 }
