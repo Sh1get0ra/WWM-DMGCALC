@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WWM DMG CALC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;600;700;900&family=Noto+Serif+JP:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+
+<div class="sticky-header">
+  <header class="topbar">
+    <div class="title-block">
+      <h1 data-i18n="headerTitle">風燕伝　<span class="accent">ダメージ計算ツール</span></h1>
+      <p data-i18n="headerSub">Real-time damage forecast · 武侠HUD</p>
+    </div>
+    <div class="top-controls">
+      <div class="lang-switcher">
+        <button class="lang-btn active" data-lang="ja" onclick="setLang('ja')">日本語</button>
+        <button class="lang-btn"        data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn"        data-lang="zh" onclick="setLang('zh')">中文</button>
+        <button class="lang-btn"        data-lang="ko" onclick="setLang('ko')">한국어</button>
+      </div>
+      <button class="icon-btn export-btn" id="exportBtn" onclick="exportImage()">EXPORT</button>
+      <button class="icon-btn" id="themeToggle" onclick="toggleTheme()" title="Theme">☀</button>
+    </div>
+  </header>
+
+  <div class="preset-bar">
+    <span class="preset-bar-title" data-i18n="presetTitle">PRESETS</span>
+    <div class="preset-slots">
+      <div class="preset-slot" id="presetSlot0">
+        <span class="preset-slot-num">01</span>
+        <input class="preset-name-input" id="presetName0" type="text" maxlength="20">
+        <button class="preset-btn preset-save" onclick="savePreset(0)" data-i18n="presetSave">保存</button>
+        <button class="preset-btn preset-load" id="presetLoadBtn0" onclick="loadPreset(0)" data-i18n="presetLoad" disabled>読込</button>
+        <button class="preset-btn preset-del"  id="presetDelBtn0"  onclick="deletePreset(0)" disabled>✕</button>
+      </div>
+      <div class="preset-slot" id="presetSlot1">
+        <span class="preset-slot-num">02</span>
+        <input class="preset-name-input" id="presetName1" type="text" maxlength="20">
+        <button class="preset-btn preset-save" onclick="savePreset(1)" data-i18n="presetSave">保存</button>
+        <button class="preset-btn preset-load" id="presetLoadBtn1" onclick="loadPreset(1)" data-i18n="presetLoad" disabled>読込</button>
+        <button class="preset-btn preset-del"  id="presetDelBtn1"  onclick="deletePreset(1)" disabled>✕</button>
+      </div>
+      <div class="preset-slot" id="presetSlot2">
+        <span class="preset-slot-num">03</span>
+        <input class="preset-name-input" id="presetName2" type="text" maxlength="20">
+        <button class="preset-btn preset-save" onclick="savePreset(2)" data-i18n="presetSave">保存</button>
+        <button class="preset-btn preset-load" id="presetLoadBtn2" onclick="loadPreset(2)" data-i18n="presetLoad" disabled>読込</button>
+        <button class="preset-btn preset-del"  id="presetDelBtn2"  onclick="deletePreset(2)" disabled>✕</button>
+      </div>
+    </div>
+  </div>
+
+<!-- HERO: expected DMG + probability donut -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow"><span data-i18n="resultHero">EXPECTED · 期待値</span></div>
+    <div class="hero-label-jp" data-i18n="resultHeroSub">最終ダメージ期待値</div>
+    <div class="hero-nums">
+      <div class="hero-number">
+        <span id="heroExpected">0</span>
+        <span class="unit">DMG</span>
+      </div>
+      <div class="hero-score-block">
+        <div class="hero-score-eyebrow">STATUS SCORE</div>
+        <div class="hero-score-num"><span id="heroScore">0</span></div>
+        <div class="hero-score-hint">外功100% · 技能150% · 付加230</div>
+      </div>
+    </div>
+    <div class="hero-breakdown">
+      <div class="hb-item">
+        <span class="hb-label" data-i18n="breakdownPhys">PHYSICAL</span>
+        <span class="hb-value phys" id="hbPhys">0</span>
+      </div>
+      <div class="hb-item">
+        <span class="hb-label" data-i18n="breakdownElem">ELEMENTAL</span>
+        <span class="hb-value elem" id="hbElem">0</span>
+      </div>
+      <div class="hb-item">
+        <span class="hb-label" data-i18n="breakdownExp">EXPECTED</span>
+        <span class="hb-value" id="hbExp">0</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="donut-wrap">
+      <div class="donut">
+        <svg viewBox="0 0 136 136">
+          <circle class="donut-bg" cx="68" cy="68" r="54" fill="none" stroke-width="14"/>
+          <circle id="donutSegCrit"     class="donut-seg" cx="68" cy="68" r="54" fill="none" stroke="var(--vermilion-bright)" stroke-width="14" stroke-dasharray="0 339.292" stroke-dashoffset="0" style="filter:drop-shadow(0 0 6px var(--vermilion-glow));"/>
+          <circle id="donutSegSympathy" class="donut-seg" cx="68" cy="68" r="54" fill="none" stroke="var(--jade-bright)"      stroke-width="14" stroke-dasharray="0 339.292" stroke-dashoffset="0"/>
+          <circle id="donutSegGraze"    class="donut-seg" cx="68" cy="68" r="54" fill="none" stroke="var(--bone)"             stroke-width="14" stroke-dasharray="0 339.292" stroke-dashoffset="0"/>
+          <circle id="donutSegNormal"   class="donut-seg" cx="68" cy="68" r="54" fill="none" stroke="var(--paper)"            stroke-width="14" stroke-dasharray="0 339.292" stroke-dashoffset="0" opacity="0.55"/>
+        </svg>
+        <div class="donut-center">
+          <div>
+            <div class="donut-center-label" data-i18n="donutCenter">P · 確率分布</div>
+            <div class="donut-center-val">100%</div>
+          </div>
+        </div>
+      </div>
+      <div class="prob-legend">
+        <div class="prob-row">
+          <div class="prob-dot prob-crit" style="background:var(--vermilion-bright);color:var(--vermilion-bright);"></div>
+          <div class="pname" data-i18n="probCrit">会心</div>
+          <div class="pval prob-crit" id="probCritVal">—</div>
+        </div>
+        <div class="prob-row">
+          <div class="prob-dot prob-sympathy" style="background:var(--jade-bright);color:var(--jade-bright);"></div>
+          <div class="pname" data-i18n="probSympathy">会意</div>
+          <div class="pval prob-sympathy" id="probSympathyVal">—</div>
+        </div>
+        <div class="prob-row">
+          <div class="prob-dot prob-graze" style="background:var(--bone);color:var(--bone);"></div>
+          <div class="pname" data-i18n="probGraze">かすり</div>
+          <div class="pval prob-graze" id="probGrazeVal">—</div>
+        </div>
+        <div class="prob-row">
+          <div class="prob-dot prob-normal" style="background:var(--paper);color:var(--paper);"></div>
+          <div class="pname" data-i18n="probNormal">通常</div>
+          <div class="pval prob-normal" id="probNormalVal">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ROW 1: Base / Skill / Damage Boost -->
+<div class="grid-3">
+  <div class="card tone-blue">
+    <div class="card-rail"><span class="rail-num">I</span><span class="rail-kanji">基本</span></div>
+    <div class="field-row"><span class="field-label" data-i18n="minPhysATK">最小物理ATK</span>
+      <input class="field-input" id="minPhysATK" type="number" value="1388" step="1"></div>
+    <div class="field-row"><span class="field-label" data-i18n="maxPhysATK">最大物理ATK</span>
+      <input class="field-input" id="maxPhysATK" type="number" value="2100" step="1"></div>
+    <div class="field-row"><span class="field-label" data-i18n="minElemMain">最小属性ATK（主）</span>
+      <input class="field-input" id="minElemMain" type="number" value="409" step="1"></div>
+    <div class="field-row"><span class="field-label" data-i18n="maxElemMain">最大属性ATK（主）</span>
+      <input class="field-input" id="maxElemMain" type="number" value="685" step="1"></div>
+    <div class="field-row"><span class="field-label" data-i18n="minElemSub">最小属性ATK（副）</span>
+      <input class="field-input" id="minElemSub" type="number" value="34" step="1"></div>
+    <div class="field-row"><span class="field-label" data-i18n="maxElemSub">最大属性ATK（副）</span>
+      <input class="field-input" id="maxElemSub" type="number" value="34" step="1"></div>
+  </div>
+
+  <div class="card tone-purple">
+    <div class="card-rail"><span class="rail-num">II</span><span class="rail-kanji">判定</span></div>
+    <div class="judge-grid">
+      <div class="jg-head"></div>
+      <div class="jg-head" data-i18n="jgInputVal">入力値</div>
+      <div class="jg-head"></div>
+      <div class="jg-head" style="text-align:center;" data-i18n="jgApplied">適用値</div>
+
+      <span class="field-label" data-i18n="hitRate">命中率</span>
+      <input class="field-input" id="hitRate" type="number" value="112.6" step="0.1">
+      <span class="pct-unit">%</span>
+      <div class="field-auto" id="dispHitRate">—</div>
+
+      <span class="field-label" data-i18n="critRate">会心率</span>
+      <input class="field-input" id="critRate" type="number" value="106.6" step="0.1">
+      <span class="pct-unit">%</span>
+      <div class="field-auto" id="dispCritRate">—</div>
+
+      <span class="field-label" data-i18n="sympathyRate">会意率</span>
+      <input class="field-input" id="sympathyRate" type="number" value="22.2" step="0.1">
+      <span class="pct-unit">%</span>
+      <div class="field-auto" id="dispSympathyRate">—</div>
+
+      <span class="field-label" data-i18n="addCritRate">付加会心率</span>
+      <input class="field-input" id="addCritRate" type="number" value="4.6" step="0.1">
+      <span class="pct-unit">%</span>
+      <div></div>
+
+      <span class="field-label" data-i18n="addSympathyRate">付加会意率</span>
+      <input class="field-input" id="addSympathyRate" type="number" value="0" step="0.1">
+      <span class="pct-unit">%</span>
+      <div></div>
+    </div>
+  </div>
+
+  <div class="card tone-red">
+    <div class="card-rail"><span class="rail-num">III</span><span class="rail-kanji">増効</span></div>
+    <div class="field-row"><span class="field-label" data-i18n="critBoost">会心攻撃強化</span>
+      <input class="field-input" id="critBoost" type="number" value="54.4" step="0.1">
+      <span class="pct-unit">%</span></div>
+    <div class="field-row"><span class="field-label" data-i18n="sympathyBoost">会意攻撃強化</span>
+      <input class="field-input" id="sympathyBoost" type="number" value="35.0" step="0.1">
+      <span class="pct-unit">%</span></div>
+    <div class="field-row"><span class="field-label" data-i18n="outerPen">外功貫通</span>
+      <input class="field-input" id="outerPen" type="number" value="37" step="1">
+      <span class="pct-gap"></span></div>
+    <div class="field-row"><span class="field-label" data-i18n="weaponBonus">外功ダメージ強化</span>
+      <input class="field-input" id="weaponBonus" type="number" value="0" step="0.1">
+      <span class="pct-unit">%</span></div>
+    <div class="field-row"><span class="field-label" data-i18n="elemPen">属性貫通</span>
+      <input class="field-input" id="elemPen" type="number" value="24" step="1">
+      <span class="pct-gap"></span></div>
+    <div class="field-row"><span class="field-label" data-i18n="elemAtkBoost">属性攻撃強化</span>
+      <input class="field-input" id="elemAtkBoost" type="number" value="0" step="0.1">
+      <span class="pct-unit">%</span></div>
+    <div class="field-row"><span class="field-label" data-i18n="allMartialBoost">全武術効果増加</span>
+      <input class="field-input" id="allMartialBoost" type="number" value="0" step="0.1">
+      <span class="pct-unit">%</span></div>
+    <div class="field-row"><span class="field-label" data-i18n="bossBoost">首領ダメージ増加</span>
+      <input class="field-input" id="bossBoost" type="number" value="2.4" step="0.1">
+      <span class="pct-unit">%</span></div>
+    <div class="field-row"><span class="field-label" data-i18n="specMartialBoost">指定武術効果強化</span>
+      <input class="field-input" id="specMartialBoost" type="number" value="0" step="0.1">
+      <span class="pct-unit">%</span></div>
+  </div>
+</div>
+
+<!-- ROW 2: Skill / Other / Enemy -->
+<div class="grid-3">
+  <div class="card tone-teal">
+    <div class="card-rail"><span class="rail-num">IV</span><span class="rail-kanji">技能</span></div>
+    <div class="field-row"><span class="field-label" data-i18n="outerCoeff">外功係数</span>
+      <input class="field-input" id="outerCoeff" type="number" value="247.56" step="0.01">
+      <span class="pct-unit">%</span></div>
+    <div class="field-row"><span class="field-label" data-i18n="statusCoeff">ステータス攻撃係数</span>
+      <input class="field-input" id="statusCoeff" type="number" value="371.34" step="0.01">
+      <span class="pct-unit">%</span></div>
+    <div class="field-row"><span class="field-label" data-i18n="outerAdd">外功付加</span>
+      <input class="field-input" id="outerAdd" type="number" value="572" step="1">
+      <span class="pct-gap"></span></div>
+  </div>
+
+  <div class="card tone-green">
+    <div class="card-rail"><span class="rail-num">V</span><span class="rail-kanji">雑項</span></div>
+    <div class="field-row"><span class="field-label" data-i18n="worldLv">大世界等級（Lv）</span>
+      <input class="field-input" id="worldLv" type="number" value="14" step="1" min="0">
+      <span class="pct-gap"></span></div>
+    <div class="field-row"><span class="field-label" data-i18n="martialLv">武学等級（Lv）</span>
+      <input class="field-input" id="martialLv" type="number" value="95" step="1" min="0">
+      <span class="pct-gap"></span></div>
+    <div class="field-row"><span class="field-label" data-i18n="elemBoostMain">属性強化（主）</span>
+      <input class="field-input" id="elemBoostMain" type="number" value="1.5" step="0.01">
+      <span class="pct-gap"></span></div>
+    <div class="field-row"><span class="field-label" data-i18n="elemBoostSub">属性強化（副）</span>
+      <input class="field-input" id="elemBoostSub" type="number" value="1.0" step="0.01">
+      <span class="pct-gap"></span></div>
+    <div class="field-row"><span class="field-label" data-i18n="enemyDebuff">デバフ（敵）</span>
+      <input class="field-input" id="enemyDebuff" type="number" value="0" step="0.1">
+      <span class="pct-unit">%</span></div>
+  </div>
+
+  <div class="card tone-slate">
+    <div class="card-rail"><span class="rail-num">VI</span><span class="rail-kanji">敵情</span></div>
+    <div class="field-row">
+      <span class="field-label" data-i18n="enemyLevel">エネミーレベル</span>
+      <select class="field-input" id="enemyLevel">
+        <option value="Lv16">Lv16</option>
+        <option value="Lv51">Lv51</option>
+        <option value="Lv81">Lv81</option>
+        <option value="Lv86">Lv86</option>
+        <option value="Lv91" selected>Lv91</option>
+        <option value="Lv96">Lv96</option>
+        <option value="Lv100">Lv100</option>
+        <option value="manual" data-i18n-opt="manualInput">手動入力</option>
+      </select>
+    </div>
+    <div class="field-row"><span class="field-label" data-i18n="physDef">物理防御力</span>
+      <div class="field-auto" id="dispPhysDef">350</div>
+      <input class="field-input" id="manPhysDef" type="number" value="350" step="1" style="display:none;"></div>
+    <div class="field-row"><span class="field-label" data-i18n="judgeRes">審判耐性</span>
+      <div class="field-auto" id="dispJudgeRes">1.45</div>
+      <input class="field-input" id="manJudgeRes" type="number" value="1.45" step="0.01" style="display:none;"></div>
+    <div class="field-row"><span class="field-label" data-i18n="physRes">物理耐性値</span>
+      <div class="field-auto" id="dispPhysRes">0</div>
+      <input class="field-input" id="manPhysRes" type="number" value="0" step="1" style="display:none;"></div>
+    <div class="field-row"><span class="field-label" data-i18n="elemRes">属性耐性値</span>
+      <div class="field-auto" id="dispElemRes">0</div>
+      <input class="field-input" id="manElemRes" type="number" value="0" step="1" style="display:none;"></div>
+    <div class="field-row"><span class="field-label" data-i18n="dmgReduce1">ダメージ軽減１</span>
+      <input class="field-input" id="dmgReduce1" type="number" value="0" step="0.1">
+      <span class="pct-unit">%</span></div>
+    <div class="field-row"><span class="field-label" data-i18n="dmgReduce2">ダメージ軽減２</span>
+      <input class="field-input" id="dmgReduce2" type="number" value="0" step="0.1">
+      <span class="pct-unit">%</span></div>
+    <div class="enemy-presets-note">
+      <b data-i18n="enemyPresetTitle">エネミーデータ（プリセット）</b>
+      Lv16: DEF 10 / JR 1.0　·　Lv51: DEF 29 / JR 1.0<br>
+      Lv81: DEF 270 / JR 1.15　·　Lv86: DEF 307 / JR 1.3<br>
+      Lv91: DEF 350 / JR 1.45　·　Lv96: DEF 405 / JR 1.65<br>
+      Lv100: DEF 498 / JR 1.85
+    </div>
+  </div>
+</div>
+
+<!-- Damage Detail Table -->
+<section class="results-section">
+  <div class="section-header">
+    <div class="mark"></div>
+    <h2 data-i18n="detailsTitle">詳細ダメージ表</h2>
+    <span class="sub" data-i18n="resultTitle">期待ダメージ</span>
+  </div>
+  <div class="results-table-wrap">
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th rowspan="2" style="width:96px;" data-i18n="thHitType">ヒット種</th>
+          <th colspan="3" data-i18n="thAvgATK">平均ATK</th>
+          <th colspan="3" data-i18n="thMinATK">最小ATK</th>
+          <th colspan="3" data-i18n="thMaxATK">最大ATK</th>
+          <th rowspan="2" data-i18n="thPhysPct">物理%</th>
+          <th rowspan="2" data-i18n="thElemPct">属性%</th>
+        </tr>
+        <tr>
+          <th data-i18n="thTotal">合計</th><th data-i18n="thPhys">物理</th><th data-i18n="thElem">属性</th>
+          <th data-i18n="thTotal">合計</th><th data-i18n="thPhys">物理</th><th data-i18n="thElem">属性</th>
+          <th data-i18n="thTotal">合計</th><th data-i18n="thPhys">物理</th><th data-i18n="thElem">属性</th>
+        </tr>
+      </thead>
+      <tbody id="tbodyResults"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Efficiency Table -->
+<section class="eff-card">
+  <div class="section-header">
+    <div class="mark" style="background:var(--gold);box-shadow:0 0 10px var(--gold-glow);"></div>
+    <h2 data-i18n="effTitle">ステータス効率分析</h2>
+    <span class="sub" data-i18n="effSub">EFFICIENCY / +1 unit</span>
+  </div>
+  <div class="eff-note" data-i18n="effNote">各ステータス＋装備1個あたりの期待DMG増加量。現在の入力値を基準に自動計算。</div>
+  <div class="eff-table-wrap">
+    <table class="eff-table">
+      <thead>
+        <tr>
+          <th data-i18n="effThStat">ステータス</th>
+          <th data-i18n="effThMax">X値</th>
+          <th data-i18n="effThBase">基準期待値</th>
+          <th data-i18n="effThAfter">+x後期待値</th>
+          <th data-i18n="effThDelta">増加量(+x)</th>
+          <th data-i18n="effThPer1">+1あたり</th>
+          <th data-i18n="effThScore">スコア</th>
+          <th data-i18n="effThRating">評価</th>
+        </tr>
+      </thead>
+      <tbody id="effTbody"></tbody>
+    </table>
+  </div>
+</section>
+
+<footer>Created by <strong>SHIGETORA</strong></footer>
+
+</div>
+
+<div id="toast"></div>
+<div id="export-card"></div>
+
+<script src="i18n.js"></script>
+<script src="calc.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
