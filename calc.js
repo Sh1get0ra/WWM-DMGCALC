@@ -275,7 +275,23 @@ function calculate() {
   _lastBaseExpected = expected.total;
 
   // ── STATUS SCORE（固定スキル係数で計算） ─────────────────────
-  const scoreExpected = computeExpected({...effParams, ...SCORE_FIXED});
-  countUp('heroScore', scoreExpected, 0);
+  (function() {
+    var sc = SCORE_FIXED;
+    function sp(atk) { return Math.max(0, atk - physDef) * sc.outerCoeff + sc.outerAdd; }
+    function se(m, s) {
+      return (m + hiddenBonus) * elemBoostMain * sc.statusCoeff
+           + (s + hiddenBonus) * elemBoostSub  * sc.statusCoeff;
+    }
+    function sd(pa, em, es, mul) {
+      mul = mul || 1;
+      return sp(pa) * (1 + physPenZone) * physDmgBonus * reductionZone * mul
+           + se(em, es) * (1 + elemPenZone) * elemDmgBonus * reductionZone * mul;
+    }
+    var s = sd(avgPhys, avgMain, avgSub)                    * pNormal
+          + sd(avgPhys, avgMain, avgSub, 1 + critBoost)     * pCrit
+          + sd(maxPhysATK, maxElemMain, maxElemSub, 1 + sympathyBoost) * pSympathy
+          + sd(minPhysATK, minElemMain, minElemSub)         * pGraze;
+    countUp('heroScore', s, 0);
+  })();
   buildEfficiencyTable(effParams, expected.total);
 }
