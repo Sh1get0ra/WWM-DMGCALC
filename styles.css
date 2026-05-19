@@ -445,6 +445,7 @@ header.topbar::after {
 }
 .hb-value.phys { color: var(--vermilion-bright); }
 .hb-value.elem { color: var(--jade-bright); }
+.hb-val-row { display: flex; align-items: baseline; gap: 7px; }
 .hb-pct {
   font-family: var(--f-mono); font-size: 13px; font-weight: 600;
   color: var(--paper-mute); letter-spacing: 0.04em;
