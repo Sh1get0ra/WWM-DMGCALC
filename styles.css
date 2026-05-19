@@ -312,14 +312,10 @@ header.topbar::after {
 .hero--collapsed .hero-label-jp,
 .hero--collapsed .hero-nums,
 .hero--collapsed .hero-breakdown { display: none; }
-.hero--collapsed .hero-left { padding-top: 14px; padding-bottom: 14px; justify-content: center; }
+.hero--collapsed .hero-left { padding-top: 10px; padding-bottom: 10px; justify-content: center; }
 /* 折りたたみ時は常に2カラム維持 + hero-right を強制表示 */
 .hero--collapsed {
   grid-template-columns: 1fr 280px !important;
-}
-.hero--collapsed .hero-left {
-  padding-top: 10px;
-  padding-bottom: 10px;
 }
 .hero--collapsed .hero-right {
   display: flex !important;
@@ -342,6 +338,23 @@ header.topbar::after {
 .hero--collapsed .prob-dot { width: 6px !important; height: 6px !important; flex-shrink: 0; }
 .hero--collapsed .pname { font-size: 8px; min-width: 0; overflow: hidden; }
 .hero--collapsed .pval { font-size: 10px; }
+
+/* PC のみ: 内訳を折りたたみ時も表示 */
+@media (min-width: 601px) {
+  .hero--collapsed .hero-breakdown {
+    display: flex !important;
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid var(--ink-2);
+  }
+}
+
+/* モバイル: pname を非表示にしてドット+数値だけに絞る */
+@media (max-width: 600px) {
+  .hero--collapsed .pname { display: none !important; }
+  .hero--collapsed .pval { font-size: 9px; }
+  .hero--collapsed .prob-row { gap: 3px; }
+}
 .hero-eyebrow::before {
   content: ''; width: 22px; height: 1px; background: var(--gold);
 }
