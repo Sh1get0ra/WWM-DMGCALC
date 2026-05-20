@@ -803,9 +803,10 @@ select.field-input option { background: var(--bg-2); color: var(--paper); }
 .badge-low  { color: var(--paper-mute);      border-color: var(--paper-mute);       background: rgba(0,0,0,0.3); }
 
 /* ── Tier バッジ ──────────────────────────────────────────── */
+.tier-badge:empty { display: none; }
 .tier-badge {
   display: inline-block;
-  font-family: var(--f-title);
+  font-family: var(--f-latin);
   font-weight: 800;
   font-size: 20px;
   letter-spacing: 0.05em;
@@ -1046,6 +1047,18 @@ html[data-theme="light"] .badge-low { background: rgba(58,38,22,0.06); }
 html[data-theme="light"] footer { color: var(--paper-mute); }
 html[data-theme="light"] footer strong { color: var(--vermilion); }
 html[data-theme="light"] #toast { background: #fff8e8; color: var(--paper); border-color: var(--gold-deep); border-left-color: var(--gold-bright); }
+
+html[data-theme="light"] .tier-SS {
+  color: var(--vermilion-deep);
+  background: rgba(200,60,43,0.10);
+  border-color: rgba(138,31,23,0.45);
+  text-shadow: none;
+  box-shadow: none;
+}
+html[data-theme="light"] .tier-S  { color: var(--vermilion);      background: rgba(200,60,43,0.08);  border-color: rgba(200,60,43,0.4); }
+html[data-theme="light"] .tier-A  { color: var(--jade-bright);    background: rgba(74,122,90,0.10);  border-color: rgba(74,122,90,0.38); }
+html[data-theme="light"] .tier-B  { color: var(--bone-dim);       background: rgba(106,82,54,0.08);  border-color: rgba(106,82,54,0.3); }
+html[data-theme="light"] .tier-C  { color: var(--paper-mute);     background: rgba(58,38,22,0.06);   border-color: rgba(58,38,22,0.18); }
 
 /* Count-up flash */
 .flash-pulse { animation: flashpulse 0.5s ease-out; }
