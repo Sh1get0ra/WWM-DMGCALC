@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;600;700;900&family=Noto+Serif+JP:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<link rel="stylesheet" href="styles.css?v=5">
+<link rel="stylesheet" href="styles.css?v=6">
 </head>
 <body>
 <div class="container">
@@ -68,7 +68,7 @@
       <span id="heroCompactDmg">0</span><span class="hero-compact-unit">DMG</span>
       <span class="hero-compact-sep">·</span>
       <span class="hero-compact-score-label">SCORE</span>
-      <span class="hero-compact-score-val" id="heroCompactScore">0</span>
+      <span class="hero-compact-score-val" id="heroCompactScore">0</span><span id="heroCompactTierBadge" class="tier-badge tier-badge-compact"></span>
       <span class="hero-compact-breakdown">
         <span class="hcb-item"><span class="hcb-label" data-i18n="breakdownPhys">PHYSICAL</span><span class="hcb-val phys" id="heroCompactPhys">0</span><span class="hcb-pct phys" id="heroCompactPhysPct">—</span></span>
         <span class="hcb-item"><span class="hcb-label" data-i18n="breakdownElem">ELEMENTAL</span><span class="hcb-val elem" id="heroCompactElem">0</span><span class="hcb-pct elem" id="heroCompactElemPct">—</span></span>
@@ -83,7 +83,7 @@
       </div>
       <div class="hero-score-block">
         <div class="hero-score-eyebrow">STATUS SCORE</div>
-        <div class="hero-score-num"><span id="heroScore">0</span></div>
+        <div class="hero-score-num"><span id="heroScore">0</span><span id="heroTierBadge" class="tier-badge"></span></div>
       </div>
     </div>
     <div class="hero-breakdown">

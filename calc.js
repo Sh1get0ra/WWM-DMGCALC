@@ -316,6 +316,19 @@ function calculate() {
     var _cs = document.getElementById('heroCompactScore');
     if (_cd) _cd.textContent = Math.round(expected.total).toLocaleString(T.locale);
     if (_cs) _cs.textContent = Math.round(s).toLocaleString(T.locale);
+
+    // ── Tier 判定（大世界Lv のみ） ────────────────────────────
+    var ssThr = 8100 * Math.pow(0.8, 14 - worldLv);
+    var tier;
+    if      (s >= ssThr)           tier = 'SS';
+    else if (s >= ssThr * 0.9)     tier = 'S';
+    else if (s >= ssThr * 0.8)     tier = 'A';
+    else if (s >= ssThr * 0.6)     tier = 'B';
+    else                           tier = 'C';
+    var _tb  = document.getElementById('heroTierBadge');
+    var _ctb = document.getElementById('heroCompactTierBadge');
+    if (_tb)  { _tb.textContent  = tier; _tb.className  = 'tier-badge tier-' + tier; }
+    if (_ctb) { _ctb.textContent = tier; _ctb.className = 'tier-badge tier-badge-compact tier-' + tier; }
   })();
   buildEfficiencyTable(effParams, expected.total);
 }

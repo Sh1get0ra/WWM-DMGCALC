@@ -802,6 +802,39 @@ select.field-input option { background: var(--bg-2); color: var(--paper); }
 .badge-good { color: var(--jade-bright);     border-color: var(--jade);             background: rgba(127,168,138,0.1); }
 .badge-low  { color: var(--paper-mute);      border-color: var(--paper-mute);       background: rgba(0,0,0,0.3); }
 
+/* ── Tier バッジ ──────────────────────────────────────────── */
+.tier-badge {
+  display: inline-block;
+  font-family: var(--f-title);
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 0.05em;
+  padding: 1px 9px;
+  border-radius: 3px;
+  vertical-align: middle;
+  margin-left: 10px;
+  line-height: 1.35;
+  border: 1px solid transparent;
+  transition: color 0.3s, background 0.3s, border-color 0.3s;
+}
+.tier-badge-compact {
+  font-size: 12px;
+  padding: 0 5px;
+  margin-left: 4px;
+  line-height: 1.4;
+}
+.tier-SS {
+  color: #f0d28a;
+  background: rgba(200,60,43,0.22);
+  border-color: rgba(240,210,138,0.5);
+  text-shadow: 0 0 14px rgba(240,210,138,0.5);
+  box-shadow: 0 0 10px rgba(200,60,43,0.2);
+}
+.tier-S  { color: #e8513a; background: rgba(200,60,43,0.16); border-color: rgba(232,81,58,0.45); }
+.tier-A  { color: #a8d4b4; background: rgba(168,212,180,0.13); border-color: rgba(168,212,180,0.38); }
+.tier-B  { color: #c9b88a; background: rgba(201,184,138,0.13); border-color: rgba(201,184,138,0.32); }
+.tier-C  { color: var(--paper-mute); background: rgba(139,129,112,0.1); border-color: rgba(139,129,112,0.22); }
+
 .score-bar-wrap { display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
 .score-bar {
   height: 4px; background: rgba(232,215,180,0.08);
