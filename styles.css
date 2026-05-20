@@ -953,6 +953,12 @@ html[data-theme="light"] .hb-label { color: var(--paper-dim); }
 html[data-theme="light"] .hb-value { color: var(--paper); }
 html[data-theme="light"] .hb-value.phys { color: var(--vermilion); }
 html[data-theme="light"] .hb-value.elem { color: var(--jade-bright); }
+html[data-theme="light"] .hb-pct.phys { color: rgba(200,60,43,0.75); }
+html[data-theme="light"] .hb-pct.elem { color: var(--jade-bright); }
+html[data-theme="light"] .hcb-pct.phys { color: rgba(200,60,43,0.7); }
+html[data-theme="light"] .hcb-pct.elem { color: var(--jade-bright); }
+html[data-theme="light"] .hcb-val.phys { color: var(--vermilion); }
+html[data-theme="light"] .hcb-val.elem { color: var(--jade-bright); }
 
 html[data-theme="light"] .donut-center-label { color: var(--paper-dim); }
 html[data-theme="light"] .donut-center-val { color: var(--vermilion); }
