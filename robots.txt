@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sh1get0ra.github.io/WWM-DMGCALC/sitemap.xml
