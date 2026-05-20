@@ -609,7 +609,7 @@ header.topbar::after {
   letter-spacing: 0.02em;
 }
 .field-input, select.field-input {
-  width: 92px; padding: 3px 8px;
+  width: 78px; padding: 3px 8px;
   background: var(--input-bg);
   border: 1px solid var(--ink-2);
   border-bottom: 1px solid var(--gold-deep);
@@ -628,11 +628,11 @@ header.topbar::after {
   box-shadow: 0 0 0 1px var(--vermilion-bright), 0 0 14px var(--vermilion-glow);
   color: var(--paper);
 }
-select.field-input { text-align: left; cursor: pointer; width: 114px; }
+select.field-input { text-align: left; cursor: pointer; width: 98px; }
 select.field-input option { background: var(--bg-2); color: var(--paper); }
 
 .field-auto {
-  width: 92px; padding: 3px 8px; text-align: right;
+  width: 78px; padding: 3px 8px; text-align: right;
   font-family: var(--f-mono); font-size: 12px; font-weight: 700;
   background: rgba(127,168,138,0.10);
   border: 1px solid rgba(127,168,138,0.35);
@@ -649,7 +649,7 @@ select.field-input option { background: var(--bg-2); color: var(--paper); }
 
 .judge-grid {
   display: grid;
-  grid-template-columns: 1fr 92px 12px 86px;
+  grid-template-columns: 1fr 78px 12px 72px;
   gap: 4px 6px; align-items: center;
 }
 .jg-head {
@@ -1164,14 +1164,14 @@ html[data-theme="light"] #toast { background: #fff8e8; color: var(--paper); bord
 
   .field-row { gap: 4px; padding: 4px 0; min-height: 32px; }
   .field-label { font-size: 11px; }
-  .field-input, select.field-input { width: 84px; padding: 5px 6px; }
-  select.field-input { width: 100px; }
-  .field-auto { width: 84px; padding: 5px 6px; font-size: 12px; }
+  .field-input, select.field-input { width: 78px; padding: 5px 6px; }
+  select.field-input { width: 96px; }
+  .field-auto { width: 78px; padding: 5px 6px; font-size: 12px; }
   .pct-unit { font-size: 10px; width: 10px; }
   .pct-gap { width: 10px; }
 
   /* 判定カード (II): グリッド幅を調整 */
-  .judge-grid { grid-template-columns: 1fr 84px 10px 78px; gap: 3px 4px; }
+  .judge-grid { grid-template-columns: 1fr 78px 10px 72px; gap: 3px 4px; }
   .jg-head { font-size: 8px; }
 
   .enemy-presets-note { font-size: 10px; line-height: 1.6; }
