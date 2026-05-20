@@ -235,7 +235,12 @@ function renderSkillPresetSelect() {
 }
 function saveSkillPreset() {
   const nameInp = document.getElementById('skillPresetName');
-  const name = (nameInp.value || '').trim();
+  const sel = document.getElementById('skillPresetSelect');
+  let name = (nameInp.value || '').trim();
+  // 名前欄空 + プルダウン選択中 → 選択中プリセットを上書き
+  if (!name && sel && sel.value) {
+    name = decodeURIComponent(sel.value);
+  }
   if (!name) { showToast((T && T.skillPresetNeedName) || '名前を入力してください'); return; }
   const data = {};
   SKILL_PRESET_FIELDS.forEach(function(id) {
@@ -247,7 +252,6 @@ function saveSkillPreset() {
   else           skillPresets.push({ name: name, data: data });
   try { localStorage.setItem(SKILL_PRESET_KEY, JSON.stringify(skillPresets)); } catch(e) {}
   renderSkillPresetSelect();
-  const sel = document.getElementById('skillPresetSelect');
   if (sel) sel.value = encodeURIComponent(name);
   const delBtn = document.getElementById('skillPresetDelBtn');
   if (delBtn) delBtn.disabled = false;
