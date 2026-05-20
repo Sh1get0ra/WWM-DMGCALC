@@ -590,13 +590,6 @@ header.topbar::after {
 .card.tone-slate  .rail-kanji { color: var(--bone); }
 .card.tone-slate  .rail-num   { color: var(--vermilion-bright); }
 
-.card::after {
-  content: ''; position: absolute; left: 0; top: 50%; width: 28px; height: 2px;
-  background: var(--vermilion); opacity: 0;
-  transition: opacity 0.2s;
-}
-.card:hover::after { opacity: 0; }
-
 /* Field rows inside cards */
 .field-row {
   display: flex; align-items: center; min-height: 24px;
@@ -918,6 +911,40 @@ select.field-input option { background: var(--bg-2); color: var(--paper); }
   color: var(--paper-mute);
   background: rgba(139,129,112,0.10);
   border-color: rgba(139,129,112,0.26);
+}
+
+/* ── prefers-reduced-motion: 動きの軽減 ─────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .tier-SS, .tier-S { animation: none !important; }
+  .tier-SS::before  { animation: none !important; }
+  .donut-seg        { transition: none !important; }
+  .flash-pulse      { animation: none !important; }
+}
+
+/* ── :focus-visible — キーボード操作可視化 ─────────────── */
+.lang-btn:focus-visible,
+.preset-btn:focus-visible,
+.icon-btn:focus-visible,
+.field-input:focus-visible,
+select.field-input:focus-visible,
+.preset-name-input:focus-visible,
+.eff-max-input:focus-visible,
+.hero:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(240,210,138,0.18);
+}
+.hero:focus-visible { outline-offset: -2px; }
+html[data-theme="light"] .lang-btn:focus-visible,
+html[data-theme="light"] .preset-btn:focus-visible,
+html[data-theme="light"] .icon-btn:focus-visible,
+html[data-theme="light"] .field-input:focus-visible,
+html[data-theme="light"] select.field-input:focus-visible,
+html[data-theme="light"] .preset-name-input:focus-visible,
+html[data-theme="light"] .eff-max-input:focus-visible,
+html[data-theme="light"] .hero:focus-visible {
+  outline-color: var(--vermilion);
+  box-shadow: 0 0 0 4px rgba(200,60,43,0.20);
 }
 
 .score-bar-wrap { display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
