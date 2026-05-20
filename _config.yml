@@ -1,2 +1,1 @@
-plugins:
-  - jekyll-sitemap
+# sitemap.xml は手動管理のため jekyll-sitemap プラグインは使用しない
