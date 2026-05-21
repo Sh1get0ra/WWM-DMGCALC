@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;600;700;900&family=Noto+Serif+JP:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<link rel="stylesheet" href="styles.css?v=17">
+<link rel="stylesheet" href="styles.css?v=18">
 </head>
 <body>
 <div class="container">
@@ -115,10 +115,10 @@
         <div class="donut">
           <svg viewBox="0 0 136 136">
             <circle class="donut-bg" cx="68" cy="68" r="54" fill="none" stroke-width="14"/>
-            <circle id="donutDmgSegCrit"     class="donut-seg" cx="68" cy="68" r="54" fill="none" stroke="var(--vermilion-bright)" stroke-width="14" stroke-dasharray="0 339.292" stroke-dashoffset="0" style="filter:drop-shadow(0 0 6px var(--vermilion-glow));"/>
-            <circle id="donutDmgSegSympathy" class="donut-seg" cx="68" cy="68" r="54" fill="none" stroke="var(--jade-bright)"      stroke-width="14" stroke-dasharray="0 339.292" stroke-dashoffset="0"/>
-            <circle id="donutDmgSegGraze"    class="donut-seg" cx="68" cy="68" r="54" fill="none" stroke="var(--bone)"             stroke-width="14" stroke-dasharray="0 339.292" stroke-dashoffset="0"/>
-            <circle id="donutDmgSegNormal"   class="donut-seg" cx="68" cy="68" r="54" fill="none" stroke="var(--paper)"            stroke-width="14" stroke-dasharray="0 339.292" stroke-dashoffset="0" opacity="0.55"/>
+            <circle id="donutDmgSegCrit"     class="donut-seg" cx="68" cy="68" r="54" fill="none" stroke="var(--chart-crit)"     stroke-width="14" stroke-dasharray="0 339.292" stroke-dashoffset="0" style="filter:drop-shadow(0 0 6px rgba(245,201,72,0.45));"/>
+            <circle id="donutDmgSegSympathy" class="donut-seg" cx="68" cy="68" r="54" fill="none" stroke="var(--chart-sympathy)" stroke-width="14" stroke-dasharray="0 339.292" stroke-dashoffset="0"/>
+            <circle id="donutDmgSegGraze"    class="donut-seg" cx="68" cy="68" r="54" fill="none" stroke="var(--chart-graze)"    stroke-width="14" stroke-dasharray="0 339.292" stroke-dashoffset="0"/>
+            <circle id="donutDmgSegNormal"   class="donut-seg" cx="68" cy="68" r="54" fill="none" stroke="var(--chart-normal)"   stroke-width="14" stroke-dasharray="0 339.292" stroke-dashoffset="0"/>
           </svg>
           <div class="donut-center">
             <div>
@@ -129,22 +129,22 @@
         </div>
         <div class="prob-legend">
           <div class="prob-row">
-            <div class="prob-dot prob-crit" style="background:var(--vermilion-bright);color:var(--vermilion-bright);"></div>
+            <div class="prob-dot prob-crit" style="background:var(--chart-crit);color:var(--chart-crit);"></div>
             <div class="pname" data-i18n="probCrit">会心</div>
             <div class="pval prob-crit" id="dmgCritVal">—</div>
           </div>
           <div class="prob-row">
-            <div class="prob-dot prob-sympathy" style="background:var(--jade-bright);color:var(--jade-bright);"></div>
+            <div class="prob-dot prob-sympathy" style="background:var(--chart-sympathy);color:var(--chart-sympathy);"></div>
             <div class="pname" data-i18n="probSympathy">会意</div>
             <div class="pval prob-sympathy" id="dmgSympathyVal">—</div>
           </div>
           <div class="prob-row">
-            <div class="prob-dot prob-graze" style="background:var(--bone);color:var(--bone);"></div>
+            <div class="prob-dot prob-graze" style="background:var(--chart-graze);color:var(--chart-graze);"></div>
             <div class="pname" data-i18n="probGraze">かすり</div>
             <div class="pval prob-graze" id="dmgGrazeVal">—</div>
           </div>
           <div class="prob-row">
-            <div class="prob-dot prob-normal" style="background:var(--paper);color:var(--paper);"></div>
+            <div class="prob-dot prob-normal" style="background:var(--chart-normal);color:var(--chart-normal);"></div>
             <div class="pname" data-i18n="probNormal">通常</div>
             <div class="pval prob-normal" id="dmgNormalVal">—</div>
           </div>

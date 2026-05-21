@@ -56,6 +56,12 @@
   --bone:        #c9b88a;
   --bone-dim:    #9c8a6a;
 
+  /* チャート色（ゲーム内円グラフ準拠） */
+  --chart-crit:     #f5c948;
+  --chart-sympathy: #ff8c3a;
+  --chart-graze:    #5a5a5a;
+  --chart-normal:   #e8e8e8;
+
   /* Paper text */
   --paper:       #ede4d0;
   --paper-2:     #c8bda6;
@@ -529,10 +535,10 @@ header.topbar::after {
   font-family: var(--f-mono); font-size: 14px; font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
-.prob-crit       { color: var(--vermilion-bright); }
-.prob-sympathy   { color: var(--jade-bright); }
-.prob-graze      { color: var(--bone); }
-.prob-normal     { color: var(--paper); }
+.prob-crit       { color: var(--chart-crit); }
+.prob-sympathy   { color: var(--chart-sympathy); }
+.prob-graze      { color: var(--chart-graze); }
+.prob-normal     { color: var(--chart-normal); }
 
 /* ─────────────────────────────────────────────────────────────────
    STAT CARDS
@@ -1184,10 +1190,10 @@ html[data-theme="light"] .hcb-val.elem { color: var(--jade-bright); }
 html[data-theme="light"] .donut-center-label { color: var(--paper-dim); }
 html[data-theme="light"] .donut-center-val { color: var(--vermilion); }
 html[data-theme="light"] .prob-row .pname { color: var(--paper-2); }
-html[data-theme="light"] .prob-crit { color: var(--vermilion); }
-html[data-theme="light"] .prob-sympathy { color: var(--jade-bright); }
-html[data-theme="light"] .prob-graze { color: #8a6a20; }
-html[data-theme="light"] .prob-normal { color: var(--paper); }
+html[data-theme="light"] .prob-crit { color: #c89b1f; }
+html[data-theme="light"] .prob-sympathy { color: #d97020; }
+html[data-theme="light"] .prob-graze { color: #4a4a4a; }
+html[data-theme="light"] .prob-normal { color: #6a6a6a; }
 
 html[data-theme="light"] .rail-kanji { text-shadow: 0 1px 0 rgba(255,255,255,0.4); }
 html[data-theme="light"] .card.tone-blue   .rail-kanji,
