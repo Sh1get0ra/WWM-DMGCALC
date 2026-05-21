@@ -330,6 +330,22 @@ function calculate() {
   document.getElementById('probGrazeVal').textContent    = pctStr(pGraze);
   document.getElementById('probNormalVal').textContent   = pctStr(pNormal);
 
+  // ── ダメ寄与率：ドーナツ＋凡例 ───────────────────────────────
+  var contribCrit  = critAvg.total     * pCrit;
+  var contribSymp  = sympathyDmg.total * pSympathy;
+  var contribGraze = grazeDmg.total    * pGraze;
+  var contribNorm  = normalAvg.total   * pNormal;
+  var contribTotal = contribCrit + contribSymp + contribGraze + contribNorm;
+  var dCrit  = contribTotal > 0 ? contribCrit  / contribTotal : 0;
+  var dSymp  = contribTotal > 0 ? contribSymp  / contribTotal : 0;
+  var dGraze = contribTotal > 0 ? contribGraze / contribTotal : 0;
+  var dNorm  = contribTotal > 0 ? contribNorm  / contribTotal : 0;
+  updateDonut(dCrit, dSymp, dGraze, dNorm, 'donutDmgSeg');
+  document.getElementById('dmgCritVal').textContent     = pctStr(dCrit);
+  document.getElementById('dmgSympathyVal').textContent = pctStr(dSymp);
+  document.getElementById('dmgGrazeVal').textContent    = pctStr(dGraze);
+  document.getElementById('dmgNormalVal').textContent   = pctStr(dNorm);
+
   // ── 詳細テーブル ──────────────────────────────────────────────
   function fmt(n) { return Math.round(n).toLocaleString(T.locale); }
   function pctStr(n) { return (n * 100).toFixed(2) + '%'; }

@@ -59,15 +59,16 @@ function formatNum(n, decimals) {
 }
 
 // ── ドーナツ（SVG） ──────────────────────────────────────────────
-function updateDonut(pCrit, pSympathy, pGraze, pNormal) {
+function updateDonut(pCrit, pSympathy, pGraze, pNormal, prefix) {
   // 円周長 = 2πr, r=54 → 339.292
   const R = 54;
   const C = 2 * Math.PI * R;
+  const p = prefix || 'donutSeg';
   const segs = [
-    { id: 'donutSegCrit',     val: pCrit },
-    { id: 'donutSegSympathy', val: pSympathy },
-    { id: 'donutSegGraze',    val: pGraze },
-    { id: 'donutSegNormal',   val: pNormal },
+    { id: p + 'Crit',     val: pCrit },
+    { id: p + 'Sympathy', val: pSympathy },
+    { id: p + 'Graze',    val: pGraze },
+    { id: p + 'Normal',   val: pNormal },
   ];
   let offset = 0;
   segs.forEach(s => {
