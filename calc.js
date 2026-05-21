@@ -323,13 +323,6 @@ function calculate() {
   if (_cpp) _cpp.textContent = physPct;
   if (_cep) _cep.textContent = elemPct;
 
-  // ── 確率分布：ドーナツ＋凡例 ─────────────────────────────────
-  updateDonut(pCrit, pSympathy, pGraze, pNormal);
-  document.getElementById('probCritVal').textContent     = pctStr(pCrit);
-  document.getElementById('probSympathyVal').textContent = pctStr(pSympathy);
-  document.getElementById('probGrazeVal').textContent    = pctStr(pGraze);
-  document.getElementById('probNormalVal').textContent   = pctStr(pNormal);
-
   // ── ダメ寄与率：ドーナツ＋凡例 ───────────────────────────────
   var contribCrit  = critAvg.total     * pCrit;
   var contribSymp  = sympathyDmg.total * pSympathy;
