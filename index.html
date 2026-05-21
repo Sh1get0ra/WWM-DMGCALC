@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;600;700;900&family=Noto+Serif+JP:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<link rel="stylesheet" href="styles.css?v=12">
+<link rel="stylesheet" href="styles.css?v=13">
 </head>
 <body>
 <div class="container">
@@ -264,6 +264,35 @@
 
   <div class="card tone-green">
     <div class="card-rail"><span class="rail-num">V</span><span class="rail-kanji">雑項</span></div>
+    <div class="field-row field-row-set"><span class="field-label" data-i18n="setEffect">セット効果</span>
+      <select class="field-input field-select-wide" id="setEffect" aria-label="装備セット効果">
+        <option value="none" data-i18n-opt="setEff_none">セット効果なし</option>
+        <option value="jadeware-1"   data-i18n-opt="setEff_jadeware_1">碧玉一式</option>
+        <option value="jadeware-2"   data-i18n-opt="setEff_jadeware_2">碧玉一式（敵真気<40%）</option>
+        <option value="hawkwing-1"   data-i18n-opt="setEff_hawkwing_1">飛鳥一式（1stack）</option>
+        <option value="hawkwing-2"   data-i18n-opt="setEff_hawkwing_2">飛鳥一式（2stack）</option>
+        <option value="hawkwing-3"   data-i18n-opt="setEff_hawkwing_3">飛鳥一式（3stack）</option>
+        <option value="hawkwing-4"   data-i18n-opt="setEff_hawkwing_4">飛鳥一式（4stack）</option>
+        <option value="hawkwing-5"   data-i18n-opt="setEff_hawkwing_5">飛鳥一式（5stack）</option>
+        <option value="rainwhisper-1" data-i18n-opt="setEff_rainwhisper_1">時雨一式</option>
+        <option value="rainwhisper-2" data-i18n-opt="setEff_rainwhisper_2">時雨一式（気血シールド時）</option>
+        <option value="swallow-1"    data-i18n-opt="setEff_swallow_1">帰燕一式（軽撃発動効果）</option>
+        <option value="swallow-2"    data-i18n-opt="setEff_swallow_2">帰燕一式（敵真気<40%）</option>
+        <option value="swallow-3"    data-i18n-opt="setEff_swallow_3">帰燕一式（軽撃発動効果 AND 敵真気<40%）</option>
+        <option value="mountain-1"   data-i18n-opt="setEff_mountain_1">斬岳一式</option>
+        <option value="mountain-2"   data-i18n-opt="setEff_mountain_2">斬岳一式（派生・協戦技）</option>
+        <option value="willow-1"     data-i18n-opt="setEff_willow_1">霧柳一式（重撃命中後）</option>
+        <option value="willow-2"     data-i18n-opt="setEff_willow_2">霧柳一式（軽撃/弾道命中後）</option>
+        <option value="willow-3"     data-i18n-opt="setEff_willow_3">霧柳一式（両発動 霧柳重々）</option>
+        <option value="ivory-1"      data-i18n-opt="setEff_ivory_1">浄花一式（気血Max時）</option>
+        <option value="sway-50"      data-i18n-opt="setEff_sway_50">山崩一式（敵気血50%）</option>
+        <option value="sway-55"      data-i18n-opt="setEff_sway_55">山崩一式（敵気血55%）</option>
+        <option value="sway-60"      data-i18n-opt="setEff_sway_60">山崩一式（敵気血60%）</option>
+        <option value="sway-65"      data-i18n-opt="setEff_sway_65">山崩一式（敵気血65%）</option>
+        <option value="sway-70"      data-i18n-opt="setEff_sway_70">山崩一式（敵気血70%）</option>
+        <option value="sway-75"      data-i18n-opt="setEff_sway_75">山崩一式（敵気血75%以上）</option>
+      </select>
+      <span class="pct-gap"></span></div>
     <div class="field-row"><span class="field-label" data-i18n="worldLv">大世界等級（Lv）</span>
       <input class="field-input" id="worldLv" type="number" value="14" step="1" min="0">
       <span class="pct-gap"></span></div>

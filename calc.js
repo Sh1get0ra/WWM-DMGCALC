@@ -57,6 +57,36 @@ function computeExpected(p) {
 // ── STATUS SCORE 固定スキルパラメータ ────────────────────────────
 const SCORE_FIXED = { outerCoeff: 1.0, statusCoeff: 1.5, outerAdd: 230 };
 
+// ── セット効果データ ────────────────────────────────────────────
+// 各項目は対応パラメータへの加算量（outerAtkBoostのみminPhysATK/maxPhysATKに乗算）
+const SET_EFFECTS = {
+  'none':         {},
+  'jadeware-1':   { sympathyBoost: 0.10 },
+  'jadeware-2':   { sympathyBoost: 0.10, addSympathyRate: 0.075 },
+  'hawkwing-1':   { outerAtkBoost: 0.02 },
+  'hawkwing-2':   { outerAtkBoost: 0.04 },
+  'hawkwing-3':   { outerAtkBoost: 0.06 },
+  'hawkwing-4':   { outerAtkBoost: 0.08 },
+  'hawkwing-5':   { outerAtkBoost: 0.10 },
+  'rainwhisper-1':{ critBoost: 0.10 },
+  'rainwhisper-2':{ critBoost: 0.25 },
+  'swallow-1':    { allMartialBoost: 0.12 },
+  'swallow-2':    { elemAtkBoost: 0.10 },
+  'swallow-3':    { allMartialBoost: 0.12, elemAtkBoost: 0.10 },
+  'mountain-1':   { allMartialBoost: 0.05 },
+  'mountain-2':   { allMartialBoost: 0.10 },
+  'willow-1':     { specMartialBoost: 0.12 },
+  'willow-2':     { specMartialBoost: 0.12 },
+  'willow-3':     { specMartialBoost: 0.12 },
+  'ivory-1':      { critRate: 0.05, critBoost: 0.15 },
+  'sway-50':      { allMartialBoost: 0.05 },
+  'sway-55':      { allMartialBoost: 0.06 },
+  'sway-60':      { allMartialBoost: 0.07 },
+  'sway-65':      { allMartialBoost: 0.08 },
+  'sway-70':      { allMartialBoost: 0.09 },
+  'sway-75':      { allMartialBoost: 0.10 },
+};
+
 // ── 効率分析：各ステータス行の定義 ───────────────────────────────
 const EFF_ROWS = [
   { key:'effMinPhysATK',  maxVal:64,    isPct:false, mod:(p,x)=>({...p, minPhysATK:p.minPhysATK+x}) },
@@ -139,22 +169,42 @@ function buildEfficiencyTable(p, baseExpected) {
 
 // ── メイン計算 ────────────────────────────────────────────────────
 function calculate() {
-  const minPhysATK = v('minPhysATK'), maxPhysATK = v('maxPhysATK');
+  let minPhysATK = v('minPhysATK'), maxPhysATK = v('maxPhysATK');
   const minElemMain = v('minElemMain'), maxElemMain = v('maxElemMain');
   const minElemSub  = v('minElemSub'),  maxElemSub  = v('maxElemSub');
   const outerCoeff  = vp('outerCoeff'), statusCoeff = vp('statusCoeff');
   const outerAdd    = v('outerAdd'),    enemyDebuff = vp('enemyDebuff');
-  const hitRate     = vp('hitRate'),    critRate    = vp('critRate');
+  const hitRate     = vp('hitRate');
+  let critRate      = vp('critRate');
   const sympathyRate= vp('sympathyRate'), addCritRate = vp('addCritRate');
-  const addSympathyRate = vp('addSympathyRate');
+  let addSympathyRate = vp('addSympathyRate');
   const worldLv     = v('worldLv'),     martialLv   = v('martialLv');
   const elemBoostMain = v('elemBoostMain'), elemBoostSub = v('elemBoostSub');
-  const critBoost       = vp('critBoost'),   allMartialBoost = vp('allMartialBoost');
-  const sympathyBoost   = vp('sympathyBoost'), specMartialBoost = vp('specMartialBoost');
+  let critBoost         = vp('critBoost');
+  let allMartialBoost   = vp('allMartialBoost');
+  let sympathyBoost     = vp('sympathyBoost');
+  let specMartialBoost  = vp('specMartialBoost');
   const outerPen        = v('outerPen'),     bossBoost       = vp('bossBoost');
-  const elemPen         = v('elemPen'),      elemAtkBoost    = vp('elemAtkBoost');
+  const elemPen         = v('elemPen');
+  let elemAtkBoost      = vp('elemAtkBoost');
   const dmgReduce1      = vp('dmgReduce1'),  dmgReduce2      = vp('dmgReduce2');
   const weaponBonus     = vp('weaponBonus');
+
+  // ── セット効果 適用（既存フィールド非改変・内部加算のみ） ──
+  const setEl = document.getElementById('setEffect');
+  const setKey = setEl ? setEl.value : 'none';
+  const eff = SET_EFFECTS[setKey] || {};
+  if (eff.sympathyBoost)     sympathyBoost     += eff.sympathyBoost;
+  if (eff.addSympathyRate)   addSympathyRate   += eff.addSympathyRate;
+  if (eff.critBoost)         critBoost         += eff.critBoost;
+  if (eff.critRate)          critRate          += eff.critRate;
+  if (eff.allMartialBoost)   allMartialBoost   += eff.allMartialBoost;
+  if (eff.specMartialBoost)  specMartialBoost  += eff.specMartialBoost;
+  if (eff.elemAtkBoost)      elemAtkBoost      += eff.elemAtkBoost;
+  if (eff.outerAtkBoost) {
+    minPhysATK *= (1 + eff.outerAtkBoost);
+    maxPhysATK *= (1 + eff.outerAtkBoost);
+  }
 
   const sel = document.getElementById('enemyLevel').value;
   let physDef, judgeRes, physRes, elemRes;

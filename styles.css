@@ -633,6 +633,10 @@ header.topbar::after {
 }
 select.field-input { text-align: left; cursor: pointer; width: 98px; }
 select.field-input option { background: var(--bg-2); color: var(--paper); }
+select.field-select-wide { width: 100%; max-width: 100%; min-width: 140px; font-size: 11px; }
+.field-row-set { flex-wrap: wrap; }
+.field-row-set .field-label { flex-basis: 100%; margin-bottom: 4px; }
+.field-row-set .field-input { flex: 1; }
 
 .field-auto {
   width: 78px; padding: 3px 8px; text-align: right;

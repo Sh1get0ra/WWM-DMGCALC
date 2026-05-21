@@ -13,8 +13,9 @@ function setLang(lang) {
     const key = el.getAttribute('data-i18n');
     if (T[key] !== undefined) el.textContent = T[key];
   });
-  document.querySelectorAll('[data-i18n-opt="manualInput"]').forEach(el => {
-    el.textContent = T.manualInput;
+  document.querySelectorAll('[data-i18n-opt]').forEach(el => {
+    const k = el.getAttribute('data-i18n-opt');
+    if (T[k] !== undefined) el.textContent = T[k];
   });
   document.querySelectorAll('[data-i18n-ph]').forEach(el => {
     const k = el.getAttribute('data-i18n-ph');
