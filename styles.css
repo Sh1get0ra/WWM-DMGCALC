@@ -365,6 +365,7 @@ header.topbar::after {
   border-top: none !important;
 }
 .hero--collapsed .donut-wrap { flex-direction: row; align-items: center; gap: 10px; width: auto; }
+.hero--collapsed .donut-block { flex-direction: row; align-items: center; gap: 10px; width: auto; }
 .hero--collapsed .donut { width: 68px; height: 68px; }
 .hero--collapsed .donut-center-label { font-size: 7px; }
 .hero--collapsed .donut-center-val { font-size: 11px; margin-top: 1px; }
