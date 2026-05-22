@@ -89,6 +89,16 @@
   --space-6: 24px;
   --space-7: 32px;
   --space-8: 40px;
+
+  /* Typography scale (8段) — 既存 font-size 値の段階集約 */
+  --text-2xs:   8px;   /* アイコンラベル */
+  --text-xs:    10px;  /* 補助ラベル・HUDメタ */
+  --text-sm:    11px;  /* 本文・入力ラベル */
+  --text-md:    13px;  /* 本文 base */
+  --text-lg:    16px;  /* 強調 */
+  --text-xl:    22px;  /* パネル見出し */
+  --text-2xl:   28px;  /* breakdown数値 */
+  --text-hero:  92px;  /* EXPECTED ヒーロー */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -630,7 +640,7 @@ a.icon-btn { text-decoration: none; }
 .field-row {
   display: flex; align-items: center; min-height: 24px;
   gap: 6px; padding: 3px 0;
-  border-bottom: 1px dashed rgba(232,215,180,0.05);
+  border-bottom: 1px dashed var(--ink-1);
 }
 .field-row:last-child { border-bottom: none; }
 
@@ -1053,7 +1063,7 @@ html[data-theme="light"] .hero:focus-visible {
 
 .score-bar-wrap { display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
 .score-bar {
-  height: 4px; background: rgba(232,215,180,0.08);
+  height: 4px; background: var(--ink-1);
   min-width: 70px; max-width: 110px; flex: 1; position: relative;
   border-radius: 0;
 }
