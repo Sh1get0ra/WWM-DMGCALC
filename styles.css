@@ -38,12 +38,18 @@
   --vermilion-bright: #e8513a;
   --vermilion-glow:   rgba(232, 81, 58, 0.5);
   /* vermilion 派生 (rgba 集約用) */
-  --vermilion-tint:        var(--vermilion-tint);
-  --vermilion-soft:        var(--vermilion-soft);
-  --vermilion-mid:         var(--vermilion-mid);
-  --vermilion-strong:      rgba(200,60,43,0.55);
-  --vermilion-bright-soft: rgba(232,81,58,0.20);
-  --vermilion-bright-mid:  var(--vermilion-bright-mid);
+  --vermilion-trace:       var(--vermilion-trace);
+  --vermilion-faint:       var(--vermilion-faint);
+  --vermilion-tint:        rgba(200,60,43,0.10);
+  --vermilion-soft:        rgba(200,60,43,0.15);
+  --vermilion-soft-2:      var(--vermilion-soft-2);
+  --vermilion-mid:         rgba(200,60,43,0.30);
+  --vermilion-mid-2:       rgba(200,60,43,0.35);
+  --vermilion-strong:      var(--vermilion-strong);
+  --vermilion-bright-trace:rgba(232,81,58,0.15);
+  --vermilion-bright-soft: var(--vermilion-bright-soft);
+  --vermilion-bright-mid:  rgba(232,81,58,0.45);
+  --vermilion-bright-strong: rgba(232,81,58,0.70);
 
   --gold:        #c9a45a;
   --gold-bright: #f0d28a;
@@ -56,11 +62,11 @@
   --bone:        #c9b88a;
   --bone-dim:    #9c8a6a;
 
-  /* チャート色（ゲーム内円グラフ準拠） */
-  --chart-crit:     #f5c948;
-  --chart-sympathy: #ff8c3a;
-  --chart-graze:    #5a5a5a;
-  --chart-normal:   #e8e8e8;
+  /* チャート色（テーマ統合: 金/朱/骨/紙） */
+  --chart-crit:     #f0d28a;  /* gold-bright */
+  --chart-sympathy: #e8513a;  /* vermilion-bright */
+  --chart-graze:    #6a6053;  /* paper-mute 寄り */
+  --chart-normal:   #ede4d0;  /* paper */
 
   /* Paper text */
   --paper:       #ede4d0;
@@ -165,7 +171,7 @@ header.topbar::after {
   transition: color 0.15s, background 0.15s;
 }
 .lang-btn:hover { color: var(--paper-2); }
-.lang-btn.active { color: var(--gold-bright); background: rgba(200,60,43,0.18); }
+.lang-btn.active { color: var(--gold-bright); background: var(--vermilion-soft-2); }
 
 .icon-btn {
   width: 30px; height: 30px;
@@ -645,7 +651,7 @@ header.topbar::after {
 .field-input:focus, select.field-input:focus {
   outline: none;
   border-color: var(--vermilion-bright);
-  background: rgba(200,60,43,0.08);
+  background: var(--vermilion-faint);
   box-shadow: 0 0 0 1px var(--vermilion-bright), 0 0 14px var(--vermilion-glow);
   color: var(--paper);
 }
@@ -756,7 +762,7 @@ select.field-select-wide { width: 100%; max-width: 100%; min-width: 140px; font-
   font-size: 10px; margin-top: 2px;
 }
 .results-table tr.expected td {
-  background: linear-gradient(180deg, rgba(200,60,43,0.18), rgba(200,60,43,0.06));
+  background: linear-gradient(180deg, var(--vermilion-soft-2), var(--vermilion-trace));
   color: var(--gold-bright); font-weight: 700; font-size: 13px;
   border-color: rgba(200,60,43,0.35);
 }
@@ -801,7 +807,7 @@ select.field-select-wide { width: 100%; max-width: 100%; min-width: 140px; font-
   text-align: left; font-family: var(--f-body); font-weight: 600;
   color: var(--paper); background: var(--surf-shade);
 }
-.eff-table tr:hover td { background: rgba(200,60,43,0.06); }
+.eff-table tr:hover td { background: var(--vermilion-trace); }
 
 .eff-max-wrap { display: inline-flex; align-items: center; justify-content: center; gap: 2px; }
 .eff-max-input {
@@ -859,10 +865,10 @@ select.field-select-wide { width: 100%; max-width: 100%; min-width: 140px; font-
   color: #f0d28a;
   background: linear-gradient(135deg, rgba(180,40,28,0.48) 0%, rgba(100,20,14,0.38) 50%, rgba(180,40,28,0.48) 100%);
   border-color: rgba(240,210,138,0.65);
-  text-shadow: 0 0 18px rgba(240,210,138,0.95), 0 0 36px rgba(200,60,43,0.55);
+  text-shadow: 0 0 18px rgba(240,210,138,0.95), 0 0 36px var(--vermilion-strong);
   box-shadow:
     0 0 20px rgba(200,60,43,0.6),
-    0 0 45px rgba(200,60,43,0.18),
+    0 0 45px var(--vermilion-soft-2),
     inset 0 1px 0 rgba(240,210,138,0.28),
     inset 0 -1px 0 rgba(0,0,0,0.45);
   animation: tier-ss-glow 2.2s ease-in-out infinite;
@@ -883,7 +889,7 @@ select.field-select-wide { width: 100%; max-width: 100%; min-width: 140px; font-
 }
 @keyframes tier-ss-glow {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(200,60,43,0.6), 0 0 45px rgba(200,60,43,0.18),
+    box-shadow: 0 0 20px rgba(200,60,43,0.6), 0 0 45px var(--vermilion-soft-2),
                 inset 0 1px 0 rgba(240,210,138,0.28), inset 0 -1px 0 rgba(0,0,0,0.45);
   }
   50% {
@@ -987,7 +993,7 @@ select.field-select-wide { width: 100%; max-width: 100%; min-width: 140px; font-
 .skill-preset-btn:hover { background: rgba(200,60,43,0.28); border-color: var(--vermilion-bright); }
 .skill-preset-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 .skill-preset-del { background: rgba(0,0,0,0.3); color: var(--paper-mute); border-color: var(--ink-3); }
-.skill-preset-del:hover:not(:disabled) { background: rgba(200,60,43,0.18); color: var(--vermilion-bright); border-color: var(--vermilion); }
+.skill-preset-del:hover:not(:disabled) { background: var(--vermilion-soft-2); color: var(--vermilion-bright); border-color: var(--vermilion); }
 
 html[data-theme="light"] .skill-preset-select,
 html[data-theme="light"] .skill-preset-name {
@@ -1011,6 +1017,9 @@ html[data-theme="light"] .skill-preset-name {
 select.field-input:focus-visible,
 .preset-name-input:focus-visible,
 .eff-max-input:focus-visible,
+.skill-preset-btn:focus-visible,
+.skill-preset-select:focus-visible,
+.skill-preset-name:focus-visible,
 .hero:focus-visible {
   outline: 2px solid var(--gold-bright);
   outline-offset: 2px;
@@ -1024,9 +1033,12 @@ html[data-theme="light"] .field-input:focus-visible,
 html[data-theme="light"] select.field-input:focus-visible,
 html[data-theme="light"] .preset-name-input:focus-visible,
 html[data-theme="light"] .eff-max-input:focus-visible,
+html[data-theme="light"] .skill-preset-btn:focus-visible,
+html[data-theme="light"] .skill-preset-select:focus-visible,
+html[data-theme="light"] .skill-preset-name:focus-visible,
 html[data-theme="light"] .hero:focus-visible {
   outline-color: var(--vermilion);
-  box-shadow: 0 0 0 4px rgba(200,60,43,0.20);
+  box-shadow: 0 0 0 4px var(--vermilion-bright-soft);
 }
 
 .score-bar-wrap { display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
@@ -1099,7 +1111,7 @@ html[data-theme="light"] {
   --hero-grad:   radial-gradient(ellipse 70% 100% at 0% 50%, rgba(200,60,43,0.12), transparent 60%),
                  linear-gradient(180deg, rgba(244,232,204,0.85), rgba(232,218,184,0.92));
   --hero-num:    #8a1f17;
-  --hero-num-shadow: 0 1px 0 rgba(255,255,255,0.5), 0 0 24px rgba(200,60,43,0.18);
+  --hero-num-shadow: 0 1px 0 rgba(255,255,255,0.5), 0 0 24px var(--vermilion-soft-2);
   --donut-track: rgba(58,38,22,0.10);
 
   --ink-1:    rgba(40, 25, 18, 0.10);
@@ -1155,7 +1167,7 @@ html[data-theme="light"] .lang-btn:hover { color: var(--paper); }
 html[data-theme="light"] .lang-btn.active { color: var(--vermilion); background: rgba(200,60,43,0.12); }
 
 html[data-theme="light"] .icon-btn { color: var(--paper-dim); }
-html[data-theme="light"] .icon-btn:hover { color: var(--vermilion); border-color: var(--vermilion); background: rgba(200,60,43,0.08); }
+html[data-theme="light"] .icon-btn:hover { color: var(--vermilion); border-color: var(--vermilion); background: var(--vermilion-faint); }
 html[data-theme="light"] .icon-btn.export-btn { color: var(--vermilion); border-color: var(--vermilion); }
 html[data-theme="light"] .icon-btn.export-btn:hover { background: var(--vermilion); color: #fff; }
 
@@ -1190,10 +1202,10 @@ html[data-theme="light"] .hcb-val.elem { color: var(--jade-bright); }
 html[data-theme="light"] .donut-center-label { color: var(--paper-dim); }
 html[data-theme="light"] .donut-center-val { color: var(--vermilion); }
 html[data-theme="light"] .prob-row .pname { color: var(--paper-2); }
-html[data-theme="light"] .prob-crit { color: #c89b1f; }
-html[data-theme="light"] .prob-sympathy { color: #d97020; }
-html[data-theme="light"] .prob-graze { color: #4a4a4a; }
-html[data-theme="light"] .prob-normal { color: #6a6a6a; }
+html[data-theme="light"] .prob-crit { color: #c9a45a; }
+html[data-theme="light"] .prob-sympathy { color: var(--vermilion); }
+html[data-theme="light"] .prob-graze { color: #8a6a20; }
+html[data-theme="light"] .prob-normal { color: var(--paper-mute); }
 
 html[data-theme="light"] .rail-kanji { text-shadow: 0 1px 0 rgba(255,255,255,0.4); }
 html[data-theme="light"] .card.tone-blue   .rail-kanji,
@@ -1224,7 +1236,7 @@ html[data-theme="light"] .eff-table td { color: var(--paper-2); }
 html[data-theme="light"] .results-table td.lbl,
 html[data-theme="light"] .eff-table td:first-child { color: var(--paper); }
 html[data-theme="light"] .results-table tr.expected td {
-  background: linear-gradient(180deg, rgba(200,60,43,0.20), rgba(200,60,43,0.08));
+  background: linear-gradient(180deg, rgba(200,60,43,0.20), var(--vermilion-faint));
   color: var(--vermilion-deep);
   border-color: rgba(200,60,43,0.35);
 }
@@ -1233,7 +1245,7 @@ html[data-theme="light"] .results-table tr.expected td.lbl {
 }
 html[data-theme="light"] .results-table td.lbl small { color: var(--paper-mute); }
 html[data-theme="light"] .results-table .na { color: var(--paper-mute); }
-html[data-theme="light"] .eff-table tr:hover td { background: rgba(200,60,43,0.06); }
+html[data-theme="light"] .eff-table tr:hover td { background: var(--vermilion-trace); }
 html[data-theme="light"] .score-bar { background: rgba(58,38,22,0.15); }
 html[data-theme="light"] .badge-low { background: rgba(58,38,22,0.06); }
 
@@ -1243,7 +1255,7 @@ html[data-theme="light"] #toast { background: #fff8e8; color: var(--paper); bord
 
 html[data-theme="light"] .tier-SS {
   color: #8a1f17;
-  background: linear-gradient(135deg, rgba(200,60,43,0.18), rgba(138,31,23,0.14));
+  background: linear-gradient(135deg, var(--vermilion-soft-2), rgba(138,31,23,0.14));
   border-color: rgba(138,31,23,0.55);
   text-shadow: 0 0 10px rgba(200,60,43,0.45);
   box-shadow: 0 0 12px var(--vermilion-mid), inset 0 1px 0 rgba(255,200,180,0.3);
@@ -1260,7 +1272,7 @@ html[data-theme="light"] .tier-SS::before {
 html[data-theme="light"] .tier-S {
   color: #c83c2b;
   background: linear-gradient(135deg, var(--vermilion-soft), rgba(138,31,23,0.12));
-  border-color: rgba(200,60,43,0.55);
+  border-color: var(--vermilion-strong);
   text-shadow: 0 0 10px rgba(200,60,43,0.35);
   box-shadow: 0 0 12px var(--vermilion-mid), inset 0 1px 0 rgba(255,200,180,0.25);
   animation: tier-s-pulse-light 2.2s ease-in-out infinite;
