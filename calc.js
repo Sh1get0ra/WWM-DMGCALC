@@ -16,9 +16,10 @@ function vp(id) { return (parseFloat(document.getElementById(id).value) || 0) / 
 function computeExpected(p) {
   const hiddenBonus  = p.worldLv + p.martialLv + 1;
   const physPenDiff  = p.outerPen - p.physRes;
-  const physPenZone  = physPenDiff > 0 ? physPenDiff / 100 : physPenDiff / 200;
+  // 穿透 ≥ 抗性: overflow は /200 (半減)、< の場合: 不足分は /100 (フル軽減)
+  const physPenZone  = physPenDiff >= 0 ? physPenDiff / 200 : physPenDiff / 100;
   const elemPenDiff  = p.elemPen - p.elemRes;
-  const elemPenZone  = elemPenDiff > 0 ? elemPenDiff / 100 : elemPenDiff / 200;
+  const elemPenZone  = elemPenDiff >= 0 ? elemPenDiff / 200 : elemPenDiff / 100;
   const physDmgBonus = 1 + p.allMartialBoost + p.specMartialBoost + p.weaponBonus + p.bossBoost + p.enemyDebuff;
   const elemDmgBonus = physDmgBonus + p.elemAtkBoost;
   const reductionZone= (1 - p.dmgReduce1) * (1 - p.dmgReduce2);
@@ -248,9 +249,10 @@ function calculate() {
 
   const hiddenBonus   = worldLv + martialLv + 1;
   const physPenDiff   = outerPen - physRes;
-  const physPenZone   = physPenDiff > 0 ? physPenDiff / 100 : physPenDiff / 200;
+  // 穿透 ≥ 抗性: overflow は /200 (半減)、< の場合: 不足分は /100 (フル軽減)
+  const physPenZone   = physPenDiff >= 0 ? physPenDiff / 200 : physPenDiff / 100;
   const elemPenDiff   = elemPen - elemRes;
-  const elemPenZone   = elemPenDiff > 0 ? elemPenDiff / 100 : elemPenDiff / 200;
+  const elemPenZone   = elemPenDiff >= 0 ? elemPenDiff / 200 : elemPenDiff / 100;
   const physDmgBonus  = 1 + allMartialBoost + specMartialBoost + weaponBonus + bossBoost + enemyDebuff;
   const elemDmgBonus  = physDmgBonus + elemAtkBoost;
   const reductionZone = (1 - dmgReduce1) * (1 - dmgReduce2);
@@ -385,7 +387,7 @@ function calculate() {
     var sc = SCORE_FIXED;
     // raw 値で各種ゾーン・確率を再計算（セット/心法の影響を排除）
     var rPhysPenDiff = _raw.outerPen - physRes;
-    var rPhysPenZone = rPhysPenDiff > 0 ? rPhysPenDiff / 100 : rPhysPenDiff / 200;
+    var rPhysPenZone = rPhysPenDiff >= 0 ? rPhysPenDiff / 200 : rPhysPenDiff / 100;
     var rPhysDmgBonus = 1 + _raw.allMartialBoost + _raw.specMartialBoost + weaponBonus + bossBoost + enemyDebuff;
     var rElemDmgBonus = rPhysDmgBonus + _raw.elemAtkBoost;
     var rSympathyAdj  = judgeRes === 0 ? sympathyRate : sympathyRate / judgeRes;
