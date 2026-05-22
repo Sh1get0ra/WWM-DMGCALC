@@ -346,10 +346,10 @@ function exportImage() {
   function fv(id) { return document.getElementById(id).value; }
   function fnum(id) { return Math.round(v(id)).toLocaleString(T.locale); }
 
-  const pCritTxt   = document.getElementById('probCritVal').textContent;
-  const pSympTxt   = document.getElementById('probSympathyVal').textContent;
-  const pGrazeTxt  = document.getElementById('probGrazeVal').textContent;
-  const pNormTxt   = document.getElementById('probNormalVal').textContent;
+  const pCritTxt   = document.getElementById('dmgCritVal').textContent;
+  const pSympTxt   = document.getElementById('dmgSympathyVal').textContent;
+  const pGrazeTxt  = document.getElementById('dmgGrazeVal').textContent;
+  const pNormTxt   = document.getElementById('dmgNormalVal').textContent;
   const expDmg     = Math.round(_lastBaseExpected).toLocaleString(T.locale);
 
   const enemySel   = document.getElementById('enemyLevel').value;
@@ -363,9 +363,9 @@ function exportImage() {
   // donut SVG values
   const segCirc = 2 * Math.PI * 54;
   const segs = [
-    { val: parseFloat(pCritTxt)/100,  color: '#e8513a' },
-    { val: parseFloat(pSympTxt)/100,  color: '#a8d4b4' },
-    { val: parseFloat(pGrazeTxt)/100, color: '#c9b88a' },
+    { val: parseFloat(pCritTxt)/100,  color: '#f0d28a' },
+    { val: parseFloat(pSympTxt)/100,  color: '#e8513a' },
+    { val: parseFloat(pGrazeTxt)/100, color: '#6a6053' },
     { val: parseFloat(pNormTxt)/100,  color: '#ede4d0' },
   ];
   let off = 0;
@@ -434,9 +434,9 @@ function exportImage() {
     +       donutPaths
     +     '</svg>'
     +     '<div style="flex:1;font-family:\'Rajdhani\',monospace;font-size:11px;">'
-    +       '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px dashed rgba(232,215,180,0.1);"><span style="display:flex;align-items:center;gap:6px;color:#c8bda6;font-family:\'Noto Sans JP\',sans-serif;font-size:11px;font-weight:600;"><span style="width:8px;height:8px;background:#e8513a;box-shadow:0 0 8px #e8513a;"></span>' + T.probCrit + '</span><span style="color:#e8513a;font-weight:700;font-size:13px;">' + pCritTxt + '</span></div>'
-    +       '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px dashed rgba(232,215,180,0.1);"><span style="display:flex;align-items:center;gap:6px;color:#c8bda6;font-family:\'Noto Sans JP\',sans-serif;font-size:11px;font-weight:600;"><span style="width:8px;height:8px;background:#a8d4b4;box-shadow:0 0 8px #a8d4b4;"></span>' + T.probSympathy + '</span><span style="color:#a8d4b4;font-weight:700;font-size:13px;">' + pSympTxt + '</span></div>'
-    +       '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px dashed rgba(232,215,180,0.1);"><span style="display:flex;align-items:center;gap:6px;color:#c8bda6;font-family:\'Noto Sans JP\',sans-serif;font-size:11px;font-weight:600;"><span style="width:8px;height:8px;background:#c9b88a;box-shadow:0 0 8px #c9b88a;"></span>' + T.probGraze + '</span><span style="color:#c9b88a;font-weight:700;font-size:13px;">' + pGrazeTxt + '</span></div>'
+    +       '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px dashed rgba(232,215,180,0.1);"><span style="display:flex;align-items:center;gap:6px;color:#c8bda6;font-family:\'Noto Sans JP\',sans-serif;font-size:11px;font-weight:600;"><span style="width:8px;height:8px;background:#f0d28a;box-shadow:0 0 8px #f0d28a;"></span>' + T.probCrit + '</span><span style="color:#f0d28a;font-weight:700;font-size:13px;">' + pCritTxt + '</span></div>'
+    +       '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px dashed rgba(232,215,180,0.1);"><span style="display:flex;align-items:center;gap:6px;color:#c8bda6;font-family:\'Noto Sans JP\',sans-serif;font-size:11px;font-weight:600;"><span style="width:8px;height:8px;background:#e8513a;box-shadow:0 0 8px #e8513a;"></span>' + T.probSympathy + '</span><span style="color:#e8513a;font-weight:700;font-size:13px;">' + pSympTxt + '</span></div>'
+    +       '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px dashed rgba(232,215,180,0.1);"><span style="display:flex;align-items:center;gap:6px;color:#c8bda6;font-family:\'Noto Sans JP\',sans-serif;font-size:11px;font-weight:600;"><span style="width:8px;height:8px;background:#6a6053;box-shadow:0 0 8px #6a6053;"></span>' + T.probGraze + '</span><span style="color:#6a6053;font-weight:700;font-size:13px;">' + pGrazeTxt + '</span></div>'
     +       '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;"><span style="display:flex;align-items:center;gap:6px;color:#c8bda6;font-family:\'Noto Sans JP\',sans-serif;font-size:11px;font-weight:600;"><span style="width:8px;height:8px;background:#ede4d0;box-shadow:0 0 8px #ede4d0;"></span>' + T.probNormal + '</span><span style="color:#ede4d0;font-weight:700;font-size:13px;">' + pNormTxt + '</span></div>'
     +     '</div>'
     +   '</div>'
