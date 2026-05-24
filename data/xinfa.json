@@ -1,59 +1,1089 @@
 {
+  "1": {
+    "names": {
+      "ja": "龍虎の勢",
+      "en": "Wind Beneath Wings",
+      "zh": "生龙活虎",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "-40% Endurance dash cost / +30% Movement (3s) / +1% Max HP +1000 HP per kill。ダメージ計算非影響。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "Physical DMG Reduction +2.2%",
+        "category": "defensive"
+      }
+    }
+  },
+  "2": {
+    "names": {
+      "ja": "晚雪間",
+      "en": "Evening Snow",
+      "zh": "晚雪间",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "-3% HP +600 HP/sec restore (4s, CD 300s)。HP回復のみ。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "Physical Resistance +4.5",
+        "category": "defensive"
+      }
+    }
+  },
+  "3": {
+    "names": {
+      "ja": "鉄身術",
+      "en": "Steadfast Stance",
+      "zh": "铁身诀",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "Higher stagger resistance (敵数に応じ)。被ダメ影響不明。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "Physical Resistance +4.5",
+        "category": "defensive"
+      }
+    }
+  },
+  "4": {
+    "names": {
+      "ja": "山月無影",
+      "en": "Shadow Assault",
+      "zh": "山月无影",
+      "ko": ""
+    },
+    "modes": {
+      "default": {
+        "allMartialBoost": 0.1
+      }
+    },
+    "defaultMode": "default",
+    "description": "+1.5m range / +10% damage / +10% damage as HP restore",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "physDmgBoost": 0.022
+        },
+        "raw": "Physical DMG Bonus +2.2%"
+      }
+    }
+  },
+  "5": {
+    "names": {
+      "ja": "血涙不止",
+      "en": "Fivefold Bleed",
+      "zh": "极乐泣血",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "10% chance Weeping Blood (5 stack max、貫通ダメ)。条件不明確で effects 空。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "critBoost": 0.035
+        },
+        "raw": "Crit DMG Bonus +3.5%"
+      }
+    }
+  },
+  "6": {
+    "names": {
+      "ja": "砂塵一閃",
+      "en": "Sandswirl Tail",
+      "zh": "沙摆尾",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "morph 状態時 sprint/jump Endurance 削減。ダメージ非影響。"
+  },
+  "41": {
+    "names": {
+      "ja": "征軍帰鄉",
+      "en": "Envigorated Warrior",
+      "zh": "征人归",
+      "ko": ""
+    },
+    "modes": {
+      "default": {
+        "allMartialBoost": 0.05
+      }
+    },
+    "defaultMode": "default",
+    "description": "+5% all damage/healing / -5s cooldown after hit / +5% damage taken (Cage)",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "outerPenAdd": 5.1
+        },
+        "raw": "Physical Penetration +5.1"
+      }
+    }
+  },
+  "42": {
+    "names": {
+      "ja": "怨念連鎖",
+      "en": "Bitter Seasons",
+      "zh": "所恨年年",
+      "ko": ""
+    },
+    "modes": {
+      "maxStack": {
+        "enemyDebuff": 0.03
+      }
+    },
+    "defaultMode": "default",
+    "description": "10% chance -0.6% Phys Def (5s poison, 5 stack max → -3% 期待値)。確率系。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "physDmgBoost": 0.025
+        },
+        "raw": "Physical DMG Bonus +2.5%"
+      }
+    }
+  },
+  "43": {
+    "names": {
+      "ja": "帰燕の経",
+      "en": "Vital Leech",
+      "zh": "归燕经",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "+8% damage dealt as HP restore。吸血のみ、ダメージ非影響。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "Physical DMG Reduction +2.5%",
+        "category": "defensive"
+      }
+    }
+  },
+  "44": {
+    "names": {
+      "ja": "怒濤斬馬",
+      "en": "Fury Harvest",
+      "zh": "怒斩马",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "50% chance +1 bonus Vitality from recovery。リソース系。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "Physical Resistance +5.1",
+        "category": "defensive"
+      }
+    }
+  },
+  "45": {
+    "names": {
+      "ja": "長生無相",
+      "en": "Divine Roulette",
+      "zh": "长生无相",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "Random effect (10s, 30s CD) on perfect deflection。確率系。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "outerPenAdd": 5.1
+        },
+        "raw": "Physical Penetration +5.1"
+      }
+    }
+  },
+  "46": {
+    "names": {
+      "ja": "舞影",
+      "en": "Evasive Charge",
+      "zh": "婆娑影",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "50% chance -100% Endurance cost after Perfect Dodge。Endurance のみ。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "Physical DMG Reduction +2.5%",
+        "category": "defensive"
+      }
+    }
+  },
+  "81": {
+    "names": {
+      "ja": "易水の歌",
+      "en": "Morale Chant",
+      "zh": "易水歌",
+      "ko": "결의의 노래"
+    },
+    "modes": {
+      "default": {
+        "outerPenAdd": 10,
+        "allMartialBoost": 0.05
+      },
+      "ccBuff": {
+        "outerPenAdd": 10,
+        "allMartialBoost": 0.1
+      }
+    },
+    "defaultMode": "default",
+    "description": "5 stack × (+2 物理貫通, +1% damage·heal, 12s)。CC中 stack 倍 (Tier3)。Tier5 +4.6% 直接会心率",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "addCritRate": 0.046
+        },
+        "raw": "Direct Critical Rate +4.6%"
+      }
+    }
+  },
+  "82": {
+    "names": {
+      "ja": "四季無常",
+      "en": "Seasonal Edge",
+      "zh": "四时无常",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "Dual-weapon skill triggers random effect。ランダム発動、effects 不明。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "physDmgBoost": 0.028
+        },
+        "raw": "Physical Damage Bonus +2.8%"
+      }
+    }
+  },
+  "101": {
+    "names": {
+      "ja": "千山法",
+      "en": "Mountain's Might",
+      "zh": "千山法",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "+20% Endurance cost reduction (5s)。Endurance のみ。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "Bellstrike Penetration +6",
+        "weaponSpecific": "bellstrike",
+        "pendingImplementation": true
+      }
+    }
+  },
+  "102": {
+    "names": {
+      "ja": "星火燎原",
+      "en": "Wildfire Spark",
+      "zh": "燎原星火",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "+3.5% Endurance refund。Endurance のみ。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "physDmgBoost": 0.025
+        },
+        "raw": "Physical DMG Bonus +2.5%"
+      }
+    }
+  },
+  "103": {
+    "names": {
+      "ja": "威猛歌",
+      "en": "Battle Anthem",
+      "zh": "威猛歌",
+      "ko": ""
+    },
+    "modes": {
+      "vsBoss": {
+        "bossBoost": 0.1
+      }
+    },
+    "defaultMode": "default",
+    "description": "+10% Charged Skill damage vs bosses。蓄力 + 対 Boss 条件。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "elemAtkBoost": 0.052
+        },
+        "raw": "Affinity DMG Bonus +5.2%"
+      }
+    }
+  },
+  "104": {
+    "names": {
+      "ja": "無名心法",
+      "en": "Sword Morph",
+      "zh": "无名心法",
+      "ko": ""
+    },
+    "modes": {
+      "maxConsume": {
+        "allMartialBoost": 0.2
+      }
+    },
+    "defaultMode": "default",
+    "description": "up to +20% damage from Endurance consumption。最大時 +20%。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "addSympathyRate": 0.023
+        },
+        "raw": "Direct Affinity Rate +2.3%"
+      }
+    }
+  },
+  "151": {
+    "names": {
+      "ja": "逐狼心経",
+      "en": "Wolfchaser's Art",
+      "zh": "逐狼心经",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "Combo 5/10 → 4/8 短縮。Bleed stack ごと 60-100% 確率。combo 系。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "elemAtkBoost": 0.052
+        },
+        "raw": "Affinity DMG Bonus +5.2%"
+      }
+    }
+  },
+  "152": {
+    "names": {
+      "ja": "武芸百般",
+      "en": "Adaptive Steel",
+      "zh": "武艺百般",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "6/10/20s cooldowns by weapon type。CD 系。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "Bellstrike DMG Bonus +3%",
+        "weaponSpecific": "bellstrike",
+        "pendingImplementation": true
+      }
+    }
+  },
+  "153": {
+    "names": {
+      "ja": "一心不乱",
+      "en": "Insightful Strike",
+      "zh": "一心不乱",
+      "ko": ""
+    },
+    "modes": {
+      "default": {
+        "sympathyBoost": 0.1
+      }
+    },
+    "defaultMode": "default",
+    "description": "+10% Affinity (共鳴) DMG / 5% chance -40% damage taken",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "Bellstrike Penetration +6",
+        "weaponSpecific": "bellstrike",
+        "pendingImplementation": true
+      }
+    }
+  },
+  "154": {
+    "names": {
+      "ja": "剣気斬波",
+      "en": "Sword Horizon",
+      "zh": "剑气斩波",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "5 stack Bleed 消費で高ダメバースト。条件付。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "addSympathyRate": 0.023
+        },
+        "raw": "Direct Affinity Rate +2.3%"
+      }
+    }
+  },
+  "301": {
+    "names": {
+      "ja": "一得一失",
+      "en": "Flying Gourds",
+      "zh": "一得一失",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "+2 charges / +3s CD penalty。charges 系。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "Silkbind Penetration +6",
+        "weaponSpecific": "silkbind",
+        "pendingImplementation": true
+      }
+    }
+  },
+  "302": {
+    "names": {
+      "ja": "春雷一閃",
+      "en": "Thunderous Bloom",
+      "zh": "春雷一闪",
+      "ko": ""
+    },
+    "modes": {
+      "maxStack": {
+        "bossBoost": 0.45
+      }
+    },
+    "defaultMode": "default",
+    "description": "15m 移動で 3 stack (15s CD)。+15% HP damage per stack → 最大 +45% (対 Boss?)",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "physDmgBoost": 0.025
+        },
+        "raw": "Physical DMG Bonus +2.5%"
+      }
+    }
+  },
+  "303": {
+    "names": {
+      "ja": "摘星の術",
+      "en": "Star Reacher",
+      "zh": "摘星术",
+      "ko": ""
+    },
+    "modes": {
+      "default": {
+        "weaponBonus": 0.05
+      },
+      "airborne": {
+        "weaponBonus": 0.1
+      }
+    },
+    "defaultMode": "default",
+    "description": "+5% Phys Attack (8s max)、空中時 +10%。物理外功 か weaponBonus 不明。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "outerPenAdd": 5.1
+        },
+        "raw": "Physical Penetration +5.1"
+      }
+    }
+  },
+  "304": {
+    "names": {
+      "ja": "花上月令",
+      "en": "Blossom Barrage",
+      "zh": "花上月令",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "2 stack max、+10% damage taken from Ballistic Skills (10s)。被ダメ系。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "critBoost": 0.044
+        },
+        "raw": "Critical DMG Bonus +4.4%"
+      }
+    }
+  },
+  "351": {
+    "names": {
+      "ja": "君臣薬",
+      "en": "Royal Remedy",
+      "zh": "君臣药",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "+10% healing / +3 Dew +2 Essence。HP回復のみ。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "addCritRate": 0.046
+        },
+        "raw": "Direct Critical Rate +4.6%"
+      }
+    }
+  },
+  "352": {
+    "names": {
+      "ja": "散花不滅",
+      "en": "Restoring Blossom",
+      "zh": "散花不灭",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "3 stack +2% healing received (3s)。HP回復のみ。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "Critical Healing Bonus +4%",
+        "category": "healing"
+      }
+    }
+  },
+  "353": {
+    "names": {
+      "ja": "蘇生の術",
+      "en": "Esoteric Revival",
+      "zh": "苏生术",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "+50% healing on revived target。HP回復のみ。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "Critical Healing Bonus +4%",
+        "category": "healing"
+      }
+    }
+  },
+  "354": {
+    "names": {
+      "ja": "癒しの糸",
+      "en": "Mending Loom",
+      "zh": "愈合丝",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "+5 Dew restored / +10% Max HP healing per 100 Dew。HP回復のみ。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "Physical Healing Bonus +2.5%",
+        "category": "healing"
+      }
+    }
+  },
+  "401": {
+    "names": {
+      "ja": "山河絶韻",
+      "en": "Exquisite Scenery",
+      "zh": "山河绝韵",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "Tier 3 Heavy Attack counter (10s CD)。条件付バースト。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "critBoost": 0.044
+        },
+        "raw": "Critical DMG Bonus +4.4%"
+      }
+    }
+  },
+  "402": {
+    "names": {
+      "ja": "困獣心経",
+      "en": "Trapped Beast",
+      "zh": "困兽心经",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "30% Max HP shield (4s, CD 300s) HP<30% 時。shield のみ。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "Physical Resistance +5.1",
+        "category": "defensive"
+      }
+    }
+  },
+  "403": {
+    "names": {
+      "ja": "堅忍の術",
+      "en": "Art of Resistance",
+      "zh": "坚忍术",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "+4s shield duration。shield のみ。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "Rock Splitting Penetration +6",
+        "weaponSpecific": "stonesplit",
+        "pendingImplementation": true
+      }
+    }
+  },
+  "404": {
+    "names": {
+      "ja": "磐石訣",
+      "en": "Rock Solid",
+      "zh": "磐石诀",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "+20% DMG Reduction vs boss taunt / +5% non-boss (20% cap) / -10% outgoing damage。被ダメ軽減 + 与ダメペナルティ。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "Physical DMG Reduction +2.5%",
+        "category": "defensive"
+      }
+    }
+  },
+  "451": {
+    "names": {
+      "ja": "忘川絶響",
+      "en": "Echoes of Oblivion",
+      "zh": "忘川绝响",
+      "ko": ""
+    },
+    "modes": {
+      "default": {
+        "enemyDebuff": 0.1
+      }
+    },
+    "defaultMode": "default",
+    "description": "ignore 10% Physical Defense and 10% Bamboocut Resistance。物理防御無視 (Bamboocut 武術専用)",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "critBoost": 0.044
+        },
+        "raw": "Critical DMG Bonus +4.4%"
+      }
+    }
+  },
+  "452": {
+    "names": {
+      "ja": "宿怨結晶",
+      "en": "Vendetta",
+      "zh": "宿怨结晶",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "+5s duration / +20 Tokens of Gratitude。リソース系。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "Bamboocut Penetration +6",
+        "weaponSpecific": "bamboocut",
+        "pendingImplementation": true
+      }
+    }
+  },
+  "453": {
+    "names": {
+      "ja": "断石心法",
+      "en": "Breaking Point",
+      "zh": "断石心法",
+      "ko": ""
+    },
+    "modes": {
+      "maxStack": {
+        "outerPenAdd": 15,
+        "critBoost": 0.15
+      }
+    },
+    "defaultMode": "default",
+    "description": "3 stack max × (+5 物理貫通, +5% 会心ダメ, 3s)。最大時 +15 貫通/+15% 会心ダメ。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "addCritRate": 0.041
+        },
+        "raw": "Direct Critical Rate +4.1%"
+      }
+    }
+  },
+  "454": {
+    "names": {
+      "ja": "蒼浪剣訣",
+      "en": "Riptide Reflex",
+      "zh": "苍浪剑诀",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "-1s cooldown (once per 10s)。CD 系。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "outerPenAdd": 5.1
+        },
+        "raw": "Physical Penetration +5.1"
+      }
+    }
+  },
+  "501": {
+    "names": {
+      "ja": "千軍の咆哮",
+      "en": "Phantom Rally",
+      "zh": "千军的咆哮",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "1st および 3rd throw で Phantom 召喚、catch で Resonance トリガー。"
+  },
+  "502": {
+    "names": {
+      "ja": "砂舟行木",
+      "en": "Towline Sweep",
+      "zh": "砂舟行木",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "+50 Tokens after Soul Sweep / 2 stack Soulbreak per hit。"
+  },
+  "503": {
+    "names": {
+      "ja": "灯火詞",
+      "en": "Light Anew",
+      "zh": "灯火词",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "5 stack max、敵デバフ -4% Move Speed / +2% damage taken per stack → 敵被ダメ +10% 最大。"
+  },
+  "504": {
+    "names": {
+      "ja": "大唐歌",
+      "en": "Song of Tang",
+      "zh": "大唐歌",
+      "ko": ""
+    },
+    "modes": {
+      "maxStack": {
+        "critBoost": 0.1
+      }
+    },
+    "defaultMode": "default",
+    "description": "5 stack max、+2% Critical Damage or +2% Life Drain per stack (capped 2.5% Max HP/sec)。最大 +10% 会心ダメ。"
+  },
   "_schema": "ID → 心法名 + モード別ステータス影響値マッピング。modes 配下に default/maxStack/ccBuff 等を定義。description は人間向け説明。effects はダメージ計算に影響する数値のみ。",
   "_lastUpdated": "2026-05-23",
   "_source": "wherewindsmeetgame.com app.js 抽出 + Game8 / Fextralife wiki",
-  "_note": "全データ Claude 抽出版 (verified: false)。ユーザー検証 → 訂正フェーズ。HP回復/シールド/Endurance 系等、ダメージ計算非影響の効果は modes 空。心法 Lv MAX 前提で計測 (roleInfo に Lv フィールドなし、別 API 全 605)。",
+  "_note": "全データ Claude 抽出版 (verified: false)。ユーザー検証 → 訂正フェーズ。HP回復/シールド/Endurance 系等、ダメージ計算非影響の効果は modes 空。心法 Lv MAX 前提で計測 (roleInfo に Lv フィールドなし、別 API 全 605)。 | Tier5 attributeBuff: CookieLips v1.2 sheet 由来 (verified: false)。Tier2 大世界Lv14値ユーザー手動入力待ち。ID 6/501/502/503/504 は v1.2 sheet 未掲載。",
   "_example": {
     "81_example": {
-      "names": { "ja": "易水の歌", "en": "Morale Chant" },
+      "names": {
+        "ja": "易水の歌",
+        "en": "Morale Chant"
+      },
       "modes": {
-        "default":  { "outerPenAdd": 10, "allMartialBoost": 0.05 },
-        "ccBuff":   { "outerPenAdd": 10, "allMartialBoost": 0.10 }
+        "default": {
+          "outerPenAdd": 10,
+          "allMartialBoost": 0.05
+        },
+        "ccBuff": {
+          "outerPenAdd": 10,
+          "allMartialBoost": 0.1
+        }
       },
       "defaultMode": "default",
       "description": "5 stack 累積。+2 物理貫通 / +1% damage·heal per stack (12s)。CC中倍率"
     }
-  },
-  "1":   { "names": { "ja": "龍虎の勢",   "en": "Wind Beneath Wings",        "zh": "生龙活虎",   "ko": "" }, "modes": {}, "defaultMode": "default", "description": "-40% Endurance dash cost / +30% Movement (3s) / +1% Max HP +1000 HP per kill。ダメージ計算非影響。" },
-  "2":   { "names": { "ja": "晚雪間",     "en": "Evening Snow",              "zh": "晚雪间",     "ko": "" }, "modes": {}, "defaultMode": "default", "description": "-3% HP +600 HP/sec restore (4s, CD 300s)。HP回復のみ。" },
-  "3":   { "names": { "ja": "鉄身術",     "en": "Steadfast Stance",          "zh": "铁身诀",     "ko": "" }, "modes": {}, "defaultMode": "default", "description": "Higher stagger resistance (敵数に応じ)。被ダメ影響不明。" },
-  "4":   { "names": { "ja": "山月無影",   "en": "Shadow Assault",            "zh": "山月无影",   "ko": "" }, "modes": { "default": { "allMartialBoost": 0.10 } }, "defaultMode": "default", "description": "+1.5m range / +10% damage / +10% damage as HP restore" },
-  "5":   { "names": { "ja": "血涙不止",   "en": "Fivefold Bleed",            "zh": "极乐泣血",   "ko": "" }, "modes": {}, "defaultMode": "default", "description": "10% chance Weeping Blood (5 stack max、貫通ダメ)。条件不明確で effects 空。" },
-  "6":   { "names": { "ja": "砂塵一閃",   "en": "Sandswirl Tail",            "zh": "沙摆尾",     "ko": "" }, "modes": {}, "defaultMode": "default", "description": "morph 状態時 sprint/jump Endurance 削減。ダメージ非影響。" },
-  "41":  { "names": { "ja": "征軍帰鄉",   "en": "Envigorated Warrior",       "zh": "征人归",     "ko": "" }, "modes": { "default": { "allMartialBoost": 0.05 } }, "defaultMode": "default", "description": "+5% all damage/healing / -5s cooldown after hit / +5% damage taken (Cage)" },
-  "42":  { "names": { "ja": "怨念連鎖",   "en": "Bitter Seasons",            "zh": "所恨年年",   "ko": "" }, "modes": { "maxStack": { "enemyDebuff": 0.03 } }, "defaultMode": "default", "description": "10% chance -0.6% Phys Def (5s poison, 5 stack max → -3% 期待値)。確率系。" },
-  "43":  { "names": { "ja": "帰燕の経",   "en": "Vital Leech",               "zh": "归燕经",     "ko": "" }, "modes": {}, "defaultMode": "default", "description": "+8% damage dealt as HP restore。吸血のみ、ダメージ非影響。" },
-  "44":  { "names": { "ja": "怒濤斬馬",   "en": "Fury Harvest",              "zh": "怒斩马",     "ko": "" }, "modes": {}, "defaultMode": "default", "description": "50% chance +1 bonus Vitality from recovery。リソース系。" },
-  "45":  { "names": { "ja": "長生無相",   "en": "Divine Roulette",           "zh": "长生无相",   "ko": "" }, "modes": {}, "defaultMode": "default", "description": "Random effect (10s, 30s CD) on perfect deflection。確率系。" },
-  "46":  { "names": { "ja": "舞影",       "en": "Evasive Charge",            "zh": "婆娑影",     "ko": "" }, "modes": {}, "defaultMode": "default", "description": "50% chance -100% Endurance cost after Perfect Dodge。Endurance のみ。" },
-  "81":  { "names": { "ja": "易水の歌",   "en": "Morale Chant",              "zh": "易水歌",     "ko": "결의의 노래" }, "modes": { "default": { "outerPenAdd": 10, "allMartialBoost": 0.05 }, "ccBuff": { "outerPenAdd": 10, "allMartialBoost": 0.10 } }, "defaultMode": "default", "description": "5 stack × (+2 物理貫通, +1% damage·heal, 12s)。CC中 stack 倍 (Tier3)。Tier5 +4.6% 直接会心率" },
-  "82":  { "names": { "ja": "四季無常",   "en": "Seasonal Edge",             "zh": "四时无常",   "ko": "" }, "modes": {}, "defaultMode": "default", "description": "Dual-weapon skill triggers random effect。ランダム発動、effects 不明。" },
-  "101": { "names": { "ja": "千山法",     "en": "Mountain's Might",          "zh": "千山法",     "ko": "" }, "modes": {}, "defaultMode": "default", "description": "+20% Endurance cost reduction (5s)。Endurance のみ。" },
-  "102": { "names": { "ja": "星火燎原",   "en": "Wildfire Spark",            "zh": "燎原星火",   "ko": "" }, "modes": {}, "defaultMode": "default", "description": "+3.5% Endurance refund。Endurance のみ。" },
-  "103": { "names": { "ja": "威猛歌",     "en": "Battle Anthem",             "zh": "威猛歌",     "ko": "" }, "modes": { "vsBoss": { "bossBoost": 0.10 } }, "defaultMode": "default", "description": "+10% Charged Skill damage vs bosses。蓄力 + 対 Boss 条件。" },
-  "104": { "names": { "ja": "無名心法",   "en": "Sword Morph",               "zh": "无名心法",   "ko": "" }, "modes": { "maxConsume": { "allMartialBoost": 0.20 } }, "defaultMode": "default", "description": "up to +20% damage from Endurance consumption。最大時 +20%。" },
-  "151": { "names": { "ja": "逐狼心経",   "en": "Wolfchaser's Art",          "zh": "逐狼心经",   "ko": "" }, "modes": {}, "defaultMode": "default", "description": "Combo 5/10 → 4/8 短縮。Bleed stack ごと 60-100% 確率。combo 系。" },
-  "152": { "names": { "ja": "武芸百般",   "en": "Adaptive Steel",            "zh": "武艺百般",   "ko": "" }, "modes": {}, "defaultMode": "default", "description": "6/10/20s cooldowns by weapon type。CD 系。" },
-  "153": { "names": { "ja": "一心不乱",   "en": "Insightful Strike",         "zh": "一心不乱",   "ko": "" }, "modes": { "default": { "sympathyBoost": 0.10 } }, "defaultMode": "default", "description": "+10% Affinity (共鳴) DMG / 5% chance -40% damage taken" },
-  "154": { "names": { "ja": "剣気斬波",   "en": "Sword Horizon",             "zh": "剑气斩波",   "ko": "" }, "modes": {}, "defaultMode": "default", "description": "5 stack Bleed 消費で高ダメバースト。条件付。" },
-  "301": { "names": { "ja": "一得一失",   "en": "Flying Gourds",             "zh": "一得一失",   "ko": "" }, "modes": {}, "defaultMode": "default", "description": "+2 charges / +3s CD penalty。charges 系。" },
-  "302": { "names": { "ja": "春雷一閃",   "en": "Thunderous Bloom",          "zh": "春雷一闪",   "ko": "" }, "modes": { "maxStack": { "bossBoost": 0.45 } }, "defaultMode": "default", "description": "15m 移動で 3 stack (15s CD)。+15% HP damage per stack → 最大 +45% (対 Boss?)" },
-  "303": { "names": { "ja": "摘星の術",   "en": "Star Reacher",              "zh": "摘星术",     "ko": "" }, "modes": { "default": { "weaponBonus": 0.05 }, "airborne": { "weaponBonus": 0.10 } }, "defaultMode": "default", "description": "+5% Phys Attack (8s max)、空中時 +10%。物理外功 か weaponBonus 不明。" },
-  "304": { "names": { "ja": "花上月令",   "en": "Blossom Barrage",           "zh": "花上月令",   "ko": "" }, "modes": {}, "defaultMode": "default", "description": "2 stack max、+10% damage taken from Ballistic Skills (10s)。被ダメ系。" },
-  "351": { "names": { "ja": "君臣薬",     "en": "Royal Remedy",              "zh": "君臣药",     "ko": "" }, "modes": {}, "defaultMode": "default", "description": "+10% healing / +3 Dew +2 Essence。HP回復のみ。" },
-  "352": { "names": { "ja": "散花不滅",   "en": "Restoring Blossom",         "zh": "散花不灭",   "ko": "" }, "modes": {}, "defaultMode": "default", "description": "3 stack +2% healing received (3s)。HP回復のみ。" },
-  "353": { "names": { "ja": "蘇生の術",   "en": "Esoteric Revival",          "zh": "苏生术",     "ko": "" }, "modes": {}, "defaultMode": "default", "description": "+50% healing on revived target。HP回復のみ。" },
-  "354": { "names": { "ja": "癒しの糸",   "en": "Mending Loom",              "zh": "愈合丝",     "ko": "" }, "modes": {}, "defaultMode": "default", "description": "+5 Dew restored / +10% Max HP healing per 100 Dew。HP回復のみ。" },
-  "401": { "names": { "ja": "山河絶韻",   "en": "Exquisite Scenery",         "zh": "山河绝韵",   "ko": "" }, "modes": {}, "defaultMode": "default", "description": "Tier 3 Heavy Attack counter (10s CD)。条件付バースト。" },
-  "402": { "names": { "ja": "困獣心経",   "en": "Trapped Beast",             "zh": "困兽心经",   "ko": "" }, "modes": {}, "defaultMode": "default", "description": "30% Max HP shield (4s, CD 300s) HP<30% 時。shield のみ。" },
-  "403": { "names": { "ja": "堅忍の術",   "en": "Art of Resistance",         "zh": "坚忍术",     "ko": "" }, "modes": {}, "defaultMode": "default", "description": "+4s shield duration。shield のみ。" },
-  "404": { "names": { "ja": "磐石訣",     "en": "Rock Solid",                "zh": "磐石诀",     "ko": "" }, "modes": {}, "defaultMode": "default", "description": "+20% DMG Reduction vs boss taunt / +5% non-boss (20% cap) / -10% outgoing damage。被ダメ軽減 + 与ダメペナルティ。" },
-  "451": { "names": { "ja": "忘川絶響",   "en": "Echoes of Oblivion",        "zh": "忘川绝响",   "ko": "" }, "modes": { "default": { "enemyDebuff": 0.10 } }, "defaultMode": "default", "description": "ignore 10% Physical Defense and 10% Bamboocut Resistance。物理防御無視 (Bamboocut 武術専用)" },
-  "452": { "names": { "ja": "宿怨結晶",   "en": "Vendetta",                  "zh": "宿怨结晶",   "ko": "" }, "modes": {}, "defaultMode": "default", "description": "+5s duration / +20 Tokens of Gratitude。リソース系。" },
-  "453": { "names": { "ja": "断石心法",   "en": "Breaking Point",            "zh": "断石心法",   "ko": "" }, "modes": { "maxStack": { "outerPenAdd": 15, "critBoost": 0.15 } }, "defaultMode": "default", "description": "3 stack max × (+5 物理貫通, +5% 会心ダメ, 3s)。最大時 +15 貫通/+15% 会心ダメ。" },
-  "454": { "names": { "ja": "蒼浪剣訣",   "en": "Riptide Reflex",            "zh": "苍浪剑诀",   "ko": "" }, "modes": {}, "defaultMode": "default", "description": "-1s cooldown (once per 10s)。CD 系。" },
-  "501": { "names": { "ja": "千軍の咆哮", "en": "Phantom Rally",             "zh": "千军的咆哮", "ko": "" }, "modes": {}, "defaultMode": "default", "description": "1st および 3rd throw で Phantom 召喚、catch で Resonance トリガー。" },
-  "502": { "names": { "ja": "砂舟行木",   "en": "Towline Sweep",             "zh": "砂舟行木",   "ko": "" }, "modes": {}, "defaultMode": "default", "description": "+50 Tokens after Soul Sweep / 2 stack Soulbreak per hit。" },
-  "503": { "names": { "ja": "灯火詞",     "en": "Light Anew",                "zh": "灯火词",     "ko": "" }, "modes": {}, "defaultMode": "default", "description": "5 stack max、敵デバフ -4% Move Speed / +2% damage taken per stack → 敵被ダメ +10% 最大。" },
-  "504": { "names": { "ja": "大唐歌",     "en": "Song of Tang",              "zh": "大唐歌",     "ko": "" }, "modes": { "maxStack": { "critBoost": 0.10 } }, "defaultMode": "default", "description": "5 stack max、+2% Critical Damage or +2% Life Drain per stack (capped 2.5% Max HP/sec)。最大 +10% 会心ダメ。" }
+  }
 }
