@@ -11,6 +11,7 @@
   "10302": { "names": { "ja": "墨筆の扇", "en": "Inkwell Fan",        "zh": "青山執筆",   "ko": "청산의 정수" }, "weaponType": "fan",   "effects": {}, "description": "墨筆の扇。" },
   "20103": { "names": { "ja": "嵐雷の槍", "en": "Stormbreaker Spear", "zh": "八方風雷槍", "ko": "풍뢰의 징표" }, "weaponType": "spear",    "effects": {}, "description": "嵐雷の槍 (八方風雷槍)。" },
   "20401": { "names": { "ja": "断魂の刀", "en": "Thundercry Blade",   "zh": "嗟夫刀法",   "ko": "탄식의 검기" }, "weaponType": "mo_blade", "effects": {}, "description": "断魂の刀 (陌刀)。" },
+  "20402": { "names": { "ja": "破陣の刀", "en": "",                   "zh": "",           "ko": "" },           "weaponType": "mo_blade", "effects": {}, "description": "破陣の刀 (陌刀)。ID 20402 = roleInfo 経由確定。公式 app.js (20251121182818) 未収録。Lv95 才能データ未取得。" },
   "20501": {
     "names": { "ja": "獄炎の双剣", "en": "Infernal Twinblades", "zh": "泥犁三垢", "ko": "윤회의 가르침" },
     "weaponType": "dual_blades",
@@ -64,5 +65,6 @@
       { "from": "minElemMain", "thresholdValue": 268, "maxBoost": 0.09,  "appliesTo": "elemAtkBoost", "formula": "linear_capped" }
     ],
     "description": "浮雲の縄 (縄鏢・遠距離攻撃・瞬嵐塵)。瞬嵐ステータス上昇 (固定 +80~160) + 瞬嵐ダメージ上昇 (cap 9.0%) + 会心率上昇 (cap 6.8%)。溜め連撃強化/失魂会心上昇/属性ダメ強化は未実装。"
-  }
+  },
+  "20801": { "names": { "ja": "斬雪の刀", "en": "",                   "zh": "",           "ko": "" },           "weaponType": "new_blade", "effects": {}, "description": "斬雪の刀 (新武器種・刀系)。ID 20801 は仮 (3桁目 8 = 新武器種推定)。装備時 roleInfo で要検証。Lv95 才能データ未取得。" }
 }
