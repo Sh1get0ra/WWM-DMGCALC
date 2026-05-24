@@ -139,7 +139,21 @@
     },
     "modes": {},
     "defaultMode": "default",
-    "description": "morph 状態時 sprint/jump Endurance 削減。ダメージ非影響。"
+    "description": "morph 状態時 sprint/jump Endurance 削減。ダメージ非影響。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "外功ダメージ軽減 +2.2%",
+        "category": "defensive"
+      }
+    }
   },
   "41": {
     "names": {
@@ -1036,7 +1050,22 @@
     },
     "modes": {},
     "defaultMode": "default",
-    "description": "1st および 3rd throw で Phantom 召喚、catch で Resonance トリガー。"
+    "description": "1st および 3rd throw で Phantom 召喚、catch で Resonance トリガー。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "physDmgBoost": 0.028
+        },
+        "raw": "外功攻撃強化 +2.8%"
+      }
+    }
   },
   "502": {
     "names": {
@@ -1047,7 +1076,22 @@
     },
     "modes": {},
     "defaultMode": "default",
-    "description": "+50 Tokens after Soul Sweep / 2 stack Soulbreak per hit。"
+    "description": "+50 Tokens after Soul Sweep / 2 stack Soulbreak per hit。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "elemPenAdd": 6
+        },
+        "raw": "瞬嵐貫通 +6"
+      }
+    }
   },
   "503": {
     "names": {
@@ -1058,7 +1102,22 @@
     },
     "modes": {},
     "defaultMode": "default",
-    "description": "5 stack max、敵デバフ -4% Move Speed / +2% damage taken per stack → 敵被ダメ +10% 最大。"
+    "description": "5 stack max、敵デバフ -4% Move Speed / +2% damage taken per stack → 敵被ダメ +10% 最大。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "outerPenAdd": 5.1
+        },
+        "raw": "外功貫通 +5.1"
+      }
+    }
   },
   "504": {
     "names": {
@@ -1073,12 +1132,27 @@
       }
     },
     "defaultMode": "default",
-    "description": "5 stack max、+2% Critical Damage or +2% Life Drain per stack (capped 2.5% Max HP/sec)。最大 +10% 会心ダメ。"
+    "description": "5 stack max、+2% Critical Damage or +2% Life Drain per stack (capped 2.5% Max HP/sec)。最大 +10% 会心ダメ。",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "critBoost": 0.04
+        },
+        "raw": "会心攻撃強化 +4.0%"
+      }
+    }
   },
   "_schema": "ID → 心法名 + モード別ステータス影響値マッピング。modes 配下に default/maxStack/ccBuff 等を定義。description は人間向け説明。effects はダメージ計算に影響する数値のみ。",
   "_lastUpdated": "2026-05-23",
   "_source": "wherewindsmeetgame.com app.js 抽出 + Game8 / Fextralife wiki",
-  "_note": "全データ Claude 抽出版 (verified: false)。ユーザー検証 → 訂正フェーズ。HP回復/シールド/Endurance 系等、ダメージ計算非影響の効果は modes 空。心法 Lv MAX 前提で計測 (roleInfo に Lv フィールドなし、別 API 全 605)。 | Tier5 attributeBuff: CookieLips v1.2 sheet 由来 (verified: false)。Tier2 大世界Lv14値ユーザー手動入力待ち。ID 6/501/502/503/504 は v1.2 sheet 未掲載。 | Tier2 attributeBuff 装備中4心法 (41/81/451/452) 大世界Lv14値 in-game 観測 (2026-05-25)。",
+  "_note": "全データ Claude 抽出版 (verified: false)。ユーザー検証 → 訂正フェーズ。HP回復/シールド/Endurance 系等、ダメージ計算非影響の効果は modes 空。心法 Lv MAX 前提で計測 (roleInfo に Lv フィールドなし、別 API 全 605)。 | Tier5 attributeBuff: CookieLips v1.2 sheet 由来 (verified: false)。Tier2 大世界Lv14値ユーザー手動入力待ち。ID 6/501/502/503/504 は v1.2 sheet 未掲載。 | Tier2 attributeBuff 装備中4心法 (41/81/451/452) 大世界Lv14値 in-game 観測 (2026-05-25)。 | Tier5 残5件 (6/501/502/503/504) in-game 観測 (2026-05-25)。",
   "_example": {
     "81_example": {
       "names": {
