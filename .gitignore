@@ -2,3 +2,6 @@
 CLAUDE.md
 .claudeignore
 docs/
+DESIGN.md
+design-tokens.json
+design-preview.html
