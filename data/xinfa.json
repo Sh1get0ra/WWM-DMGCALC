@@ -22,7 +22,8 @@
         "raw": "Physical DMG Reduction +2.2%",
         "category": "defensive"
       }
-    }
+    },
+    "rank": "blue"
   },
   "2": {
     "names": {
@@ -47,7 +48,8 @@
         "raw": "Physical Resistance +4.5",
         "category": "defensive"
       }
-    }
+    },
+    "rank": "blue"
   },
   "3": {
     "names": {
@@ -72,7 +74,8 @@
         "raw": "Physical Resistance +4.5",
         "category": "defensive"
       }
-    }
+    },
+    "rank": "blue"
   },
   "4": {
     "names": {
@@ -102,7 +105,8 @@
         },
         "raw": "Physical DMG Bonus +2.2%"
       }
-    }
+    },
+    "rank": "blue"
   },
   "5": {
     "names": {
@@ -128,7 +132,8 @@
         },
         "raw": "Crit DMG Bonus +3.5%"
       }
-    }
+    },
+    "rank": "blue"
   },
   "6": {
     "names": {
@@ -153,7 +158,8 @@
         "raw": "外功ダメージ軽減 +2.2%",
         "category": "defensive"
       }
-    }
+    },
+    "rank": "blue"
   },
   "41": {
     "names": {
@@ -186,7 +192,8 @@
         },
         "raw": "Physical Penetration +5.1"
       }
-    }
+    },
+    "rank": "purple"
   },
   "42": {
     "names": {
@@ -216,7 +223,8 @@
         },
         "raw": "Physical DMG Bonus +2.5%"
       }
-    }
+    },
+    "rank": "purple"
   },
   "43": {
     "names": {
@@ -241,7 +249,8 @@
         "raw": "Physical DMG Reduction +2.5%",
         "category": "defensive"
       }
-    }
+    },
+    "rank": "purple"
   },
   "44": {
     "names": {
@@ -266,7 +275,8 @@
         "raw": "Physical Resistance +5.1",
         "category": "defensive"
       }
-    }
+    },
+    "rank": "purple"
   },
   "45": {
     "names": {
@@ -292,7 +302,8 @@
         },
         "raw": "Physical Penetration +5.1"
       }
-    }
+    },
+    "rank": "purple"
   },
   "46": {
     "names": {
@@ -317,7 +328,8 @@
         "raw": "Physical DMG Reduction +2.5%",
         "category": "defensive"
       }
-    }
+    },
+    "rank": "purple"
   },
   "81": {
     "names": {
@@ -356,7 +368,8 @@
         },
         "raw": "Direct Critical Rate +4.6%"
       }
-    }
+    },
+    "rank": "gold"
   },
   "82": {
     "names": {
@@ -382,7 +395,8 @@
         },
         "raw": "Physical Damage Bonus +2.8%"
       }
-    }
+    },
+    "rank": "gold"
   },
   "101": {
     "names": {
@@ -408,7 +422,8 @@
         "weaponSpecific": "bellstrike",
         "pendingImplementation": true
       }
-    }
+    },
+    "rank": "purple"
   },
   "102": {
     "names": {
@@ -434,7 +449,8 @@
         },
         "raw": "Physical DMG Bonus +2.5%"
       }
-    }
+    },
+    "rank": "purple"
   },
   "103": {
     "names": {
@@ -464,7 +480,8 @@
         },
         "raw": "Affinity DMG Bonus +5.2%"
       }
-    }
+    },
+    "rank": "purple"
   },
   "104": {
     "names": {
@@ -494,7 +511,8 @@
         },
         "raw": "Direct Affinity Rate +2.3%"
       }
-    }
+    },
+    "rank": "gold"
   },
   "151": {
     "names": {
@@ -520,7 +538,8 @@
         },
         "raw": "Affinity DMG Bonus +5.2%"
       }
-    }
+    },
+    "rank": "purple"
   },
   "152": {
     "names": {
@@ -546,7 +565,8 @@
         "weaponSpecific": "bellstrike",
         "pendingImplementation": true
       }
-    }
+    },
+    "rank": "purple"
   },
   "153": {
     "names": {
@@ -576,7 +596,8 @@
         "weaponSpecific": "bellstrike",
         "pendingImplementation": true
       }
-    }
+    },
+    "rank": "purple"
   },
   "154": {
     "names": {
@@ -602,7 +623,8 @@
         },
         "raw": "Direct Affinity Rate +2.3%"
       }
-    }
+    },
+    "rank": "gold"
   },
   "301": {
     "names": {
@@ -628,7 +650,8 @@
         "weaponSpecific": "silkbind",
         "pendingImplementation": true
       }
-    }
+    },
+    "rank": "purple"
   },
   "302": {
     "names": {
@@ -658,7 +681,8 @@
         },
         "raw": "Physical DMG Bonus +2.5%"
       }
-    }
+    },
+    "rank": "purple"
   },
   "303": {
     "names": {
@@ -691,7 +715,8 @@
         },
         "raw": "Physical Penetration +5.1"
       }
-    }
+    },
+    "rank": "purple"
   },
   "304": {
     "names": {
@@ -717,7 +742,8 @@
         },
         "raw": "Critical DMG Bonus +4.4%"
       }
-    }
+    },
+    "rank": "gold"
   },
   "351": {
     "names": {
@@ -743,7 +769,8 @@
         },
         "raw": "Direct Critical Rate +4.6%"
       }
-    }
+    },
+    "rank": "gold"
   },
   "352": {
     "names": {
@@ -768,7 +795,8 @@
         "raw": "Critical Healing Bonus +4%",
         "category": "healing"
       }
-    }
+    },
+    "rank": "purple"
   },
   "353": {
     "names": {
@@ -793,7 +821,8 @@
         "raw": "Critical Healing Bonus +4%",
         "category": "healing"
       }
-    }
+    },
+    "rank": "purple"
   },
   "354": {
     "names": {
@@ -818,7 +847,8 @@
         "raw": "Physical Healing Bonus +2.5%",
         "category": "healing"
       }
-    }
+    },
+    "rank": "purple"
   },
   "401": {
     "names": {
@@ -844,7 +874,8 @@
         },
         "raw": "Critical DMG Bonus +4.4%"
       }
-    }
+    },
+    "rank": "gold"
   },
   "402": {
     "names": {
@@ -869,7 +900,8 @@
         "raw": "Physical Resistance +5.1",
         "category": "defensive"
       }
-    }
+    },
+    "rank": "purple"
   },
   "403": {
     "names": {
@@ -895,7 +927,8 @@
         "weaponSpecific": "stonesplit",
         "pendingImplementation": true
       }
-    }
+    },
+    "rank": "purple"
   },
   "404": {
     "names": {
@@ -920,7 +953,8 @@
         "raw": "Physical DMG Reduction +2.5%",
         "category": "defensive"
       }
-    }
+    },
+    "rank": "purple"
   },
   "451": {
     "names": {
@@ -953,7 +987,8 @@
         },
         "raw": "Critical DMG Bonus +4.4%"
       }
-    }
+    },
+    "rank": "gold"
   },
   "452": {
     "names": {
@@ -982,7 +1017,8 @@
         "weaponSpecific": "bamboocut",
         "pendingImplementation": true
       }
-    }
+    },
+    "rank": "purple"
   },
   "453": {
     "names": {
@@ -1013,7 +1049,8 @@
         },
         "raw": "Direct Critical Rate +4.1%"
       }
-    }
+    },
+    "rank": "purple"
   },
   "454": {
     "names": {
@@ -1039,7 +1076,8 @@
         },
         "raw": "Physical Penetration +5.1"
       }
-    }
+    },
+    "rank": "purple"
   },
   "501": {
     "names": {
@@ -1065,7 +1103,8 @@
         },
         "raw": "外功攻撃強化 +2.8%"
       }
-    }
+    },
+    "rank": "gold"
   },
   "502": {
     "names": {
@@ -1091,7 +1130,8 @@
         },
         "raw": "瞬嵐貫通 +6"
       }
-    }
+    },
+    "rank": "purple"
   },
   "503": {
     "names": {
@@ -1117,7 +1157,8 @@
         },
         "raw": "外功貫通 +5.1"
       }
-    }
+    },
+    "rank": "purple"
   },
   "504": {
     "names": {
@@ -1147,12 +1188,121 @@
         },
         "raw": "会心攻撃強化 +4.0%"
       }
-    }
+    },
+    "rank": "purple"
+  },
+  "551": {
+    "names": {
+      "ja": "霜天白夜",
+      "en": "",
+      "zh": "",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "霜天白夜 (砕岩path新心法、ID 551 roleInfo経由確定 2026-05-25)",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "addCritRate": 0.046
+        },
+        "raw": "付加会心率 +4.6%"
+      }
+    },
+    "rank": "gold"
+  },
+  "552": {
+    "names": {
+      "ja": "孤忠不辞",
+      "en": "",
+      "zh": "",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "孤忠不辞 (砕岩path新心法、ID 552 roleInfo経由確定 2026-05-25)",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "critBoost": 0.04
+        },
+        "raw": "会心攻撃強化 +4.0%"
+      }
+    },
+    "rank": "purple"
+  },
+  "553": {
+    "names": {
+      "ja": "穿喉の訣",
+      "en": "",
+      "zh": "",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "穿喉の訣 (砕岩path新心法、ID 553 roleInfo経由確定 2026-05-25)",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {},
+        "raw": "砕岩貫通 +6",
+        "weaponSpecific": "stonesplit",
+        "pendingImplementation": true
+      }
+    },
+    "rank": "purple"
+  },
+  "554": {
+    "names": {
+      "ja": "燎原脚",
+      "en": "",
+      "zh": "",
+      "ko": ""
+    },
+    "modes": {},
+    "defaultMode": "default",
+    "description": "燎原脚 (砕岩path新心法、ID 554 roleInfo経由確定 2026-05-25)",
+    "attributeBuff": {
+      "tier2": {
+        "effects": {},
+        "permanent": true,
+        "raw": "TBD (Lv14ゲーム内値要収集)",
+        "needsManualInput": true
+      },
+      "tier5": {
+        "permanent": true,
+        "effects": {
+          "physDmgBoost": 0.025
+        },
+        "raw": "外功攻撃強化 +2.5%"
+      }
+    },
+    "rank": "purple"
   },
   "_schema": "ID → 心法名 + モード別ステータス影響値マッピング。modes 配下に default/maxStack/ccBuff 等を定義。description は人間向け説明。effects はダメージ計算に影響する数値のみ。",
   "_lastUpdated": "2026-05-23",
   "_source": "wherewindsmeetgame.com app.js 抽出 + Game8 / Fextralife wiki",
-  "_note": "全データ Claude 抽出版 (verified: false)。ユーザー検証 → 訂正フェーズ。HP回復/シールド/Endurance 系等、ダメージ計算非影響の効果は modes 空。心法 Lv MAX 前提で計測 (roleInfo に Lv フィールドなし、別 API 全 605)。 | Tier5 attributeBuff: CookieLips v1.2 sheet 由来 (verified: false)。Tier2 大世界Lv14値ユーザー手動入力待ち。ID 6/501/502/503/504 は v1.2 sheet 未掲載。 | Tier2 attributeBuff 装備中4心法 (41/81/451/452) 大世界Lv14値 in-game 観測 (2026-05-25)。 | Tier5 残5件 (6/501/502/503/504) in-game 観測 (2026-05-25)。",
+  "_note": "全データ Claude 抽出版 (verified: false)。ユーザー検証 → 訂正フェーズ。HP回復/シールド/Endurance 系等、ダメージ計算非影響の効果は modes 空。心法 Lv MAX 前提で計測 (roleInfo に Lv フィールドなし、別 API 全 605)。 | Tier5 attributeBuff: CookieLips v1.2 sheet 由来 (verified: false)。Tier2 大世界Lv14値ユーザー手動入力待ち。ID 6/501/502/503/504 は v1.2 sheet 未掲載。 | Tier2 attributeBuff 装備中4心法 (41/81/451/452) 大世界Lv14値 in-game 観測 (2026-05-25)。 | Tier5 残5件 (6/501/502/503/504) in-game 観測 (2026-05-25)。 | rank フィールド追加 (2026-05-25): gold=金 (9件確定、霜天白夜は新ID未確定)、blue=青 (6件基礎)、purple=紫 (残り)。同rank・同ステータス → Tier5値共通。 | 新心法4件追加 (551-554, 砕岩path, 2026-05-25)。赤心筆/和光同塵 ID未取得。",
   "_example": {
     "81_example": {
       "names": {
