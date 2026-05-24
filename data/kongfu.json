@@ -1,0 +1,19 @@
+{
+  "_schema": "ID → 武術名 + ステータス影響値マッピング。effects はゲーム内データ確定後に追記。",
+  "_lastUpdated": "2026-05-23",
+  "_source": "wherewindsmeetgame.com 公式データツール app.js 抽出",
+  "10101": { "names": { "ja": "積矩九劍",   "en": "Nine-Square Sword Art",   "zh": "积矩九剑",   "ko": "" }, "effects": {} },
+  "10102": { "names": { "ja": "無名劍法",   "en": "Nameless Sword Art",      "zh": "无名剑法",   "ko": "" }, "effects": {} },
+  "10201": { "names": { "ja": "九曲驚神槍", "en": "Heavenquaker Spear",      "zh": "九曲惊神枪", "ko": "" }, "effects": {} },
+  "10202": { "names": { "ja": "無銘の槍",   "en": "Nameless Spear",          "zh": "无名枪法",   "ko": "" }, "effects": {} },
+  "10301": { "names": { "ja": "明川藥典",   "en": "Mingchuan Medicinal Fan", "zh": "明川药典",   "ko": "" }, "effects": {} },
+  "10302": { "names": { "ja": "青山執筆",   "en": "Qingshan Writing Brush",  "zh": "青山执笔",   "ko": "" }, "effects": {} },
+  "20103": { "names": { "ja": "嵐雷の槍",   "en": "Stormbreaker Spear",      "zh": "八方风雷枪", "ko": "" }, "effects": {} },
+  "20401": { "names": { "ja": "断魂の刀",   "en": "Thundercry Blade",        "zh": "嗟夫刀法",   "ko": "" }, "effects": {} },
+  "20501": { "names": { "ja": "獄炎の双剣", "en": "Infernal Twinblades",     "zh": "泥犁三垢",   "ko": "윤회의 가르침" }, "effects": {} },
+  "20601": { "names": { "ja": "千紅の傘",   "en": "Crimson Umbrella",        "zh": "九重春色",   "ko": "" }, "effects": {} },
+  "20602": { "names": { "ja": "誘魂の傘",   "en": "Soulbinding Umbrella",    "zh": "千香引魂蛊", "ko": "" }, "effects": {} },
+  "20603": { "names": { "ja": "醉夢の傘",   "en": "Drunken Dream Umbrella",  "zh": "醉梦游春",   "ko": "" }, "effects": {} },
+  "20701": { "names": { "ja": "浮塵の縄",   "en": "Mortal Rope Dart",        "zh": "粟子游尘",   "ko": "" }, "effects": {} },
+  "20702": { "names": { "ja": "浮雲の縄",   "en": "Cloudborne Rope Dart",    "zh": "粟子行云",   "ko": "" }, "effects": {} }
+}

@@ -332,6 +332,13 @@ function reflectEnemyDisplay() {
   }
 }
 
+// ── データインポート（工事中） ──────────────────────────────────────
+function importData() {
+  // TODO: ブックマークレットからの roleInfo JSON をパース → 全フィールド自動入力
+  // データ管理: data/kongfu.json, data/xinfa.json, data/affix.json
+  showToast((T && T.toastImportWip) || '工事中のため使用できません');
+}
+
 // ── 画像エクスポート（新デザイン版） ──────────────────────────────
 function exportImage() {
   if (typeof html2canvas === 'undefined') {

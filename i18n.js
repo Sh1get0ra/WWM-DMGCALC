@@ -57,7 +57,7 @@ const TRANSLATIONS = {
     effCritRate:'会心率', effSympathy:'会意率', effHitRate:'命中率',
     effAgility:'速 (Agility)', effPower:'会 (Power)', effStrength:'力 (Strength)',
     effBossBoost:'ダメージ増加', effPhysPen:'物理貫通', effElemPen:'属性貫通',
-    toastSaved:'プリセット「{name}」を保存', toastLoaded:'プリセット「{name}」を読込', toastDeleted:'プリセット「{name}」を削除', toastExported:'画像を出力しました',
+    toastSaved:'プリセット「{name}」を保存', toastLoaded:'プリセット「{name}」を読込', toastDeleted:'プリセット「{name}」を削除', toastExported:'画像を出力しました', toastImportWip:'工事中のため使用できません', importBtn:'IMPORT',
     locale:'ja-JP',
   },
   en: {
@@ -117,7 +117,7 @@ const TRANSLATIONS = {
     effCritRate:'Critical Rate', effSympathy:'Affinity Rate', effHitRate:'Hit Rate',
     effAgility:'Agility (速)', effPower:'Power (会)', effStrength:'Strength (力)',
     effBossBoost:'DMG Bonus', effPhysPen:'Physical Penetration', effElemPen:'Elemental Penetration',
-    toastSaved:'Saved "{name}"', toastLoaded:'Loaded "{name}"', toastDeleted:'Deleted "{name}"', toastExported:'Image exported',
+    toastSaved:'Saved "{name}"', toastLoaded:'Loaded "{name}"', toastDeleted:'Deleted "{name}"', toastExported:'Image exported', toastImportWip:'Under construction — not yet available', importBtn:'IMPORT',
     locale:'en-US',
   },
   zh: {
@@ -177,7 +177,7 @@ const TRANSLATIONS = {
     effCritRate:'会心率', effSympathy:'会意率', effHitRate:'命中率',
     effAgility:'速 (Agility)', effPower:'会 (Power)', effStrength:'力 (Strength)',
     effBossBoost:'伤害增加', effPhysPen:'物理穿透', effElemPen:'属性穿透',
-    toastSaved:'预设「{name}」已保存', toastLoaded:'预设「{name}」已读取', toastDeleted:'预设「{name}」已删除', toastExported:'图片已导出',
+    toastSaved:'预设「{name}」已保存', toastLoaded:'预设「{name}」已读取', toastDeleted:'预设「{name}」已删除', toastExported:'图片已导出', toastImportWip:'施工中，暂不可用', importBtn:'导入',
     locale:'zh-CN',
   },
   ko: {
@@ -237,7 +237,7 @@ const TRANSLATIONS = {
     effCritRate:'회심률', effSympathy:'친화율', effHitRate:'명중률',
     effAgility:'속 (Agility)', effPower:'회 (Power)', effStrength:'력 (Strength)',
     effBossBoost:'대미지 증가', effPhysPen:'물리 관통', effElemPen:'속성 관통',
-    toastSaved:'프리셋 「{name}」 저장됨', toastLoaded:'프리셋 「{name}」 불러옴', toastDeleted:'프리셋 「{name}」 삭제됨', toastExported:'이미지 내보내기 완료',
+    toastSaved:'프리셋 「{name}」 저장됨', toastLoaded:'프리셋 「{name}」 불러옴', toastDeleted:'프리셋 「{name}」 삭제됨', toastExported:'이미지 내보내기 완료', toastImportWip:'공사 중 — 아직 사용할 수 없습니다', importBtn:'IMPORT',
     locale:'ko-KR',
   },
 };
