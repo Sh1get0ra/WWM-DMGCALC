@@ -8,4 +8,5 @@ design-preview.html
 data/inner_way_tier_data_raw.csv
 data/extract_tier5.js
 data/apply_tier5.js
+data/apply_tier2_4ids.js
 data/xinfa_attribute_buff_template.csv

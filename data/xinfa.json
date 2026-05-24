@@ -157,10 +157,13 @@
     "description": "+5% all damage/healing / -5s cooldown after hit / +5% damage taken (Cage)",
     "attributeBuff": {
       "tier2": {
-        "effects": {},
         "permanent": true,
-        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
-        "needsManualInput": true
+        "worldLv": 14,
+        "needsManualInput": false,
+        "effects": {
+          "minPhysATKAdd": 57.5
+        },
+        "raw": "Min Physical Attack +57.5"
       },
       "tier5": {
         "permanent": true,
@@ -323,10 +326,14 @@
     "description": "5 stack × (+2 物理貫通, +1% damage·heal, 12s)。CC中 stack 倍 (Tier3)。Tier5 +4.6% 直接会心率",
     "attributeBuff": {
       "tier2": {
-        "effects": {},
         "permanent": true,
-        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
-        "needsManualInput": true
+        "worldLv": 14,
+        "needsManualInput": false,
+        "effects": {
+          "minPhysATKAdd": 21.3,
+          "maxPhysATKAdd": 42.5
+        },
+        "raw": "Physical Attack +21.3 ~ +42.5"
       },
       "tier5": {
         "permanent": true,
@@ -917,10 +924,13 @@
     "description": "ignore 10% Physical Defense and 10% Bamboocut Resistance。物理防御無視 (Bamboocut 武術専用)",
     "attributeBuff": {
       "tier2": {
-        "effects": {},
         "permanent": true,
-        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
-        "needsManualInput": true
+        "worldLv": 14,
+        "needsManualInput": false,
+        "effects": {
+          "critRateAdj": 0.074
+        },
+        "raw": "Critical Rate +7.4%"
       },
       "tier5": {
         "permanent": true,
@@ -943,10 +953,13 @@
     "description": "+5s duration / +20 Tokens of Gratitude。リソース系。",
     "attributeBuff": {
       "tier2": {
-        "effects": {},
         "permanent": true,
-        "raw": "TBD (大世界Lv依存・Lv14ゲーム内値要収集)",
-        "needsManualInput": true
+        "worldLv": 14,
+        "needsManualInput": false,
+        "effects": {},
+        "raw": "Min Bamboocut Attack +32.6",
+        "weaponSpecific": "bamboocut",
+        "pendingImplementation": true
       },
       "tier5": {
         "permanent": true,
@@ -1065,7 +1078,7 @@
   "_schema": "ID → 心法名 + モード別ステータス影響値マッピング。modes 配下に default/maxStack/ccBuff 等を定義。description は人間向け説明。effects はダメージ計算に影響する数値のみ。",
   "_lastUpdated": "2026-05-23",
   "_source": "wherewindsmeetgame.com app.js 抽出 + Game8 / Fextralife wiki",
-  "_note": "全データ Claude 抽出版 (verified: false)。ユーザー検証 → 訂正フェーズ。HP回復/シールド/Endurance 系等、ダメージ計算非影響の効果は modes 空。心法 Lv MAX 前提で計測 (roleInfo に Lv フィールドなし、別 API 全 605)。 | Tier5 attributeBuff: CookieLips v1.2 sheet 由来 (verified: false)。Tier2 大世界Lv14値ユーザー手動入力待ち。ID 6/501/502/503/504 は v1.2 sheet 未掲載。",
+  "_note": "全データ Claude 抽出版 (verified: false)。ユーザー検証 → 訂正フェーズ。HP回復/シールド/Endurance 系等、ダメージ計算非影響の効果は modes 空。心法 Lv MAX 前提で計測 (roleInfo に Lv フィールドなし、別 API 全 605)。 | Tier5 attributeBuff: CookieLips v1.2 sheet 由来 (verified: false)。Tier2 大世界Lv14値ユーザー手動入力待ち。ID 6/501/502/503/504 は v1.2 sheet 未掲載。 | Tier2 attributeBuff 装備中4心法 (41/81/451/452) 大世界Lv14値 in-game 観測 (2026-05-25)。",
   "_example": {
     "81_example": {
       "names": {
