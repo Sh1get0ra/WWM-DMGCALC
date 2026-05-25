@@ -58,6 +58,14 @@ const TRANSLATIONS = {
     effAgility:'速 (Agility)', effPower:'会 (Power)', effStrength:'力 (Strength)',
     effBossBoost:'ダメージ増加', effPhysPen:'物理貫通', effElemPen:'属性貫通',
     toastSaved:'プリセット「{name}」を保存', toastLoaded:'プリセット「{name}」を読込', toastDeleted:'プリセット「{name}」を削除', toastExported:'画像を出力しました', toastImportWip:'工事中のため使用できません', importBtn:'IMPORT',
+    importSetupTitle:'インポート設定', importSetupIntro:'公式データツールのデータを取り込むには、ブックマークレットの登録が必要です。',
+    importOpenOfficial:'公式データツールを開く', importOpenSetup:'セットアップページを開く', importUsageHint:'設定完了後: 公式ツールを開いてブックマークレットをクリックしてください。',
+    importLastLabel:'直前のインポート', importReapply:'再適用', importNoHistory:'直前のインポートはありません',
+    importPreviewTitle:'インポートカード', importApplyBtn:'インポート実行', importCancelBtn:'キャンセル',
+    importNextBtn:'次へ', importBackBtn:'戻る', importStep2Title:'観音 & 武庫 入力',
+    importEnhanceTitle:'観音 (Enhance)', importArsenalTitle:'武庫 (Arsenal)',
+    importArsenalPath:'武庫種別', importArsenalPeaked:'頂点',
+    importConfirmMsg:'現在設定されている数値がインポートデータに差し変わりますがよろしいですか？', importDone:'インポート完了',
     locale:'ja-JP',
   },
   en: {
@@ -118,6 +126,14 @@ const TRANSLATIONS = {
     effAgility:'Agility (速)', effPower:'Power (会)', effStrength:'Strength (力)',
     effBossBoost:'DMG Bonus', effPhysPen:'Physical Penetration', effElemPen:'Elemental Penetration',
     toastSaved:'Saved "{name}"', toastLoaded:'Loaded "{name}"', toastDeleted:'Deleted "{name}"', toastExported:'Image exported', toastImportWip:'Under construction — not yet available', importBtn:'IMPORT',
+    importSetupTitle:'Import Setup', importSetupIntro:'To import data from the official tool, a bookmarklet needs to be installed.',
+    importOpenOfficial:'Open Official Tool', importOpenSetup:'Open Setup Page', importUsageHint:'After setup: open the official tool and click the bookmarklet.',
+    importLastLabel:'Last Import', importReapply:'Re-apply', importNoHistory:'No previous imports',
+    importPreviewTitle:'Import Card', importApplyBtn:'Apply Import', importCancelBtn:'Cancel',
+    importNextBtn:'Next', importBackBtn:'Back', importStep2Title:'Enhance & Arsenal',
+    importEnhanceTitle:'Enhance', importArsenalTitle:'Arsenal',
+    importArsenalPath:'Arsenal Type', importArsenalPeaked:'Peak',
+    importConfirmMsg:'Current values will be replaced by the imported data. Continue?', importDone:'Import complete',
     locale:'en-US',
   },
   zh: {
@@ -178,6 +194,14 @@ const TRANSLATIONS = {
     effAgility:'速 (Agility)', effPower:'会 (Power)', effStrength:'力 (Strength)',
     effBossBoost:'伤害增加', effPhysPen:'物理穿透', effElemPen:'属性穿透',
     toastSaved:'预设「{name}」已保存', toastLoaded:'预设「{name}」已读取', toastDeleted:'预设「{name}」已删除', toastExported:'图片已导出', toastImportWip:'施工中，暂不可用', importBtn:'导入',
+    importSetupTitle:'导入设置', importSetupIntro:'要从官方数据工具导入数据，需要先安装书签小工具。',
+    importOpenOfficial:'打开官方数据工具', importOpenSetup:'打开设置页面', importUsageHint:'设置完成后：打开官方工具并点击书签小工具。',
+    importLastLabel:'上次导入', importReapply:'重新应用', importNoHistory:'无导入历史',
+    importPreviewTitle:'导入卡', importApplyBtn:'执行导入', importCancelBtn:'取消',
+    importNextBtn:'下一步', importBackBtn:'返回', importStep2Title:'观音 & 武库 输入',
+    importEnhanceTitle:'观音', importArsenalTitle:'武库',
+    importArsenalPath:'武库种类', importArsenalPeaked:'顶点',
+    importConfirmMsg:'当前设置的数值将被导入数据替换，确认继续吗？', importDone:'导入完成',
     locale:'zh-CN',
   },
   ko: {
@@ -238,9 +262,19 @@ const TRANSLATIONS = {
     effAgility:'속 (Agility)', effPower:'회 (Power)', effStrength:'력 (Strength)',
     effBossBoost:'대미지 증가', effPhysPen:'물리 관통', effElemPen:'속성 관통',
     toastSaved:'프리셋 「{name}」 저장됨', toastLoaded:'프리셋 「{name}」 불러옴', toastDeleted:'프리셋 「{name}」 삭제됨', toastExported:'이미지 내보내기 완료', toastImportWip:'공사 중 — 아직 사용할 수 없습니다', importBtn:'IMPORT',
+    importSetupTitle:'가져오기 설정', importSetupIntro:'공식 데이터 도구의 데이터를 가져오려면 북마클릿 등록이 필요합니다.',
+    importOpenOfficial:'공식 데이터 도구 열기', importOpenSetup:'설정 페이지 열기', importUsageHint:'설정 완료 후: 공식 도구를 열고 북마클릿을 클릭하세요.',
+    importLastLabel:'직전 가져오기', importReapply:'재적용', importNoHistory:'이전 가져오기 없음',
+    importPreviewTitle:'가져오기 카드', importApplyBtn:'가져오기 실행', importCancelBtn:'취소',
+    importNextBtn:'다음', importBackBtn:'뒤로', importStep2Title:'관음 & 무고 입력',
+    importEnhanceTitle:'관음', importArsenalTitle:'무고',
+    importArsenalPath:'무고 종류', importArsenalPeaked:'정점',
+    importConfirmMsg:'현재 설정된 수치가 가져오기 데이터로 대체됩니다. 계속하시겠습니까?', importDone:'가져오기 완료',
     locale:'ko-KR',
   },
 };
 
 let currentLang = 'ja';
 let T = TRANSLATIONS.ja;
+window.T = T;
+window.currentLang = currentLang;

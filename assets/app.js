@@ -2,6 +2,8 @@
 function setLang(lang) {
   currentLang = lang;
   T = TRANSLATIONS[lang];
+  window.T = T;
+  window.currentLang = lang;
   document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang === 'ko' ? 'ko' : lang;
   document.title = T.pageTitle;
 
@@ -332,11 +334,13 @@ function reflectEnemyDisplay() {
   }
 }
 
-// ── データインポート（工事中） ──────────────────────────────────────
+// ── データインポート ──────────────────────────────────────────────
 function importData() {
-  // TODO: ブックマークレットからの roleInfo JSON をパース → 全フィールド自動入力
-  // データ管理: data/kongfu.json, data/xinfa.json, data/affix.json
-  showToast((T && T.toastImportWip) || '工事中のため使用できません');
+  if (window.WWMImport && typeof window.WWMImport.openSetup === 'function') {
+    window.WWMImport.openSetup();
+  } else {
+    showToast((T && T.toastImportWip) || '工事中のため使用できません');
+  }
 }
 
 // ── 画像エクスポート（新デザイン版） ──────────────────────────────

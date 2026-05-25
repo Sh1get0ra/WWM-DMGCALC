@@ -2,95 +2,375 @@
   "_schema": "suffix → セット名 + 2/4点効果。weaponSets/bowSets/defensiveSets 別。pieces2 = 常時(計算反映)、pieces4 = 多くは条件付(pendingImplementation:true)。activationLv = ゲーム内発動レベル。",
   "_lastUpdated": "2026-05-25",
   "_source": "roleInfo wearEquipsDetailed.<slot>.exVo.suffix + ユーザー in-game 観測 (2026-05-25)",
-  "_note": "武器セット10種完成。弓セット 44 弓の名手 は予想 suffix (未装備未検証)。defensiveSets 24 はダメ計算非影響でスルー。pieces4 効果は条件付(気血/真気/重撃/受流/etc)多く、現状 calc.js では未実装。",
-
+  "_note": "武器セット10種完成。弓セット 44 弓の名手 は予想 suffix (未装備未検証)。defensiveSets 24 はダメ計算非影響でスルー。pieces4 効果は条件付(気血/真気/重撃/受流/etc)多く、現状 calc.js では未実装。 | 英名 (en) 反映: 6種 WW Math由来確認済 / 17種 phonetic/literal推測 (公式英版確認待ち)。 | 防具10セット 公式英名 確定 (in-game image照合)。",
   "weaponSets": {
     "1": {
-      "names": { "ja": "碧玉一式", "en": "Jadeware Set" },
+      "names": {
+        "ja": "碧玉一式",
+        "en": "Jadeware Set"
+      },
       "activationLv": 91,
-      "pieces2": { "effects": { "maxPhysATKAdd": 64 }, "raw": "最大外功攻撃 +64" },
-      "pieces4": { "effects": {}, "raw": "武術技発動後 碧玉効果 → 会意ダメ+10%、真気値<対象 or <40%でダメ与時 付加会意率+5% 3秒", "conditional": true, "pendingImplementation": true }
+      "pieces2": {
+        "effects": {
+          "maxPhysATKAdd": 64
+        },
+        "raw": "最大外功攻撃 +64"
+      },
+      "pieces4": {
+        "effects": {},
+        "raw": "武術技発動後 碧玉効果 → 会意ダメ+10%、真気値<対象 or <40%でダメ与時 付加会意率+5% 3秒",
+        "conditional": true,
+        "pendingImplementation": true
+      }
     },
     "3": {
-      "names": { "ja": "飛鳥一式", "en": "Hawkwing Set" },
+      "names": {
+        "ja": "飛鳥一式",
+        "en": "Hawkwing Set"
+      },
       "activationLv": 91,
-      "pieces2": { "effects": { "sympathyRate": 0.037 }, "raw": "会意率 +3.7%" },
-      "pieces4": { "effects": {}, "raw": "ダメ → 会意発生時 飛鳥効果 → 5秒 外功攻撃 +2% 最大5stack", "conditional": true, "pendingImplementation": true }
+      "pieces2": {
+        "effects": {
+          "sympathyRate": 0.037
+        },
+        "raw": "会意率 +3.7%"
+      },
+      "pieces4": {
+        "effects": {},
+        "raw": "ダメ → 会意発生時 飛鳥効果 → 5秒 外功攻撃 +2% 最大5stack",
+        "conditional": true,
+        "pendingImplementation": true
+      }
     },
     "7": {
-      "names": { "ja": "時雨一式", "en": "Rainwhisper Set" },
+      "names": {
+        "ja": "時雨一式",
+        "en": "Rainwhisper Set"
+      },
       "activationLv": 91,
-      "pieces2": { "effects": { "hitRate": 0.066 }, "raw": "命中率 +6.6%" },
-      "pieces4": { "effects": {}, "raw": "会心ダメ/治療 +10%、気血シールド時 +15%", "conditional": true, "pendingImplementation": true }
+      "pieces2": {
+        "effects": {
+          "hitRate": 0.066
+        },
+        "raw": "命中率 +6.6%"
+      },
+      "pieces4": {
+        "effects": {},
+        "raw": "会心ダメ/治療 +10%、気血シールド時 +15%",
+        "conditional": true,
+        "pendingImplementation": true
+      }
     },
     "9": {
-      "names": { "ja": "疾風一式", "en": "Swift Gale Set" },
+      "names": {
+        "ja": "疾風一式",
+        "en": "Swift Gale Set"
+      },
       "activationLv": 91,
-      "pieces2": { "effects": { "maxPhysATKAdd": 64 }, "raw": "最大外功攻撃 +64" },
-      "pieces4": { "effects": {}, "raw": "Airborne Heavy Attack +10% + ノックダウン (10s once)", "conditional": true, "pendingImplementation": true }
+      "pieces2": {
+        "effects": {
+          "maxPhysATKAdd": 64
+        },
+        "raw": "最大外功攻撃 +64"
+      },
+      "pieces4": {
+        "effects": {},
+        "raw": "Airborne Heavy Attack +10% + ノックダウン (10s once)",
+        "conditional": true,
+        "pendingImplementation": true
+      }
     },
     "11": {
-      "names": { "ja": "山崩一式", "en": "Swaying Heights Set" },
+      "names": {
+        "ja": "山崩一式",
+        "en": "Shattered Ridge Set"
+      },
       "activationLv": 91,
-      "pieces2": { "effects": { "minPhysATKAdd": 64 }, "raw": "最小外功攻撃 +64" },
-      "pieces4": { "effects": {}, "raw": "対象気血≥50%で与ダメ+5%、気血+5%毎+1%、最大+10%", "conditional": true, "pendingImplementation": true }
+      "pieces2": {
+        "effects": {
+          "minPhysATKAdd": 64
+        },
+        "raw": "最小外功攻撃 +64"
+      },
+      "pieces4": {
+        "effects": {},
+        "raw": "対象気血≥50%で与ダメ+5%、気血+5%毎+1%、最大+10%",
+        "conditional": true,
+        "pendingImplementation": true
+      }
     },
     "23": {
-      "names": { "ja": "帰燕一式", "en": "Swallowcall Set" },
+      "names": {
+        "ja": "帰燕一式",
+        "en": "Swallowcall Set"
+      },
       "activationLv": 91,
-      "pieces2": { "effects": { "minPhysATKAdd": 64 }, "raw": "最小外功攻撃 +64" },
-      "pieces4": { "effects": {}, "raw": "軽撃/軽撃発動効果(鼠等)気血ダメ+12%、真気値<40%対象 瞬嵐ダメ+10%", "conditional": true, "pendingImplementation": true }
+      "pieces2": {
+        "effects": {
+          "minPhysATKAdd": 64
+        },
+        "raw": "最小外功攻撃 +64"
+      },
+      "pieces4": {
+        "effects": {},
+        "raw": "軽撃/軽撃発動効果(鼠等)気血ダメ+12%、真気値<40%対象 瞬嵐ダメ+10%",
+        "conditional": true,
+        "pendingImplementation": true
+      }
     },
     "25": {
-      "names": { "ja": "霧柳一式", "en": "Mistwillow Set" },
+      "names": {
+        "ja": "霧柳一式",
+        "en": "Mistwillow Set"
+      },
       "activationLv": 91,
-      "pieces2": { "effects": { "hitRate": 0.066 }, "raw": "命中率 +6.6%" },
-      "pieces4": { "effects": {}, "raw": "重撃/重撃追撃命中 → 軽撃/弾道ダメ+12% 15秒 (逆も同様、両同時で霧柳重撃)", "conditional": true, "pendingImplementation": true }
+      "pieces2": {
+        "effects": {
+          "hitRate": 0.066
+        },
+        "raw": "命中率 +6.6%"
+      },
+      "pieces4": {
+        "effects": {},
+        "raw": "重撃/重撃追撃命中 → 軽撃/弾道ダメ+12% 15秒 (逆も同様、両同時で霧柳重撃)",
+        "conditional": true,
+        "pendingImplementation": true
+      }
     },
     "29": {
-      "names": { "ja": "浄花一式", "en": "Ivorybloom Set" },
+      "names": {
+        "ja": "浄花一式",
+        "en": "Ivorybloom Set"
+      },
       "activationLv": 91,
-      "pieces2": { "effects": { "critRate": 0.074 }, "raw": "会心率 +7.4%" },
-      "pieces4": { "effects": {}, "raw": "気血最大時 5%確率で会心治療/会心ダメ + 効果+15%", "conditional": true, "pendingImplementation": true }
+      "pieces2": {
+        "effects": {
+          "critRate": 0.074
+        },
+        "raw": "会心率 +7.4%"
+      },
+      "pieces4": {
+        "effects": {},
+        "raw": "気血最大時 5%確率で会心治療/会心ダメ + 効果+15%",
+        "conditional": true,
+        "pendingImplementation": true
+      }
     },
     "34": {
-      "names": { "ja": "連星一式", "en": "Stars Align Set" },
+      "names": {
+        "ja": "連星一式",
+        "en": "Stars Align Set"
+      },
       "activationLv": 91,
-      "pieces2": { "effects": { "minPhysATKAdd": 64 }, "raw": "最小外功攻撃 +64" },
-      "pieces4": { "effects": {}, "raw": "2体以上同時命中+首領/Player命中で 連星 1stack 獲得 5秒 (武術技ダメ強化)", "conditional": true, "pendingImplementation": true }
+      "pieces2": {
+        "effects": {
+          "minPhysATKAdd": 64
+        },
+        "raw": "最小外功攻撃 +64"
+      },
+      "pieces4": {
+        "effects": {},
+        "raw": "2体以上同時命中+首領/Player命中で 連星 1stack 獲得 5秒 (武術技ダメ強化)",
+        "conditional": true,
+        "pendingImplementation": true
+      }
     },
     "50": {
-      "names": { "ja": "斬岳一式", "en": "Shattered Ridge Set" },
+      "names": {
+        "ja": "斬岳一式",
+        "en": "Swaying Heights Set"
+      },
       "activationLv": 91,
-      "pieces2": { "effects": { "minPhysATKAdd": 64 }, "raw": "最小外功攻撃 +64" },
-      "pieces4": { "effects": {}, "raw": "受流成功 or 首領命中 → 5秒 斬岳効果 気血ダメ+5% (軽撃/重撃派生/協戦発動技)", "conditional": true, "pendingImplementation": true }
+      "pieces2": {
+        "effects": {
+          "minPhysATKAdd": 64
+        },
+        "raw": "最小外功攻撃 +64"
+      },
+      "pieces4": {
+        "effects": {},
+        "raw": "受流成功 or 首領命中 → 5秒 斬岳効果 気血ダメ+5% (軽撃/重撃派生/協戦発動技)",
+        "conditional": true,
+        "pendingImplementation": true
+      }
     }
   },
-
   "bowSets": {
     "44": {
-      "names": { "ja": "弓の名手一式", "en": "" },
+      "names": {
+        "ja": "弓の名手一式",
+        "en": "Plume Set"
+      },
       "activationLv": 91,
       "suffixPredicted": true,
-      "pieces2": { "effects": { "hitRate": 0.033 }, "raw": "命中率 +3.3%" },
+      "pieces2": {
+        "effects": {
+          "hitRate": 0.033
+        },
+        "raw": "命中率 +3.3%"
+      },
       "_note": "suffix予想 (連番仮説 44/45/46)、未装備未検証"
     },
     "45": {
-      "names": { "ja": "驚弦一式", "en": "" },
+      "names": {
+        "ja": "驚弦一式",
+        "en": "Startling String Set"
+      },
       "activationLv": 91,
-      "pieces2": { "effects": { "critRate": 0.037 }, "raw": "会心率 +3.7%" }
+      "pieces2": {
+        "effects": {
+          "critRate": 0.037
+        },
+        "raw": "会心率 +3.7%"
+      }
     },
     "46": {
-      "names": { "ja": "影を追う一式", "en": "" },
+      "names": {
+        "ja": "影を追う一式",
+        "en": "Pursuing Shadow Set"
+      },
       "activationLv": 91,
-      "pieces2": { "effects": { "sympathyRate": 0.018 }, "raw": "会意率 +1.8%" }
+      "pieces2": {
+        "effects": {
+          "sympathyRate": 0.018
+        },
+        "raw": "会意率 +1.8%"
+      }
     }
   },
-
   "defensiveSets": {
+    "2": {
+      "names": {
+        "ja": "易相一式",
+        "en": "Formbend Set"
+      },
+      "pieces2": {
+        "raw": "外功防御力アップ"
+      },
+      "pieces4": {
+        "raw": "自身が発動するシールド持続時間+2秒。真気値≥85% or 真気ダメ無効化シールド持続中 受気血ダメ-20%",
+        "conditional": true,
+        "pendingImplementation": true
+      }
+    },
+    "4": {
+      "names": {
+        "ja": "鷹揚一式",
+        "en": "Eaglerise Set"
+      },
+      "pieces2": {
+        "raw": "外功防御力アップ"
+      },
+      "pieces4": {
+        "raw": "持続ダメ/治療毎に1stack鷹揚効果。10秒被ダメ-1.2% max5stack。最大時 鷹護:10秒以内攻撃ダメ-90% (首領半減)、30秒1回",
+        "conditional": true,
+        "pendingImplementation": true
+      }
+    },
+    "8": {
+      "names": {
+        "ja": "桂月一式",
+        "en": "Moonflare Set"
+      },
+      "pieces2": {
+        "raw": "気血最大値アップ"
+      },
+      "pieces4": {
+        "raw": "防御中攻撃受時 30%確率で気血上限10%シールド20秒。既存シールド有時 気血値2%回復。60秒1回",
+        "conditional": true,
+        "pendingImplementation": true
+      }
+    },
+    "10": {
+      "names": {
+        "ja": "凌波歩一式",
+        "en": "Agile Steps Set"
+      },
+      "pieces2": {
+        "raw": "気血最大値アップ"
+      },
+      "pieces4": {
+        "raw": "受流成功時 次2秒間 受ダメ-20% max3stack",
+        "conditional": true,
+        "pendingImplementation": true
+      }
+    },
+    "12": {
+      "names": {
+        "ja": "御無欠一式",
+        "en": "Flawless Defense Set"
+      },
+      "pieces2": {
+        "raw": "外功防御力アップ"
+      },
+      "pieces4": {
+        "raw": "被ダメ-5%。気血<60%で10%失う毎 追加-1% max5stack",
+        "conditional": true,
+        "pendingImplementation": true
+      }
+    },
     "24": {
-      "names": { "ja": "(防御系、名称未取得)", "en": "" },
-      "_note": "ダメ計算非影響でスルー対象。slot 3/4/5/8 (防具4箇所)。"
+      "names": {
+        "ja": "江凝一式",
+        "en": "Calmwaters Set"
+      },
+      "_note": "防具セット。slot 3/4/5/8 (冠/胸当て/膝鎧/小手)。set affix: 270502=獄炎の双剣・軽撃ダメ増加, 270505=浮塵の縄・鼠ダメ増加。ダメ計算非影響でスルー対象。"
+    },
+    "26": {
+      "names": {
+        "ja": "不知寒一式",
+        "en": "Beyond the Chill Set"
+      },
+      "pieces2": {
+        "raw": "気血最大値アップ"
+      },
+      "pieces4": {
+        "raw": "戦闘状態に入ってから10秒間ダメージを受けないと不知寒効果獲得。次にダメージ受時 2秒間 受ダメ-40%。戦闘離脱で解除",
+        "conditional": true,
+        "pendingImplementation": true
+      }
+    },
+    "30": {
+      "names": {
+        "ja": "梨雪一式",
+        "en": "Whirlsnow Set"
+      },
+      "pieces2": {
+        "raw": "外功防御力アップ"
+      },
+      "pieces4": {
+        "raw": "1回の被ダメが気血最大値40%超 or 気血<20% → 5秒次回の治療で+25% (60秒1回)",
+        "conditional": true,
+        "pendingImplementation": true
+      }
+    },
+    "35": {
+      "names": {
+        "ja": "抱玉一式",
+        "en": "Jade Embrace Set"
+      },
+      "pieces2": {
+        "raw": "気血最大値アップ"
+      },
+      "pieces4": {
+        "raw": "1秒以内に6m以上移動で抱玉獲得 → 5秒間 受気血/真気ダメ-15% (20秒1回)",
+        "conditional": true,
+        "pendingImplementation": true
+      }
+    },
+    "51": {
+      "names": {
+        "ja": "玄甲一式",
+        "en": "Obsidian Armor Set"
+      },
+      "pieces2": {
+        "raw": "外功防御力アップ"
+      },
+      "pieces4": {
+        "raw": "強靭状態時 受気血ダメ-5%。強靭で被撃時 玄甲効果 5秒max5stack 会心ダメ確率-2%/会意ダメ確率-1%",
+        "conditional": true,
+        "pendingImplementation": true
+      }
     }
   }
 }
