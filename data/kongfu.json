@@ -7,9 +7,30 @@
       "ko": "구현의 검무"
     },
     "weaponType": "sword",
-    "effects": {},
-    "description": "九変の剣 (片手剣)。",
-    "path": "bellstrike"
+    "effects": {
+      "minBellstrikeAdd": 80,
+      "maxBellstrikeAdd": 160
+    },
+    "description": "九変の剣 (片手剣、Strategic Sword)。鋼鳴攻撃力 +80~160 想定 + 力依存 共鳴率 (cap 3.37%) + max鋼鳴 依存 鋼鳴貫通 (cap 18.0)。WW Math 由来 + 推定。",
+    "path": "bellstrike",
+    "derived": [
+      {
+        "from": "power",
+        "thresholdValue": 225,
+        "maxBoost": 0.0337,
+        "appliesTo": "sympathyRate",
+        "formula": "linear_capped",
+        "_inferred": "fromStat=power 推定"
+      },
+      {
+        "from": "maxBellstrike",
+        "thresholdValue": 563,
+        "maxBoost": 18,
+        "appliesTo": "bellstrikePen",
+        "formula": "linear_capped",
+        "weaponSpecific": "bellstrike"
+      }
+    ]
   },
   "10102": {
     "names": {
@@ -19,9 +40,30 @@
       "ko": "무명 검법"
     },
     "weaponType": "sword",
-    "effects": {},
-    "description": "無銘の剣 (片手剣)。",
-    "path": "bellstrike"
+    "effects": {
+      "minBellstrikeAdd": 80,
+      "maxBellstrikeAdd": 160
+    },
+    "description": "無銘の剣 (片手剣、Nameless Sword)。鋼鳴攻撃力 +80~160 想定 + 力依存 最小外功 (cap 59.4) + max鋼鳴 依存 鋼鳴貫通 (cap 18.0)。WW Math 由来 + 推定。",
+    "path": "bellstrike",
+    "derived": [
+      {
+        "from": "power",
+        "thresholdValue": 225,
+        "maxBoost": 59.4,
+        "appliesTo": "minPhysATK",
+        "formula": "linear_capped",
+        "_inferred": "fromStat=power 推定"
+      },
+      {
+        "from": "maxBellstrike",
+        "thresholdValue": 563,
+        "maxBoost": 18,
+        "appliesTo": "bellstrikePen",
+        "formula": "linear_capped",
+        "weaponSpecific": "bellstrike"
+      }
+    ]
   },
   "10201": {
     "names": {
@@ -31,9 +73,29 @@
       "ko": "격류의 파동"
     },
     "weaponType": "spear",
-    "effects": {},
-    "description": "蛇神の槍。",
-    "path": "bellstrike"
+    "effects": {
+      "minBellstrikeAdd": 80,
+      "maxBellstrikeAdd": 160
+    },
+    "description": "蛇神の槍 (Heavenquaker Spear)。鋼鳴攻撃力 +80~160 想定 + 力依存 最小外功 (cap 59.4) + max鋼鳴 依存 属性ダメ (cap 9.0%)。",
+    "path": "bellstrike",
+    "derived": [
+      {
+        "from": "power",
+        "thresholdValue": 225,
+        "maxBoost": 59.4,
+        "appliesTo": "minPhysATK",
+        "formula": "linear_capped"
+      },
+      {
+        "from": "maxBellstrike",
+        "thresholdValue": 536,
+        "maxBoost": 0.09,
+        "appliesTo": "elemAtkBoost",
+        "formula": "linear_capped",
+        "_inferred": "toStat=attrDmgBonus相当=elemAtkBoost"
+      }
+    ]
   },
   "10202": {
     "names": {
@@ -43,9 +105,30 @@
       "ko": "무명 창법"
     },
     "weaponType": "spear",
-    "effects": {},
-    "description": "無銘の槍。",
-    "path": "bellstrike"
+    "effects": {
+      "minBellstrikeAdd": 80,
+      "maxBellstrikeAdd": 160
+    },
+    "description": "無銘の槍 (Nameless Spear)。鋼鳴攻撃力 +80~160 想定 + 力依存 共鳴率 (cap 3.37%) + min鋼鳴 依存 属性ダメ (cap 9.0%)。",
+    "path": "bellstrike",
+    "derived": [
+      {
+        "from": "power",
+        "thresholdValue": 225,
+        "maxBoost": 0.0337,
+        "appliesTo": "sympathyRate",
+        "formula": "linear_capped",
+        "_inferred": "fromStat=power 推定"
+      },
+      {
+        "from": "minBellstrike",
+        "thresholdValue": 536,
+        "maxBoost": 0.09,
+        "appliesTo": "elemAtkBoost",
+        "formula": "linear_capped",
+        "_inferred": "toStat=attrDmgBonus相当=elemAtkBoost"
+      }
+    ]
   },
   "10301": {
     "names": {
@@ -55,9 +138,29 @@
       "ko": "천계의 수호"
     },
     "weaponType": "fan",
-    "effects": {},
-    "description": "薬川の扇。",
-    "path": "silkbind"
+    "effects": {
+      "minSilkbindAdd": 80,
+      "maxSilkbindAdd": 160
+    },
+    "description": "薬川の扇 (Panacea Fan)。糸操攻撃力 +80~160 想定 + 速依存 会心率 (cap 6.8%) + min糸操 依存 属性ダメ (cap 9.0%)。",
+    "path": "silkbind",
+    "derived": [
+      {
+        "from": "agility",
+        "thresholdValue": 225,
+        "maxBoost": 0.068,
+        "appliesTo": "critRate",
+        "formula": "linear_capped"
+      },
+      {
+        "from": "minSilkbind",
+        "thresholdValue": 268,
+        "maxBoost": 0.09,
+        "appliesTo": "elemAtkBoost",
+        "formula": "linear_capped",
+        "_inferred": "toStat=attrDmgBonus相当=elemAtkBoost"
+      }
+    ]
   },
   "10302": {
     "names": {
@@ -67,9 +170,21 @@
       "ko": "청산의 정수"
     },
     "weaponType": "fan",
-    "effects": {},
-    "description": "墨筆の扇。",
-    "path": "silkbind"
+    "effects": {
+      "minSilkbindAdd": 80,
+      "maxSilkbindAdd": 160
+    },
+    "description": "墨筆の扇 (Inkwell Fan)。糸操攻撃力 +80~160 想定 + 速依存 最小外功 (cap 59.4)。WW Math 由来 (単一 bonus)。",
+    "path": "silkbind",
+    "derived": [
+      {
+        "from": "agility",
+        "thresholdValue": 225,
+        "maxBoost": 59.4,
+        "appliesTo": "minPhysATK",
+        "formula": "linear_capped"
+      }
+    ]
   },
   "20103": {
     "names": {
@@ -79,9 +194,30 @@
       "ko": "풍뢰의 징표"
     },
     "weaponType": "spear",
-    "effects": {},
-    "description": "嵐雷の槍 (八方風雷槍)。",
-    "path": "stonesplit"
+    "effects": {
+      "minStonesplitAdd": 80,
+      "maxStonesplitAdd": 160
+    },
+    "description": "嵐雷の槍 (Stormbreaker Spear)。砕岩攻撃力 +80~160 想定 + 力依存 HP (cap 2250 推定) + min砕岩 依存 属性ダメ (cap 9.0%)。第1 bonus toStat 要確認。",
+    "path": "stonesplit",
+    "derived": [
+      {
+        "from": "power",
+        "thresholdValue": 225,
+        "maxBoost": 2250,
+        "appliesTo": "maxHp",
+        "formula": "linear_capped",
+        "_inferred": "toStat=HP系 (×10 multiplier) 推定"
+      },
+      {
+        "from": "minStonesplit",
+        "thresholdValue": 268,
+        "maxBoost": 0.09,
+        "appliesTo": "elemAtkBoost",
+        "formula": "linear_capped",
+        "_inferred": "toStat=attrDmgBonus相当=elemAtkBoost"
+      }
+    ]
   },
   "20401": {
     "names": {
@@ -123,9 +259,30 @@
       "ko": ""
     },
     "weaponType": "mo_blade",
-    "effects": {},
-    "description": "破陣の刀 (陌刀)。ID 20402 roleInfo (kongfuMain) で確定 (2026-05-24)。公式 app.js 未収録。Lv95 才能データ未取得。",
-    "path": "stonesplit"
+    "effects": {
+      "minStonesplitAdd": 80,
+      "maxStonesplitAdd": 160
+    },
+    "description": "破陣の刀 (Phalanxbane Blade)。砕岩攻撃力 +80~160 想定 + 力依存 会心率 (cap 6.8%) + min砕岩 依存 砕岩貫通 (cap 18.0)。",
+    "path": "stonesplit",
+    "derived": [
+      {
+        "from": "power",
+        "thresholdValue": 225,
+        "maxBoost": 0.068,
+        "appliesTo": "critRate",
+        "formula": "linear_capped",
+        "_inferred": "fromStat=power 推定"
+      },
+      {
+        "from": "minStonesplit",
+        "thresholdValue": 268,
+        "maxBoost": 18,
+        "appliesTo": "stonesplitPen",
+        "formula": "linear_capped",
+        "weaponSpecific": "stonesplit"
+      }
+    ]
   },
   "20501": {
     "names": {
@@ -166,9 +323,21 @@
       "ko": ""
     },
     "weaponType": "umbrella",
-    "effects": {},
-    "description": "傘武術。九重春色。",
-    "path": "silkbind"
+    "effects": {
+      "minSilkbindAdd": 80,
+      "maxSilkbindAdd": 160
+    },
+    "description": "千紅の傘 (Vernal Umbrella)。糸操攻撃力 +80~160 想定 + 速依存 会心率 (cap 6.8%)。WW Math 由来 (単一 bonus)。",
+    "path": "silkbind",
+    "derived": [
+      {
+        "from": "agility",
+        "thresholdValue": 225,
+        "maxBoost": 0.068,
+        "appliesTo": "critRate",
+        "formula": "linear_capped"
+      }
+    ]
   },
   "20602": {
     "names": {
@@ -178,9 +347,29 @@
       "ko": ""
     },
     "weaponType": "umbrella",
-    "effects": {},
-    "description": "誘魂の傘。Silkbind - Deluge path。",
-    "path": "silkbind"
+    "effects": {
+      "minSilkbindAdd": 80,
+      "maxSilkbindAdd": 160
+    },
+    "description": "誘魂の傘 (Soulshade Umbrella)。糸操攻撃力 +80~160 想定 + 速依存 最小外功 (cap 59.4) + min糸操 依存 糸操貫通 (cap 18.0)。",
+    "path": "silkbind",
+    "derived": [
+      {
+        "from": "agility",
+        "thresholdValue": 225,
+        "maxBoost": 59.4,
+        "appliesTo": "minPhysATK",
+        "formula": "linear_capped"
+      },
+      {
+        "from": "minSilkbind",
+        "thresholdValue": 268,
+        "maxBoost": 18,
+        "appliesTo": "silkbindPen",
+        "formula": "linear_capped",
+        "weaponSpecific": "silkbind"
+      }
+    ]
   },
   "20603": {
     "names": {
@@ -283,12 +472,32 @@
       "ko": ""
     },
     "weaponType": "new_blade",
-    "effects": {},
-    "description": "斬雪の刀 (新武器種・刀系)。ID 20801 roleInfo (kongfuSub) で確定 (2026-05-24)。Lv95 才能データ未取得。",
-    "path": "stonesplit"
+    "effects": {
+      "minStonesplitAdd": 80,
+      "maxStonesplitAdd": 160
+    },
+    "description": "斬雪の刀 (Snowparting Blade、新武器種)。砕岩攻撃力 +80~160 想定 + 速依存 最小外功 (cap 59.4) + min砕岩 依存 属性ダメ (cap 9.0%)。",
+    "path": "stonesplit",
+    "derived": [
+      {
+        "from": "agility",
+        "thresholdValue": 225,
+        "maxBoost": 59.4,
+        "appliesTo": "minPhysATK",
+        "formula": "linear_capped"
+      },
+      {
+        "from": "minStonesplit",
+        "thresholdValue": 268,
+        "maxBoost": 0.09,
+        "appliesTo": "elemAtkBoost",
+        "formula": "linear_capped",
+        "_inferred": "toStat=attrDmgBonus相当=elemAtkBoost"
+      }
+    ]
   },
   "_schema": "ID → 武術名 + 武器タイプ + 説明。武術自体は直接 effects 値を持たず、武術ツリー進行度 (xiuWeiKungFu) と武器ボーナスに集約される。",
   "_lastUpdated": "2026-05-25",
   "_source": "wherewindsmeetgame.com app.js 抽出 + Game8 / Epiccarry",
-  "_note": "全データ Claude 抽出版 (verified: false)。ユーザー検証 → 訂正フェーズ。 | path フィールド追加 (2026-05-25): bellstrike=鋼鳴/stonesplit=砕岩/silkbind=糸操/bamboocut=瞬嵐。formless=無相 は使用中武学に応じ動的、武術固定ではない。 | 20401/20501/20701 derived 訂正・追加 (in-game 観測 2026-05-25)。"
+  "_note": "全データ Claude 抽出版 (verified: false)。ユーザー検証 → 訂正フェーズ。 | path フィールド追加 (2026-05-25): bellstrike=鋼鳴/stonesplit=砕岩/silkbind=糸操/bamboocut=瞬嵐。formless=無相 は使用中武学に応じ動的、武術固定ではない。 | 20401/20501/20701 derived 訂正・追加 (in-game 観測 2026-05-25)。 | 残11武術 derived 反映 (WW Math 由来 + 推定、_inferred flag付)。"
 }
