@@ -198,16 +198,17 @@
       "minStonesplitAdd": 80,
       "maxStonesplitAdd": 160
     },
-    "description": "嵐雷の槍 (Stormbreaker Spear)。砕岩攻撃力 +80~160 想定 + 力依存 HP (cap 2250 推定) + min砕岩 依存 属性ダメ (cap 9.0%)。第1 bonus toStat 要確認。",
+    "description": "嵐雷の槍 (Stormbreaker Spear)。砕岩攻撃力 +80~160 想定 + max(体,力)依存 気血最大値 (cap +2250、ダメ非影響) + min砕岩 依存 属性ダメ (cap 9.0%)。in-game 観測 2026-05-25。",
     "path": "stonesplit",
     "derived": [
       {
-        "from": "power",
+        "from": "max(body,power)",
         "thresholdValue": 225,
         "maxBoost": 2250,
         "appliesTo": "maxHp",
         "formula": "linear_capped",
-        "_inferred": "toStat=HP系 (×10 multiplier) 推定"
+        "category": "defensive",
+        "_note": "ダメ非影響、calc.jsスルー対象"
       },
       {
         "from": "minStonesplit",
@@ -499,5 +500,5 @@
   "_schema": "ID → 武術名 + 武器タイプ + 説明。武術自体は直接 effects 値を持たず、武術ツリー進行度 (xiuWeiKungFu) と武器ボーナスに集約される。",
   "_lastUpdated": "2026-05-25",
   "_source": "wherewindsmeetgame.com app.js 抽出 + Game8 / Epiccarry",
-  "_note": "全データ Claude 抽出版 (verified: false)。ユーザー検証 → 訂正フェーズ。 | path フィールド追加 (2026-05-25): bellstrike=鋼鳴/stonesplit=砕岩/silkbind=糸操/bamboocut=瞬嵐。formless=無相 は使用中武学に応じ動的、武術固定ではない。 | 20401/20501/20701 derived 訂正・追加 (in-game 観測 2026-05-25)。 | 残11武術 derived 反映 (WW Math 由来 + 推定、_inferred flag付)。"
+  "_note": "全データ Claude 抽出版 (verified: false)。ユーザー検証 → 訂正フェーズ。 | path フィールド追加 (2026-05-25): bellstrike=鋼鳴/stonesplit=砕岩/silkbind=糸操/bamboocut=瞬嵐。formless=無相 は使用中武学に応じ動的、武術固定ではない。 | 20401/20501/20701 derived 訂正・追加 (in-game 観測 2026-05-25)。 | 残11武術 derived 反映 (WW Math 由来 + 推定、_inferred flag付)。 | 残11武術 derived 反映 (WW Math 由来 + 推定、_inferred flag付)。"
 }
