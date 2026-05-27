@@ -34,7 +34,33 @@ function _loadSavedLang() {
   try {
     const saved = localStorage.getItem('wwm_lang');
     if (saved && ['ja','en','zh','ko'].includes(saved) && saved !== 'ja') setLang(saved);
+    else if (!saved) _showLangPicker();
   } catch(e) {}
+}
+function _showLangPicker() {
+  if (document.getElementById('wwmLangPicker')) return;
+  const m = document.createElement('div');
+  m.className = 'wwm-modal-backdrop';
+  m.id = 'wwmLangPicker';
+  m.innerHTML = `
+    <div class="wwm-modal" style="max-width:480px;text-align:center;padding:32px 28px;">
+      <h2 style="margin:0 0 18px;font-family:Cinzel,serif;font-size:18px;letter-spacing:0.18em;color:var(--gold-bright);">SELECT LANGUAGE</h2>
+      <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;">
+        <button class="wwm-btn-secondary" data-lang-pick="ja" style="min-width:90px;">日本語</button>
+        <button class="wwm-btn-secondary" data-lang-pick="en" style="min-width:90px;">English</button>
+        <button class="wwm-btn-secondary" data-lang-pick="zh" style="min-width:90px;">中文</button>
+        <button class="wwm-btn-secondary" data-lang-pick="ko" style="min-width:90px;">한국어</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(m);
+  m.querySelectorAll('[data-lang-pick]').forEach(b => {
+    b.addEventListener('click', () => {
+      const lang = b.dataset.langPick;
+      setLang(lang);
+      m.remove();
+    });
+  });
 }
 
 // ── カウントアップ ────────────────────────────────────────────────

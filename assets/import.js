@@ -70,7 +70,7 @@ function openSetupModal() {
           <div class="wwm-setup-panel" data-panel="pc" ${isMobile?'hidden':''}>
             <ol class="wwm-setup-steps">
               <li>${(window.T && T.importPcStep1) || 'ブックマークバー表示 (Chrome/Edge: <code>Ctrl+Shift+B</code>)'}</li>
-              <li>${(window.T && T.importPcStep2) || '下のボタンを<b>ドラッグ</b>してブックマークバーへ:'}<br><a class="wwm-bm-link" id="wwmBmLink" href="${bmUrl}">${(window.T && T.importBmLabel) || '📥 WWM-DMGCALC インポート'}</a></li>
+              <li>${(window.T && T.importPcStep2) || '下のボタンを<b>ドラッグ</b>してブックマークバーへ:'}<br><a class="wwm-bm-link" id="wwmBmLink" data-i18n="importBmLabel" href="${bmUrl}">${(window.T && T.importBmLabel) || '風燕計インポート'}</a></li>
               <li>${(window.T && T.importPcStep3) || '下の「公式データツールを開く」 → ログイン後、登録したブックマークをクリック'}</li>
             </ol>
           </div>
@@ -507,7 +507,7 @@ const _STAT_LABELS_I18N = {
     minBamboocut: '最小瞬嵐攻撃', maxBamboocut: '最大瞬嵐攻撃', bamboocutPen: '瞬嵐貫通',
     minVoid: '最小無相攻撃', maxVoid: '最大無相攻撃', voidPen: '無相貫通',
     precision: '命中率', crit: '会心率', affinity: '会意率',
-    allWeaponDmg: '全武学ダメ',
+    allWeaponDmg: '全武学/PvP/BOSSダメ',
     swordDmg: '剣ダメ強化', spearDmg: '槍ダメ強化', moBladeDmg: '墨刀ダメ強化',
     dualBladesDmg: '双剣ダメ強化', fanDmg: '扇ダメ強化', umbrellaDmg: '傘ダメ強化',
     hengBladeDmg: '横刀ダメ', ropeDartDmg: '縄鏢ダメ',
@@ -549,7 +549,7 @@ const _STAT_LABELS_I18N = {
     minBamboocut: 'Bam ATK Min', maxBamboocut: 'Bam ATK Max', bamboocutPen: 'Bam Pen',
     minVoid: 'Void ATK Min', maxVoid: 'Void ATK Max', voidPen: 'Void Pen',
     precision: 'Precision', crit: 'Crit', affinity: 'Affinity',
-    allWeaponDmg: 'All Martial DMG',
+    allWeaponDmg: 'All Martial/PvP/BOSS DMG',
     swordDmg: 'Sword DMG', spearDmg: 'Spear DMG', moBladeDmg: 'Mo Blade DMG',
     dualBladesDmg: 'Twinblades DMG', fanDmg: 'Fan DMG', umbrellaDmg: 'Umbrella DMG',
     hengBladeDmg: 'Heng Blade DMG', ropeDartDmg: 'Rope Dart DMG',
@@ -591,7 +591,7 @@ const _STAT_LABELS_I18N = {
     minBamboocut: '最小瞬岚攻击', maxBamboocut: '最大瞬岚攻击', bamboocutPen: '瞬岚穿透',
     minVoid: '最小无相攻击', maxVoid: '最大无相攻击', voidPen: '无相穿透',
     precision: '命中率', crit: '会心率', affinity: '会意率',
-    allWeaponDmg: '全武术伤害',
+    allWeaponDmg: '全武术/PvP/BOSS 伤害',
     swordDmg: '剑伤害强化', spearDmg: '枪伤害强化', moBladeDmg: '墨刀伤害强化',
     dualBladesDmg: '双剑伤害强化', fanDmg: '扇伤害强化', umbrellaDmg: '伞伤害强化',
     hengBladeDmg: '横刀伤害', ropeDartDmg: '绳镖伤害',
@@ -633,7 +633,7 @@ const _STAT_LABELS_I18N = {
     minBamboocut: '최소 파죽 공격', maxBamboocut: '최대 파죽 공격', bamboocutPen: '파죽 관통',
     minVoid: '최소 무상 공격', maxVoid: '최대 무상 공격', voidPen: '무상 관통',
     precision: '정확도', crit: '치명타 확률', affinity: '각성 확률',
-    allWeaponDmg: '모든 무술의 피해',
+    allWeaponDmg: '모든 무술/PvP/BOSS 피해',
     swordDmg: '검 피해 강화', spearDmg: '창 피해 강화', moBladeDmg: '묵도 피해 강화',
     dualBladesDmg: '쌍검 피해 강화', fanDmg: '부채 피해 강화', umbrellaDmg: '우산 피해 강화',
     hengBladeDmg: '횡도 피해', ropeDartDmg: '승표 피해',

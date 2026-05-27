@@ -418,11 +418,16 @@ async function renderAffixRanking(roleInfo, params) {
     { key: 'maxPhysATK', delta: maxTbl.maxPhys, label: `${SL.maxPhys||'最大外功攻撃'} +${maxTbl.maxPhys?.toFixed(1)}` },
     pathKeys[0] && { key: 'minElemMain', delta: maxTbl.pathSingle, label: `${SL[pathKeys[0]]||pathKeys[0]} +${maxTbl.pathSingle?.toFixed(1)}` },
     pathKeys[1] && { key: 'maxElemMain', delta: maxTbl.pathSingle, label: `${SL[pathKeys[1]]||pathKeys[1]} +${maxTbl.pathSingle?.toFixed(1)}` },
+    { key: 'minElemSub', delta: maxTbl.pathSingle, label: `${(window.T&&T.minElemSub)||'最小属性攻撃(副)'} +${maxTbl.pathSingle?.toFixed(1)}` },
+    { key: 'maxElemSub', delta: maxTbl.pathSingle, label: `${(window.T&&T.maxElemSub)||'最大属性攻撃(副)'} +${maxTbl.pathSingle?.toFixed(1)}` },
     { key: 'critRate',     delta: maxTbl.crit,     label: `${SL.crit||'会心率'} +${((maxTbl.crit||0)*100).toFixed(1)}%` },
     { key: 'sympathyRate', delta: maxTbl.affinity, label: `${SL.affinity||'会意率'} +${((maxTbl.affinity||0)*100).toFixed(1)}%` },
     { key: 'hitRate',      delta: maxTbl.precision, label: `${SL.precision||'命中率'} +${((maxTbl.precision||0)*100).toFixed(1)}%` },
     { key: 'outerPen',     delta: maxTbl.outerPen, label: `${(window.T&&T.penPhys)||'外功貫通'} +${maxTbl.outerPen}` },
     { key: 'elemPen',      delta: maxTbl.attrPen,  label: `${(window.T&&T.penVoid)||'無相貫通'} +${maxTbl.attrPen}` },
+    { key: '_momentum',  delta: maxTbl.stat5, label: `${SL.momentum||'力'} +${maxTbl.stat5?.toFixed(1)}`, derivedPatch: (p,d) => { p.minPhysATK = (p.minPhysATK||0) + d*0.225; p.maxPhysATK = (p.maxPhysATK||0) + d*1.36; } },
+    { key: '_agility',   delta: maxTbl.stat5, label: `${SL.agility||'速'} +${maxTbl.stat5?.toFixed(1)}`, derivedPatch: (p,d) => { p.minPhysATK = (p.minPhysATK||0) + d*0.9; if ((p.critRate||0) < 0.8) p.critRate = Math.min(0.8, (p.critRate||0) + d*0.00076); } },
+    { key: '_power',     delta: maxTbl.stat5, label: `${SL.power||'会'} +${maxTbl.stat5?.toFixed(1)}`, derivedPatch: (p,d) => { p.maxPhysATK = (p.maxPhysATK||0) + d*0.9; if ((p.sympathyRate||0) < 0.4) p.sympathyRate = Math.min(0.4, (p.sympathyRate||0) + d*0.00038); } },
     { key: 'stMysticDmg',  delta: maxTbl.mysticDmg, label: `${SL.stMysticDmg||'奇術ダメ'} +${((maxTbl.mysticDmg||0)*100).toFixed(1)}%` },
     { key: 'allMartialBoost', delta: maxTbl.allWeaponDmg, label: `${SL.allWeaponDmg||'全武学効果'} +${((maxTbl.allWeaponDmg||0)*100).toFixed(1)}%` }
   ].filter(t => t && t.delta != null && t.delta > 0);
@@ -431,8 +436,12 @@ async function renderAffixRanking(roleInfo, params) {
   for (const t of targets) {
     try {
       const p2 = await window.WWMStats.buildStatParams(roleInfo, state);
-      // +delta 適用後 再 compute (params改変 で済む)
-      p2[t.key] = (p2[t.key] || 0) + t.delta;
+      if (t.derivedPatch) {
+        // 5行ステ → derived 手動加算 (buildStatParams は roleInfo.statN 読まない)
+        t.derivedPatch(p2, t.delta);
+      } else {
+        p2[t.key] = (p2[t.key] || 0) + t.delta;
+      }
       window.computeExpected(p2);
       const newScore = (window.__WWM_LAST_RESULT?.statusScore || 0) + _set4Bonus(roleInfo);
       results.push({ label: t.label, delta: newScore - baseScore });
@@ -469,10 +478,17 @@ async function renderOptimization(roleInfo, params, opts) {
   const root = document.getElementById('wwmOptimization');
   if (!root || !roleInfo || !window.WWMStats?.buildStatParams) return;
   opts = opts || {};
+  // abort token: 新しい render 開始時、前回 loop を打切
+  const myToken = (window._OPT_TOKEN = (window._OPT_TOKEN || 0) + 1);
+  const _aborted = () => window._OPT_TOKEN !== myToken;
   // 保存された ratio (slider 値) 取得
   const savedRatio = parseFloat(localStorage.getItem('wwm_opt_target_ratio_v1')) || 0.94;
   const TARGET_RATIO = opts.ratio ?? savedRatio;
-  const MAX_ITER = 30; // best=null で自動停止、上限保険
+  const MAX_ITER = 20; // best=null で自動停止、上限保険
+  // 微改善打切閾値 (localStorage 永続化、UI で変更可)
+  if (typeof window._OPT_MIN_DELTA === 'undefined' || window._OPT_MIN_DELTA == null) {
+    try { window._OPT_MIN_DELTA = parseInt(localStorage.getItem('wwm_opt_min_delta_v1'), 10) || 5; } catch(_) { window._OPT_MIN_DELTA = 5; }
+  }
   // header controls
   const savedSlot = opts.slotFilter ?? (localStorage.getItem('wwm_opt_slot_filter_v1') || 'all');
   const T_ = window.T || {};
@@ -493,7 +509,7 @@ async function renderOptimization(roleInfo, params, opts) {
           <input type="range" id="wwmOptRatio" min="90" max="100" step="1" value="${Math.round(TARGET_RATIO*100)}">
         </label>
         <button type="button" class="wwm-opt-btn" id="wwmOptRecalc" title="${T_.optRecalc||'再計算'}">↻</button>
-        <button type="button" class="wwm-opt-btn" id="wwmOptExport" title="手順をテキストでコピー">📋</button>
+        <label class="wwm-opt-ratio-label" title="${T_.optMinDeltaTip||'これ未満のΔで打切'}">Δ<input type="number" id="wwmOptMinDelta" min="2" max="50" step="1" value="${window._OPT_MIN_DELTA}" style="width:40px;background:var(--surf-shade);color:var(--paper);border:1px solid var(--ink-2);border-radius:3px;padding:2px 4px;font-family:var(--f-mono);"></label>
         <button type="button" class="wwm-opt-btn wwm-opt-btn-apply" id="wwmOptApplyAll">${T_.optApplyAll||'全適用'}</button>
       </div>
     </div>
@@ -520,8 +536,15 @@ async function renderOptimization(roleInfo, params, opts) {
     }
     const reEl = root.querySelector('#wwmOptRecalc');
     if (reEl) reEl.addEventListener('click', () => renderOptimization(roleInfo, params));
-    const exEl = root.querySelector('#wwmOptExport');
-    if (exEl) exEl.addEventListener('click', _exportOptSteps);
+    const mdEl = root.querySelector('#wwmOptMinDelta');
+    if (mdEl) mdEl.addEventListener('change', () => {
+      const v = parseInt(mdEl.value, 10);
+      if (!isNaN(v) && v >= 2) {
+        window._OPT_MIN_DELTA = v;
+        try { localStorage.setItem('wwm_opt_min_delta_v1', String(v)); } catch(_) {}
+        renderOptimization(roleInfo, params);
+      }
+    });
     const apEl = root.querySelector('#wwmOptApplyAll');
     if (apEl) apEl.addEventListener('click', () => _applyOptSteps(_OPT_LAST_STEPS || []));
     const slEl = root.querySelector('#wwmOptSlot');
@@ -563,17 +586,25 @@ async function renderOptimization(roleInfo, params, opts) {
   const ssThr = 6700 * Math.pow(0.8, 14 - wl);
   let stopReason = null;
   let lastBestNull = false;
+  // iter=0 は弓セット swap のみ評価 (他affixより先に確定)
+  // iter>=1 は affix swap (弓セットも再評価)
   for (let iter = 0; iter < MAX_ITER; iter++) {
+    if (_aborted()) return;
     setProgress(iter + 1, MAX_ITER);
     await new Promise(r => setTimeout(r, 0)); // UI更新yield
+    if (_aborted()) return;
     const eqDet = working.wearEquipsDetailed || {};
     const slots = ['1','2','3','4','5','8','10','11'].filter(s => eqDet[s] && slotsAllowed.has(s));
     let best = null;
     let slotIdx = 0;
-    for (const slot of slots) {
+    // iter=0 は弓セットだけ評価 (affix skip)
+    const skipAffix = (iter === 0);
+    for (const slot of skipAffix ? [] : slots) {
+      if (_aborted()) return;
       slotIdx++;
       setProgress(`${iter+1}/${MAX_ITER} (slot ${slotIdx}/${slots.length})`, '');
       await new Promise(r => setTimeout(r, 0));
+      if (_aborted()) return;
       const eq = eqDet[slot];
       const affixes = eq?.exVo?.baseAffixes || [];
       for (let idx = 0; idx < affixes.length; idx++) {
@@ -612,30 +643,61 @@ async function renderOptimization(roleInfo, params, opts) {
         }
       }
     }
+    // 弓セット (slot 9 + 21) suffix swap 評価
+    const bowEq9 = eqDet['9'];
+    const bowEq21 = eqDet['21'];
+    if (bowEq9 && bowEq21 && window.WWM_SETS?.bowSets) {
+      const curBowSuffix = bowEq9.exVo?.suffix;
+      const bowSuffixOptions = Object.keys(window.WWM_SETS.bowSets);
+      for (const newSfx of bowSuffixOptions) {
+        const sfxInt = parseInt(newSfx, 10);
+        if (sfxInt === curBowSuffix) continue;
+        try {
+          const ri = JSON.parse(JSON.stringify(working));
+          ri.wearEquipsDetailed['9'].exVo.suffix = sfxInt;
+          ri.wearEquipsDetailed['21'].exVo.suffix = sfxInt;
+          const p = await window.WWMStats.buildStatParams(ri, state);
+          window.computeExpected(p);
+          const newScore = _scoreWithBonus(ri);
+          const delta = newScore - curScore;
+          if (delta > 0 && (!best || delta > best.delta)) {
+            const lang = _curLang();
+            const oldName = window.WWM_SETS.bowSets[curBowSuffix]?.names?.[lang] || window.WWM_SETS.bowSets[curBowSuffix]?.names?.ja || '';
+            const newName = window.WWM_SETS.bowSets[sfxInt]?.names?.[lang] || window.WWM_SETS.bowSets[sfxInt]?.names?.ja || '';
+            best = {
+              kind: 'bowSet',
+              slot: '9,21', slotLabel: '弓矢/射玦',
+              fromName: oldName, fromSuffix: curBowSuffix,
+              toName: newName, toSuffix: sfxInt,
+              delta, newScore
+            };
+          }
+        } catch(e) {}
+      }
+    }
     if (!best) {
-      stopReason = iter === 0 ? '改善余地なし (現状最適 or 全 オプション max)' : `${iter}回 改善後、追加改善なし`;
+      // iter=0 (弓セット評価) で改善なし → affix最適化に進む (continue)
+      if (iter === 0) continue;
+      stopReason = `${iter}回 改善後、追加改善なし`;
       break;
     }
-    // 微改善で早期収束 (Δ<2)
-    if (best.delta < 2 && iter > 0) {
-      stopReason = `${iter+1}回で収束 (微改善Δ<2)`;
-      steps.push(best);
-      const tgtMicro = working.wearEquipsDetailed[best.slot].exVo.baseAffixes[best.idx].equipmentDetails;
-      const tgtMicroMax = _getAffixMax(window.WWM_AFFIX?.[best.toId]?.statKey, charLv);
-      tgtMicro[0] = best.toId;
-      tgtMicro[1] = tgtMicroMax * TARGET_RATIO;
-      tgtMicro[2] = TARGET_RATIO;
-      tgtMicro[3] = 2;
-      curScore = best.newScore;
+    // 微改善で早期収束 (Δ<閾値) — push せずに break
+    if (best.delta < window._OPT_MIN_DELTA && iter > 0) {
+      stopReason = `${iter}回で収束 (微改善Δ<${window._OPT_MIN_DELTA} で打切)`;
       break;
     }
     // 採用: working state 更新
-    const tgt = working.wearEquipsDetailed[best.slot].exVo.baseAffixes[best.idx].equipmentDetails;
-    const tgtMax = _getAffixMax(window.WWM_AFFIX?.[best.toId]?.statKey, charLv);
-    tgt[0] = best.toId;
-    tgt[1] = tgtMax * TARGET_RATIO;
-    tgt[2] = TARGET_RATIO;
-    tgt[3] = 2;
+    if (best.kind === 'bowSet') {
+      working.wearEquipsDetailed['9'].exVo.suffix = best.toSuffix;
+      working.wearEquipsDetailed['21'].exVo.suffix = best.toSuffix;
+    } else {
+      const tgt = working.wearEquipsDetailed[best.slot].exVo.baseAffixes[best.idx].equipmentDetails;
+      const tgtMax = _getAffixMax(window.WWM_AFFIX?.[best.toId]?.statKey, charLv);
+      tgt[0] = best.toId;
+      tgt[1] = tgtMax * TARGET_RATIO;
+      tgt[2] = TARGET_RATIO;
+      tgt[3] = 2;
+    }
     // tier 達成判定
     const TIER_LIST = [['SS', 1.0], ['S', 0.9], ['A', 0.8], ['B', 0.6]];
     let prevTier = 'C', curTier = 'C';
@@ -661,16 +723,22 @@ async function renderOptimization(roleInfo, params, opts) {
     const pct = ratio != null ? `(${Math.round(ratio*100)}%)` : '';
     return `${name} ${v}${pct}`;
   };
-  const rows = steps.length ? steps.map((s, i) => `
+  const rows = steps.length ? steps.map((s, i) => {
+    const isBow = s.kind === 'bowSet';
+    const slotCol = isBow ? s.slotLabel : `${s.slotLabel}#${s.idx+1}`;
+    const changeCol = isBow
+      ? `<span class="wwm-opt-from">${s.fromName||'(未装着)'}</span> ▶ <span class="wwm-opt-to">${s.toName}</span>`
+      : `<span class="wwm-opt-from">${_fmtFromTo(s.fromName, s.fromVal, s.fromRatio, s.fromKey)}</span> ▶ <span class="wwm-opt-to">${_fmtFromTo(s.toName, s.toVal, s.toRatio, s.toKey)}</span>`;
+    return `
     <div class="wwm-opt-row">
       <span class="wwm-opt-pos">${i+1}</span>
-      <span class="wwm-opt-slot">${s.slotLabel}#${s.idx+1}</span>
-      <span class="wwm-opt-change"><span class="wwm-opt-from">${_fmtFromTo(s.fromName, s.fromVal, s.fromRatio, s.fromKey)}</span> ▶ <span class="wwm-opt-to">${_fmtFromTo(s.toName, s.toVal, s.toRatio, s.toKey)}</span></span>
+      <span class="wwm-opt-slot">${slotCol}</span>
+      <span class="wwm-opt-change">${changeCol}</span>
       <span class="wwm-opt-delta">+${Math.round(s.delta).toLocaleString()}</span>
       ${s.tierUp ? `<span class="wwm-opt-tierup">★ ${s.tierUp}</span>` : '<span></span>'}
       <button type="button" class="wwm-opt-btn wwm-opt-btn-step" data-opt-step="${i}" title="この swap だけ適用">${(window.T&&T.optApplyOne)||'適用'}</button>
     </div>
-  `).join('') : `<div class="wwm-opt-empty">${stopReason || '改善余地なし'}</div>`;
+  `;}).join('') : `<div class="wwm-opt-empty">${stopReason || '改善余地なし'}</div>`;
   const reasonHtml = stopReason && steps.length ? `<div class="wwm-opt-reason">${stopReason}</div>` : '';
   // 結果 cache (export 用)
   _OPT_LAST_STEPS = steps;
@@ -715,6 +783,20 @@ function _applyOptSteps(stepsToApply) {
   if (!origRi) return;
   if (!window.__WWM_VIRTUAL) window.__WWM_VIRTUAL = {};
   for (const step of stepsToApply) {
+    if (step.kind === 'bowSet') {
+      // 弓セット suffix 変更 (slot 9 + 21)
+      ['9','21'].forEach(s => {
+        let vEq = window.__WWM_VIRTUAL[s];
+        if (!vEq) {
+          const orig = origRi.wearEquipsDetailed?.[s];
+          if (!orig) return;
+          vEq = JSON.parse(JSON.stringify(orig));
+          window.__WWM_VIRTUAL[s] = vEq;
+        }
+        if (vEq.exVo) vEq.exVo.suffix = step.toSuffix;
+      });
+      continue;
+    }
     const slot = step.slot;
     // 既存 virtual or original の clone を取得/初期化
     let vEq = window.__WWM_VIRTUAL[slot];
@@ -1678,10 +1760,30 @@ const _PCT_RATIO_STATKEYS = new Set([
   'allWeaponDmg', 'bossDmg', 'playerUnitDmg',
   'stMysticDmg', 'stBurstMysticDmg', 'stControlMysticDmg',
   'areaMysticDmg', 'areaDmgMysticDmg', 'areaDebuffMysticDmg',
-  'lightAtkDmg', 'heavyAtkDmg', 'executionDmg',
+  'lightAtkDmg', 'heavyAtkDmg', 'airborneLightAtkDmg', 'jumpStrikeDmg',
+  'dualWeaponSkillDmg', 'executionDmg', 'dashDmg',
   'swordDmg', 'spearDmg', 'fanDmg', 'umbrellaDmg',
   'hengBladeDmg', 'moBladeDmg', 'dualBladesDmg', 'ropeDartDmg',
-  'sympathyRate', 'addCritRate', 'addSympathyRate'
+  'fanHealingBoost', 'umbrellaHealingBoost',
+  'sympathyRate', 'addCritRate', 'addSympathyRate',
+  // 武器固有 強化系 (全 ratio保存)
+  'bleed', 'moBladeShield', 'panaceaFanHealing',
+  'swordQ', 'swordCharged', 'swordSpecial',
+  'namelessSwordQ', 'namelessSwordCharged', 'namelessSwordSpecial',
+  'spearQ', 'spearCharged', 'spearSpecial',
+  'namelessSpearQ', 'namelessSpearCharged', 'namelessSpearSpecial',
+  'stormbreakerQ', 'stormbreakerCharged', 'stormbreakerSpecial',
+  'fanQ', 'fanCharged', 'fanSpecial',
+  'panaceaFanQ', 'panaceaFanSpecial',
+  'moBladeCharged', 'moBladeSpecial',
+  'phalanxbaneQ', 'phalanxbaneCharged',
+  'snowpartingQ', 'snowpartingCharged', 'snowpartingVariedCombo',
+  'infernalTwinbladesQ', 'infernalTwinbladesSpecial', 'infernalTwinbladesLight',
+  'umbQ', 'umbCharged', 'umbDrone',
+  'soulshadeUmbQ', 'soulshadeUmbCharged', 'soulshadeUmbSpecial',
+  'everspringUmbQ', 'everspringUmbCharged', 'everspringUmbSpecial',
+  'mortalRopeDartQ', 'mortalRopeDartCharged', 'mortalRopeDartRodent',
+  'unfetteredRopeDartQ', 'unfetteredRopeDartCharged', 'unfetteredRopeDartSpecial'
 ]);
 // すでに % 単位で保存 (例: 9.4=9.4%) → *100 不要。現状空 (Pen系はゲーム内 非%表記)
 const _PCT_DIRECT_STATKEYS = new Set([]);
@@ -1763,9 +1865,9 @@ function _getAffixMax(statKey, lv) {
   const t = _EQUIP_MAX.tiers?.[tier];
   if (!t) return null;
   let mapKey = _STAT_TO_MAX_KEY[statKey];
-  // 武学固有 affix (xxxQ, xxxCharged, xxxSpecial, bleed 等) → mysticDmg
+  // 武学固有 affix (xxxQ, xxxCharged, xxxSpecial, bleed 等) → attunement (武器固有 max = 0.05@tier91)
   if (!mapKey && /Q$|Charged$|Special$|Drone$|Light$|Healing$|Shield$|Rodent$|VariedCombo$|^bleed$/.test(statKey)) {
-    mapKey = 'mysticDmg';
+    mapKey = 'attunement';
   }
   if (!mapKey) return null;
   const v = t[mapKey];
@@ -1883,8 +1985,10 @@ function openGearEdit(slot) {
   const _kfName = (id) => kfMap[id]?.names?.[lang] || kfMap[id]?.names?.ja || '';
   const isWeaponSlot = slot === '1' || slot === '2';
   const origKongfuId = slot === '1' ? origRi?.kongfuMain : (slot === '2' ? origRi?.kongfuSub : null);
-  // 編集中 kongfu state (新パネル用)
-  let newKongfuId = origKongfuId;
+  // 編集中 kongfu state (新パネル用) — virtual あれば virtual優先
+  const virtKongfu = slot === '1' ? window.__WWM_VIRTUAL_KONGFU?.kongfuMain
+                   : slot === '2' ? window.__WWM_VIRTUAL_KONGFU?.kongfuSub : null;
+  let newKongfuId = virtKongfu ?? origKongfuId;
   const kongfuLabel = origKongfuId ? _kfName(origKongfuId) : '';
   const kongfuHtml = kongfuLabel ? `<span class="wwm-cmp-kongfu">${kongfuLabel}</span>` : '';
   // セット系 slot: 武器/環/佩び物 = weaponSets / 弓矢/射玦 = bowSets
@@ -1892,7 +1996,8 @@ function openGearEdit(slot) {
   const isBowSetSlot = ['9','21'].includes(String(slot));
   const isSetEditable = isWeaponSetSlot || isBowSetSlot;
   const origSuffix = origEq.exVo?.suffix;
-  let newSuffix = origSuffix;
+  // virtual あれば virtual優先
+  let newSuffix = window.__WWM_VIRTUAL?.[slot]?.exVo?.suffix ?? origSuffix;
   const setsMap = isBowSetSlot
     ? (window.WWM_SETS?.bowSets || {})
     : (window.WWM_SETS?.weaponSets || {});
@@ -1943,10 +2048,18 @@ function openGearEdit(slot) {
       const name = _affixDisplayName(id);
       const rkCls = rank===3?'gold':rank===2?'purple':'blue';
       const usefulAuto = _isUsefulAffix(id, origRi);
+      const pct = (ratio != null) ? (ratio * 100).toFixed(0) : null;
+      const pctColor = pct == null ? 'var(--paper-mute)'
+        : ratio >= 0.9 ? '#4caf50'
+        : ratio >= 0.75 ? '#8bc34a'
+        : ratio >= 0.6 ? '#ffc107'
+        : ratio >= 0.4 ? '#ff9800'
+        : '#e74c3c';
+      const pctHtml = pct != null ? `<span class="wwm-cmp-ratio" style="color:${pctColor};font-size:11px;font-family:var(--f-mono);margin-left:6px;">${pct}%</span>` : '';
       return `
         <div class="wwm-cmp-row">
           <span class="wwm-cmp-name wwm-rank-${rkCls}" title="ID:${id}">${name}${usefulAuto?' 👍':''}</span>
-          <span class="wwm-cmp-val">${_fmtAffixVal(val, sk)}</span>
+          <span class="wwm-cmp-val">${_fmtAffixVal(val, sk)}${pctHtml}</span>
         </div>
       `;
     }).join('');
@@ -1988,13 +2101,24 @@ function openGearEdit(slot) {
       const maxAttr = maxInternal != null
         ? `max="${isPct ? (needsMul ? (maxInternal*100).toFixed(1) : maxInternal.toFixed(1)) : maxInternal.toFixed(2)}"`
         : '';
+      // 初期 ratio 計算 (val / maxInternal)
+      const initRatio = (maxInternal != null && maxInternal > 0 && typeof val === 'number')
+        ? Math.min(1, val / maxInternal) : null;
+      const initPct = initRatio != null ? (initRatio * 100).toFixed(0) : '';
+      const initColor = initRatio == null ? 'var(--paper-mute)'
+        : initRatio >= 0.9 ? '#4caf50'
+        : initRatio >= 0.75 ? '#8bc34a'
+        : initRatio >= 0.6 ? '#ffc107'
+        : initRatio >= 0.4 ? '#ff9800'
+        : '#e74c3c';
       return `
-        <div class="wwm-cmp-row wwm-cmp-edit-row" data-affix-idx="${idx}">
+        <div class="wwm-cmp-row wwm-cmp-edit-row" data-affix-idx="${idx}" data-max-internal="${maxInternal||''}">
           <select class="wwm-cmp-stat-select wwm-rank-${rkCls}" data-field="stat" data-stat-el>${optsHtml}</select>
           <div class="wwm-cmp-useful-mark" data-useful-el>${useful?'👍':''}</div>
           <div class="wwm-cmp-val-wrap">
             <input type="number" class="wwm-num-input wwm-cmp-val-input" step="${step}" min="0" ${maxAttr} value="${displayVal}" data-field="val" data-pct="${isPct?1:0}" data-pctmul="${needsMul?1:0}">
             <span class="wwm-cmp-unit" data-unit-el>${isPct?'%':''}</span>
+            <span class="wwm-cmp-ratio" data-ratio-el style="color:${initColor};font-size:11px;font-family:var(--f-mono);margin-left:4px;min-width:32px;text-align:right;">${initPct?initPct+'%':''}</span>
           </div>
         </div>
       `;
@@ -2165,9 +2289,30 @@ function openGearEdit(slot) {
       } else {
         valInp.removeAttribute('max');
       }
+      row.dataset.maxInternal = maxInt != null ? maxInt : '';
     }
     const unitEl = row.querySelector('[data-unit-el]');
     if (unitEl) unitEl.textContent = isPct ? '%' : '';
+    _updateRatioEl(row);
+  }
+  function _updateRatioEl(row) {
+    const el = row.querySelector('[data-ratio-el]');
+    if (!el) return;
+    const inp = row.querySelector('.wwm-cmp-val-input');
+    const maxInt = parseFloat(row.dataset.maxInternal);
+    if (!inp || !maxInt || maxInt <= 0) { el.textContent = ''; return; }
+    let v = parseFloat(inp.value);
+    if (isNaN(v)) { el.textContent = ''; return; }
+    if (inp.dataset.pctmul === '1') v = v / 100;
+    const ratio = Math.min(1, Math.max(0, v / maxInt));
+    const pct = (ratio * 100).toFixed(0);
+    const c = ratio >= 0.9 ? '#4caf50'
+      : ratio >= 0.75 ? '#8bc34a'
+      : ratio >= 0.6 ? '#ffc107'
+      : ratio >= 0.4 ? '#ff9800'
+      : '#e74c3c';
+    el.textContent = pct + '%';
+    el.style.color = c;
   }
 
   function _bindRowEvents() {
@@ -2237,6 +2382,7 @@ function openGearEdit(slot) {
             _refreshRowUI(row, idx);
           }
         }
+        _updateRatioEl(row);
         _schedulePreview();
       });
     });
@@ -2251,9 +2397,15 @@ function openGearEdit(slot) {
     vEq.exVo.baseAffixes = newAffixes;
     if (isSetEditable && newSuffix != null) vEq.exVo.suffix = parseInt(newSuffix, 10);
     window.__WWM_VIRTUAL[slot] = vEq;
-    if (isWeaponSlot && newKongfuId && newKongfuId !== origKongfuId) {
-      if (slot === '1') window.__WWM_VIRTUAL_KONGFU.kongfuMain = newKongfuId;
-      else if (slot === '2') window.__WWM_VIRTUAL_KONGFU.kongfuSub = newKongfuId;
+    if (isWeaponSlot) {
+      if (newKongfuId && newKongfuId !== origKongfuId) {
+        if (slot === '1') window.__WWM_VIRTUAL_KONGFU.kongfuMain = newKongfuId;
+        else if (slot === '2') window.__WWM_VIRTUAL_KONGFU.kongfuSub = newKongfuId;
+      } else {
+        // 元に戻す: virtual から削除
+        if (slot === '1') delete window.__WWM_VIRTUAL_KONGFU.kongfuMain;
+        else if (slot === '2') delete window.__WWM_VIRTUAL_KONGFU.kongfuSub;
+      }
     }
     m.remove();
     _refreshAll();
@@ -2656,3 +2808,74 @@ function _histRender() {
   `;
 }
 window.WWMHistory = { record: _histRecord, render: _histRender };
+
+// ── ロール品質 heatmap (装備別 平均ratio) ─────────────────────
+const _QUAL_SLOT_ORDER = ['1','2','10','11','3','4','5','8'];
+const _QUAL_SLOT_KEYS = {
+  '1':'slotMain','2':'slotSub','3':'slotHelm','4':'slotChest','5':'slotLegs','8':'slotHands',
+  '9':'slotDisc','10':'slotRing','11':'slotPendant','21':'slotBow'
+};
+function _qualSlotLabel(slot) {
+  const k = _QUAL_SLOT_KEYS[slot];
+  return (window.T && window.T[k]) || slot;
+}
+function _qualColor(r) {
+  // ratio 0-1 → 赤(0)→黄(0.5)→緑(1)
+  if (r >= 0.9) return '#4caf50';
+  if (r >= 0.75) return '#8bc34a';
+  if (r >= 0.6) return '#ffc107';
+  if (r >= 0.4) return '#ff9800';
+  return '#e74c3c';
+}
+function _qualRender() {
+  const root = document.getElementById('wwmQuality');
+  if (!root) return;
+  const T_ = window.T || {};
+  const ri = window.__WWM_ROLEINFO;
+  if (!ri || !ri.wearEquipsDetailed) {
+    root.innerHTML = '<div class="wwm-analysis-card wwm-modal-square">'
+      + '<div class="wwm-analysis-header"><h3>'+(T_.qualityTab||'ロール品質')+'</h3></div>'
+      + '<div style="padding:24px;text-align:center;color:var(--paper-mute);font-size:13px;">'+(T_.qualityEmpty||'インポート後 装備データから品質を表示します')+'</div>'
+    + '</div>';
+    return;
+  }
+  const rows = _QUAL_SLOT_ORDER.map(slot => {
+    const eq = ri.wearEquipsDetailed[slot];
+    const label = _qualSlotLabel(slot);
+    if (!eq || !eq.exVo || !eq.exVo.baseAffixes || !eq.exVo.baseAffixes.length) {
+      return { slot, label, avg: 0, count: 0, details: [] };
+    }
+    const details = eq.exVo.baseAffixes.map(a => {
+      const d = a.equipmentDetails || [];
+      return { id: d[0], val: d[1], ratio: d[2] || 0, rank: d[3], useful: d[4] };
+    });
+    const avg = details.reduce((s,d) => s + (d.ratio||0), 0) / details.length;
+    return { slot, label, avg, count: details.length, details };
+  });
+  const rowHtml = rows.map(r => {
+    const pct = (r.avg * 100).toFixed(0);
+    const c = _qualColor(r.avg);
+    const tip = r.details.map(d => {
+      const nm = (window._AFFIX_DISPLAY_LABELS && d.id) ? (window._AFFIX_DISPLAY_LABELS[window.WWM_AFFIX?.[d.id]?.statKey] || ('affix#'+d.id)) : '';
+      const useful = d.useful ? ' 👍' : '';
+      return nm + ' ' + ((d.ratio||0)*100).toFixed(0) + '%' + useful;
+    }).join('\n');
+    return '<div class="wwm-qual-row" title="'+tip.replace(/"/g,'&quot;')+'" style="display:grid;grid-template-columns:80px 1fr 50px;gap:8px;align-items:center;padding:4px 6px;font-size:12px;background:var(--surf-shade);border-radius:3px;">'
+      + '<span style="font-weight:700;color:var(--paper);">'+r.label+'</span>'
+      + '<div style="background:var(--ink-2);height:14px;border-radius:7px;overflow:hidden;position:relative;">'
+      +   '<div style="width:'+pct+'%;height:100%;background:linear-gradient(90deg,'+c+'88,'+c+');border-radius:7px;transition:width 0.3s;"></div>'
+      + '</div>'
+      + '<span style="text-align:right;font-family:var(--f-mono);font-weight:700;color:'+c+';">'+pct+'%</span>'
+      + '</div>';
+  }).join('');
+  // 全体平均
+  const allAvg = rows.filter(r => r.count).reduce((s,r) => s+r.avg, 0) / (rows.filter(r => r.count).length || 1);
+  const allPct = (allAvg * 100).toFixed(1);
+  const allC = _qualColor(allAvg);
+  root.innerHTML = '<div class="wwm-analysis-card wwm-modal-square">'
+    + '<div class="wwm-modal-bg-icon" style="background-image:url(\'assets/icons/scales.svg\');"></div>'
+    + '<div class="wwm-analysis-header"><h3>'+(T_.qualityTab||'ロール品質')+' <span style="font-size:13px;color:'+allC+';margin-left:8px;font-family:var(--f-mono);">'+allPct+'%</span></h3></div>'
+    + '<div style="padding:8px 12px;display:flex;flex-direction:column;gap:4px;">'+rowHtml+'</div>'
+  + '</div>';
+}
+window.WWMQuality = { render: _qualRender };

@@ -2545,7 +2545,8 @@ body.wwm-layout-active .wwm-footer {
 .wwm-analysis-card > * { position: relative; z-index: 1; }
 #wwmAffixRanking .wwm-analysis-card,
 #wwmOptimization .wwm-analysis-card,
-#wwmHistory .wwm-analysis-card {
+#wwmHistory .wwm-analysis-card,
+#wwmQuality .wwm-analysis-card {
   height: 380px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -2768,7 +2769,9 @@ body.wwm-layout-active .wwm-footer {
 }
 .wwm-ladder-next b { color: var(--gold-bright); font-family: var(--f-latin); font-size: 14px; }
 /* Affix ranking */
-.wwm-rank-body { display: flex; flex-direction: column; gap: 3px; }
+.wwm-rank-body { display: flex; flex-direction: column; gap: 3px; overflow-y: auto; max-height: 320px; scrollbar-width: thin; }
+.wwm-rank-body::-webkit-scrollbar { width: 6px; }
+.wwm-rank-body::-webkit-scrollbar-thumb { background: var(--gold-deep); border-radius: 3px; }
 .wwm-rank-row {
   display: grid; grid-template-columns: 18px 1fr max-content;
   gap: 8px; align-items: center;
@@ -2904,7 +2907,7 @@ body.wwm-layout-active .wwm-footer {
 .wwm-cmp-useful-mark { font-size: 12px; text-align: center; }
 .wwm-cmp-val-wrap {
   display: grid;
-  grid-template-columns: 1fr 14px;
+  grid-template-columns: 1fr 14px 34px;
   gap: 2px; align-items: center;
   width: 100%;
 }
