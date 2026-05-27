@@ -49,15 +49,17 @@ function _showChangelogModal(entries, currentVer, manual) {
     </div>
   `).join('');
   m.innerHTML = `
-    <div class="wwm-modal wwm-modal-wide">
+    <div class="wwm-modal wwm-modal-wide wwm-modal-square">
+      <div class="wwm-modal-bg-icon" style="background-image:url('assets/icons/book-cover.svg');"></div>
       <div class="wwm-modal-header">
-        <h2>${manual ? '変更履歴' : '更新内容 (v' + currentVer + ')'}</h2>
+        <h2>${manual ? ((window.T&&T.changelogTitle)||'変更履歴') : '更新内容 (v' + currentVer + ')'}</h2>
         <button class="wwm-modal-close" aria-label="Close">×</button>
       </div>
       <div class="wwm-modal-body">
+        <div class="wwm-cl-notice" style="padding:8px 12px;margin-bottom:12px;background:rgba(201,164,90,0.08);border-left:3px solid var(--gold,#c9a45a);font-size:12px;color:var(--ink-muted,#888);border-radius:4px;">${(window.T&&T.changelogLangNotice)||'※ Changelog: Japanese only / 日本語のみ / 일본어 한정'}</div>
         ${body}
         <div class="wwm-btn-row" style="margin-top:16px;">
-          <button class="wwm-btn-primary" id="wwmClClose">閉じる</button>
+          <button class="wwm-btn-primary" id="wwmClClose">${(window.T&&T.close)||'閉じる'}</button>
         </div>
       </div>
     </div>
@@ -85,12 +87,13 @@ function _showScoreFormula() {
   m.innerHTML = `
     <div class="wwm-modal wwm-modal-wide">
       <div class="wwm-modal-header">
-        <h2>STATUS SCORE 計算式</h2>
+        <h2>武格指数 計算式</h2>
         <button class="wwm-modal-close" aria-label="Close">×</button>
       </div>
       <div class="wwm-modal-body wwm-help-body">
+        <div class="wwm-cl-notice" style="padding:8px 12px;margin-bottom:12px;background:rgba(201,164,90,0.08);border-left:3px solid var(--gold,#c9a45a);font-size:12px;color:var(--ink-muted,#888);border-radius:4px;">${(window.T&&T.changelogLangNotice)||'※ Japanese only / 日本語のみ / 일본어 한정'}</div>
         <h3>概要</h3>
-        <p>STATUS SCORE は装備/心法/武学/セットを総合してダメージ期待値を <b>固定係数</b> で算出した指標。装備変更や心法 swap の影響を一元的に比較可。</p>
+        <p>武格指数 は装備/心法/武学/セットを総合してダメージ期待値を <b>固定係数</b> で算出した指標。装備変更や心法 swap の影響を一元的に比較可。</p>
 
         <h3>固定係数 (全プレイヤー共通)</h3>
         <ul>
@@ -113,7 +116,7 @@ function _showScoreFormula() {
         <h3>反映される効果</h3>
         <ul>
           <li>装備 base stat (外功攻撃/属性攻撃 等)</li>
-          <li>装備 affix (副ステ)</li>
+          <li>装備 オプション (副ステ)</li>
           <li>武学 effects + derived (会心率上限 +Δ 等)</li>
           <li>心法 Tier 効果 (Tier ≥ 2 で Tier2 効果、Tier ≥ 5 で Tier5 効果)</li>
           <li>セット効果 pieces2 (2 個装備で発動)</li>
@@ -148,7 +151,7 @@ statusScore = expected (固定係数で再計算)
 finalScore = statusScore + 4-set bonus (該当時)</pre>
 
         <div class="wwm-btn-row" style="margin-top:16px;">
-          <button class="wwm-btn-primary" id="wwmHelpClose">閉じる</button>
+          <button class="wwm-btn-primary" id="wwmHelpClose">${(window.T&&T.close)||'閉じる'}</button>
         </div>
       </div>
     </div>
@@ -166,42 +169,45 @@ function _optionTerm() {
   const lang = _curLang();
   return lang === 'ja' ? 'オプション' : 'affix';
 }
+// {n} placeholder 置換 helper (i18n template)
+function _tpl(tpl, ...args) {
+  return (tpl || '').replace(/\{(\d+)\}/g, (_, i) => args[i] != null ? args[i] : '');
+}
 function _diagnose(roleInfo, params) {
   const out = [];
   if (!params) return out;
-  const opt = _optionTerm();
+  const T_ = window.T || {};
   const jr = params.judgeRes || 1.45;
   // 命中率過多 (超過 ≥3% で通知)
   const hitCapThreshold = 0.35 * jr + 0.65;
   const hitOverPct = (params.hitRate - hitCapThreshold) * 100;
   if (hitOverPct >= 3) {
-    out.push({ type: 'warn', text: `命中率過多 (現 ${(params.hitRate*100).toFixed(1)}% / cap ${(hitCapThreshold*100).toFixed(1)}% / 超過 +${hitOverPct.toFixed(1)}%)` });
+    out.push({ type: 'warn', text: _tpl(T_.diagHitOver || '命中率過多 (現 {0}% / cap {1}% / 超過 +{2}%)', (params.hitRate*100).toFixed(1), (hitCapThreshold*100).toFixed(1), hitOverPct.toFixed(1)) });
   } else if (params.hitRate < hitCapThreshold * 0.95) {
     const need = ((hitCapThreshold - params.hitRate) * 100).toFixed(1);
-    out.push({ type: 'info', text: `命中率不足 (現 ${(params.hitRate*100).toFixed(1)}% / cap ${(hitCapThreshold*100).toFixed(1)}% / 残 ${need}%)` });
+    out.push({ type: 'info', text: _tpl(T_.diagHitUnder || '命中率不足 (現 {0}% / cap {1}% / 残 {2}%)', (params.hitRate*100).toFixed(1), (hitCapThreshold*100).toFixed(1), need) });
   }
   // 会心率過多
   const critAdj = params.critRate / jr;
   const critOverPct = (critAdj - 0.8) * 100;
   if (critOverPct >= 3) {
-    out.push({ type: 'warn', text: `会心率過多 (適用 ${(critAdj*100).toFixed(1)}% / cap 80% / 超過 +${critOverPct.toFixed(1)}%)` });
+    out.push({ type: 'warn', text: _tpl(T_.diagCritOver || '会心率過多 (適用 {0}% / cap 80% / 超過 +{1}%)', (critAdj*100).toFixed(1), critOverPct.toFixed(1)) });
   }
   // 会意率過多
   const symAdj = params.sympathyRate / jr;
   const symOverPct = (symAdj - 0.4) * 100;
   if (symOverPct >= 3) {
-    out.push({ type: 'warn', text: `会意率過多 (適用 ${(symAdj*100).toFixed(1)}% / cap 40% / 超過 +${symOverPct.toFixed(1)}%)` });
+    out.push({ type: 'warn', text: _tpl(T_.diagSymOver || '会意率過多 (適用 {0}% / cap 40% / 超過 +{1}%)', (symAdj*100).toFixed(1), symOverPct.toFixed(1)) });
   }
-  // 会心率不足: jr 適用後 ≤70% かつ 最終会心+最終会意 <100%
+  // 会心率不足
   const appliedCritFinal = Math.min(0.8, critAdj) + (params.addCritRate || 0);
   const appliedSymFinal = Math.min(0.4, symAdj) + (params.addSympathyRate || 0);
   if (critAdj <= 0.70 && (appliedCritFinal + appliedSymFinal) < 1.0) {
-    out.push({ type: 'warn', text: `会心率不足 (適用 ${(critAdj*100).toFixed(1)}% / 最終会心+会意 ${((appliedCritFinal+appliedSymFinal)*100).toFixed(1)}%)` });
+    out.push({ type: 'warn', text: _tpl(T_.diagCritUnder || '会心率不足 (適用 {0}% / 最終会心+会意 {1}%)', (critAdj*100).toFixed(1), ((appliedCritFinal+appliedSymFinal)*100).toFixed(1)) });
   }
-  // 外功貫通/属性貫通 +1あたり期待値 判定: 後段 async で simulate 追記
   // 良好メッセ
   if (!out.filter(x => x.type==='warn').length) {
-    out.push({ type: 'good', text: '主要ステータス は概ね良好' });
+    out.push({ type: 'good', text: T_.diagGood || '主要ステータス は概ね良好' });
   }
   return out;
 }
@@ -242,10 +248,12 @@ function _checkAffix6PenMismatch(roleInfo, dPhys, dElem) {
   });
   const allPhys = stats.every(k => k === 'physPen');
   const allVoid = stats.every(k => k === 'voidPen');
-  if (allPhys && dElem > dPhys) return { type:'mismatch', current:'外功貫通', better:'無相貫通', cur:dPhys, btr:dElem };
-  if (allVoid && dPhys > dElem) return { type:'mismatch', current:'無相貫通', better:'外功貫通', cur:dElem, btr:dPhys };
+  const T_=window.T||{};
+  const _PP=T_.penPhys||'外功貫通', _VP=T_.penVoid||'無相貫通';
+  if (allPhys && dElem > dPhys) return { type:'mismatch', current:_PP, better:_VP, cur:dPhys, btr:dElem };
+  if (allVoid && dPhys > dElem) return { type:'mismatch', current:_VP, better:_PP, cur:dElem, btr:dPhys };
   if (!allPhys && !allVoid) {
-    const better = dPhys >= dElem ? '外功貫通' : '無相貫通';
+    const better = dPhys >= dElem ? _PP : _VP;
     const counts = { physPen:0, voidPen:0, other:0 };
     stats.forEach(k => { counts[k === 'physPen' ? 'physPen' : k === 'voidPen' ? 'voidPen' : 'other']++; });
     return { type:'mixed', better, counts };
@@ -291,27 +299,51 @@ async function _findWastedAffixes(roleInfo) {
   } catch (e) {}
   return wasted;
 }
+// 弱点 items キャッシュ (popup表示用)
+let _DIAG_ITEMS_CACHE = [];
+function _updateDiagBadge(items) {
+  const warns = items.filter(it => it.type === 'warn');
+  const badge = document.getElementById('wwmDiagBadge');
+  const cnt = document.getElementById('wwmDiagBadgeCount');
+  if (!badge) return;
+  if (warns.length > 0) {
+    badge.hidden = false;
+    if (cnt) cnt.textContent = warns.length;
+  } else {
+    badge.hidden = true;
+  }
+}
+function _openDiagPopup() {
+  const items = _DIAG_ITEMS_CACHE;
+  const sorted = items.slice().sort((a,b) => {
+    const order = { warn: 0, info: 1, good: 2 };
+    return (order[a.type]||3) - (order[b.type]||3);
+  });
+  const existing = document.getElementById('wwmDiagPopup');
+  if (existing) existing.remove();
+  const popup = document.createElement('div');
+  popup.id = 'wwmDiagPopup';
+  popup.className = 'wwm-modal-backdrop';
+  popup.innerHTML = `
+    <div class="wwm-modal wwm-modal-square wwm-diag-modal">
+      <div class="wwm-modal-bg-icon" style="background-image:url('assets/icons/cracked-shield.svg');"></div>
+      <div class="wwm-modal-header">
+        <h2>${(window.T&&T.diagTitle)||'弱点指摘 / Diagnostics'}</h2>
+        <button class="wwm-modal-close" aria-label="Close">×</button>
+      </div>
+      <div class="wwm-modal-body">
+        ${sorted.length ? sorted.map(it => `<div class="wwm-diag-item wwm-diag-${it.type}"><span class="wwm-diag-icon">${it.type==='warn'?'⚠':it.type==='good'?'✓':'ℹ'}</span><span class="wwm-diag-text">${it.text}</span></div>`).join('') : '<div class="wwm-diag-item wwm-diag-good"><span class="wwm-diag-icon">✓</span><span class="wwm-diag-text">弱点なし</span></div>'}
+      </div>
+    </div>`;
+  document.body.appendChild(popup);
+  popup.querySelector('.wwm-modal-close').addEventListener('click', () => popup.remove());
+  popup.addEventListener('click', (e) => { if (e.target === popup) popup.remove(); });
+}
 async function renderDiagnostics(roleInfo, params) {
-  const root = document.getElementById('wwmDiagnostics');
-  if (!root) return;
   const items = _diagnose(roleInfo, params);
-  // 初回 sync 表示
   function _draw(list) {
-    // 6 項目上限 (warn 優先)
-    const sorted = list.slice().sort((a,b) => {
-      const order = { warn: 0, info: 1, good: 2 };
-      return (order[a.type]||3) - (order[b.type]||3);
-    });
-    const limited = sorted.slice(0, 4);
-    root.innerHTML = `
-      <div class="wwm-diag-header">
-        <span class="wwm-diag-rail">弱点</span>
-        <h3 class="wwm-diag-title">弱点指摘 / Diagnostics</h3>
-      </div>
-      <div class="wwm-diag-body">
-        ${limited.map(it => `<div class="wwm-diag-item wwm-diag-${it.type}"><span class="wwm-diag-icon">${it.type==='warn'?'⚠':it.type==='good'?'✓':'ℹ'}</span><span class="wwm-diag-text">${it.text}</span></div>`).join('')}
-      </div>
-    `;
+    _DIAG_ITEMS_CACHE = list;
+    _updateDiagBadge(list);
   }
   _draw(items);
   // async wasted + 貫通特化判定
@@ -319,85 +351,41 @@ async function renderDiagnostics(roleInfo, params) {
     _findWastedAffixes(roleInfo),
     _evalPenSpecialization(roleInfo)
   ]);
+  const T_ = window.T || {};
   let merged = items.slice();
   if (penEval && penEval.dPhysPer1 < 22 && penEval.dElemPer1 < 18) {
     merged = merged.filter(it => it.type !== 'good').concat([{
       type: 'warn',
-      text: `外功/属性 どちらにも特化なし → 片方に特化推奨 (外功貫通+1=${penEval.dPhysPer1.toFixed(2)} / 属性貫通+1=${penEval.dElemPer1.toFixed(2)} / 推奨 外功≥22 or 属性≥18)`
+      text: _tpl(T_.diagPenBoth || '外功/属性 どちらにも特化なし → 片方に特化推奨 (外功貫通+1={0} / 属性貫通+1={1} / 推奨 外功≥22 or 属性≥18)', penEval.dPhysPer1.toFixed(2), penEval.dElemPer1.toFixed(2))
     }]);
   }
   if (penEval) {
-    // mismatch/mixed比較: max比 n で正規化 → +1あたり × max値 (=装備1個Δ) 同士で比較
     const physScaled = penEval.dPhysPer1 * penEval.maxPhysPen;
     const elemScaled = penEval.dElemPer1 * penEval.maxElemPen;
     const m = _checkAffix6PenMismatch(roleInfo, physScaled, elemScaled);
     if (m?.type === 'mismatch') {
       merged = merged.filter(it => it.type !== 'good').concat([{
         type: 'warn',
-        text: `武器系affix6 全4スロット ${m.current} だが ${m.better} の方が期待値高 (外功貫通+1=${penEval.dPhysPer1.toFixed(2)} / 属性貫通+1=${penEval.dElemPer1.toFixed(2)})`
+        text: _tpl(T_.diagAffix6Mismatch || '武器系定音オプション 全4スロット {0} だが {1} の方が期待値高 (外功貫通+1={2} / 属性貫通+1={3})', m.current, m.better, penEval.dPhysPer1.toFixed(2), penEval.dElemPer1.toFixed(2))
       }]);
     } else if (m?.type === 'mixed') {
-      const breakdown = `外功${m.counts.physPen}/無相${m.counts.voidPen}${m.counts.other?`/他${m.counts.other}`:''}`;
+      const _Pp=T_.penPhysShort||'外功', _Vv=T_.penVoidShort||'無相', _Ot=T_.penOther||'他';
+      const breakdown = `${_Pp}${m.counts.physPen}/${_Vv}${m.counts.voidPen}${m.counts.other?`/${_Ot}${m.counts.other}`:''}`;
       merged = merged.filter(it => it.type !== 'good').concat([{
         type: 'warn',
-        text: `武器系affix6 混在 (${breakdown}) → ${m.better} 4スロット統一推奨 (外功貫通+1=${penEval.dPhysPer1.toFixed(2)} / 属性貫通+1=${penEval.dElemPer1.toFixed(2)})`
+        text: _tpl(T_.diagAffix6Mixed || '武器系定音オプション 混在 ({0}) → {1} 4スロット統一推奨 (外功貫通+1={2} / 属性貫通+1={3})', breakdown, m.better, penEval.dPhysPer1.toFixed(2), penEval.dElemPer1.toFixed(2))
       }]);
     }
   }
   if (wasted.length) {
-    const opt = _optionTerm();
+    const more = wasted.length > 5 ? _tpl(T_.diagWastedMore || ' 他{0}件', wasted.length - 5) : '';
     merged = merged.filter(it => it.type !== 'good').concat([
-      { type: 'warn', text: `無駄${opt} (${wasted.length}件): ${wasted.slice(0,5).join(' / ')}${wasted.length>5?` 他${wasted.length-5}件`:''}` }
+      { type: 'warn', text: _tpl(T_.diagWasted || '無駄オプション ({0}件): {1}{2}', wasted.length, wasted.slice(0,5).join(' / '), more) }
     ]);
   }
   if (merged !== items) _draw(merged);
 }
-window.WWMDiag = { render: renderDiagnostics };
-
-// ── Tier ladder ────────────────────────────────────────────────
-function renderTierLadder(roleInfo, params) {
-  const root = document.getElementById('wwmTierLadder');
-  if (!root || !params) return;
-  const wl = params.worldLv || roleInfo?.worldLv || 14;
-  const thr = 6700 * Math.pow(0.8, 14 - wl);
-  const tiers = [
-    { name: 'SS', val: thr },
-    { name: 'S',  val: thr * 0.9 },
-    { name: 'A',  val: thr * 0.8 },
-    { name: 'B',  val: thr * 0.6 },
-    { name: 'C',  val: 0 }
-  ];
-  const cur = (window.__WWM_LAST_RESULT?.statusScore || 0) + _set4Bonus(_getEffectiveRoleInfo() || roleInfo);
-  const curScore = Math.round(cur);
-  let curTier = 'C';
-  for (const t of tiers) if (curScore >= t.val) { curTier = t.name; break; }
-  // 次 tier 残 Δ
-  let nextTier = null, nextNeed = 0;
-  for (let i = tiers.length - 1; i >= 0; i--) {
-    if (curScore < tiers[i].val) { nextTier = tiers[i].name; nextNeed = Math.ceil(tiers[i].val - curScore); break; }
-  }
-  // 表示順: SS top → C bottom
-  const rows = tiers.map(t => {
-    const reached = curScore >= t.val;
-    const isCurrent = t.name === curTier;
-    return `<div class="wwm-ladder-row${reached?' reached':''}${isCurrent?' current':''}">
-      <span class="wwm-ladder-tier tier-${t.name}">${t.name}</span>
-      <span class="wwm-ladder-val">${Math.round(t.val).toLocaleString()}</span>
-      ${isCurrent ? `<span class="wwm-ladder-marker">◀ 現在 (${curScore.toLocaleString()})</span>` : ''}
-    </div>`;
-  }).join('');
-  const nextLabel = nextTier
-    ? `<div class="wwm-ladder-next">次 ${nextTier} まで <b>+${nextNeed.toLocaleString()}</b></div>`
-    : `<div class="wwm-ladder-next">最高 tier 到達</div>`;
-  root.innerHTML = `
-    <div class="wwm-analysis-card">
-      <div class="wwm-analysis-header"><span class="wwm-analysis-rail">階級</span><h3>Tier Ladder</h3></div>
-      <div class="wwm-ladder-body">${rows}</div>
-      ${nextLabel}
-    </div>
-  `;
-}
-window.WWMTierLadder = { render: renderTierLadder };
+window.WWMDiag = { render: renderDiagnostics, openPopup: _openDiagPopup };
 
 // ── Affix 期待値ランキング (各 stat の score 寄与 Top) ────────────
 async function renderAffixRanking(roleInfo, params) {
@@ -418,26 +406,25 @@ async function renderAffixRanking(roleInfo, params) {
   const maxTbl = _EQUIP_MAX?.tiers?.[tier] || {};
   const PATH_PEN = { bellstrike:'bellstrikePen', stonesplit:'stonesplitPen', silkbind:'silkbindPen', bamboocut:'bamboocutPen', voidPath:'voidPen' };
   const path = window.WWM_KONGFU?.[roleInfo?.kongfuMain]?.path;
-  const PATH_NAME = { bellstrike:'鋼鳴', stonesplit:'砕岩', silkbind:'糸操', bamboocut:'瞬嵐', voidPath:'無相' };
-  const pathLabel = PATH_NAME[path] || '';
   const PATH_MAP = { bellstrike:['minBellstrike','maxBellstrike'], stonesplit:['minStonesplit','maxStonesplit'],
                      silkbind:['minSilkbind','maxSilkbind'], bamboocut:['minBamboocut','maxBamboocut'],
                      voidPath:['minVoid','maxVoid'] };
   const pathKeys = PATH_MAP[path] || [];
   const activePathPen = PATH_PEN[path];
+  const SL = window._AFFIX_DISPLAY_LABELS || {};
   // 装備オプションに出るもののみ評価対象 (compute が読む key にマップ)
   const targets = [
-    { key: 'minPhysATK', delta: maxTbl.maxPhys, label: `最小外功攻撃 +${maxTbl.maxPhys?.toFixed(1)}` },
-    { key: 'maxPhysATK', delta: maxTbl.maxPhys, label: `最大外功攻撃 +${maxTbl.maxPhys?.toFixed(1)}` },
-    pathKeys[0] && { key: 'minElemMain', delta: maxTbl.pathSingle, label: `最小${pathLabel}攻撃 +${maxTbl.pathSingle?.toFixed(1)}` },
-    pathKeys[1] && { key: 'maxElemMain', delta: maxTbl.pathSingle, label: `最大${pathLabel}攻撃 +${maxTbl.pathSingle?.toFixed(1)}` },
-    { key: 'critRate',     delta: maxTbl.crit,     label: `会心率 +${((maxTbl.crit||0)*100).toFixed(1)}%` },
-    { key: 'sympathyRate', delta: maxTbl.affinity, label: `会意率 +${((maxTbl.affinity||0)*100).toFixed(1)}%` },
-    { key: 'hitRate',      delta: maxTbl.precision, label: `命中率 +${((maxTbl.precision||0)*100).toFixed(1)}%` },
-    { key: 'outerPen',     delta: maxTbl.outerPen, label: `外功貫通 +${maxTbl.outerPen}` },
-    { key: 'elemPen',      delta: maxTbl.attrPen,  label: `無相貫通 +${maxTbl.attrPen}` },
-    { key: 'stMysticDmg',  delta: maxTbl.mysticDmg, label: `奇術ダメ +${((maxTbl.mysticDmg||0)*100).toFixed(1)}%` },
-    { key: 'allMartialBoost', delta: maxTbl.allWeaponDmg, label: `全武学効果/ダメージブースト +${((maxTbl.allWeaponDmg||0)*100).toFixed(1)}%` }
+    { key: 'minPhysATK', delta: maxTbl.maxPhys, label: `${SL.minPhys||'最小外功攻撃'} +${maxTbl.maxPhys?.toFixed(1)}` },
+    { key: 'maxPhysATK', delta: maxTbl.maxPhys, label: `${SL.maxPhys||'最大外功攻撃'} +${maxTbl.maxPhys?.toFixed(1)}` },
+    pathKeys[0] && { key: 'minElemMain', delta: maxTbl.pathSingle, label: `${SL[pathKeys[0]]||pathKeys[0]} +${maxTbl.pathSingle?.toFixed(1)}` },
+    pathKeys[1] && { key: 'maxElemMain', delta: maxTbl.pathSingle, label: `${SL[pathKeys[1]]||pathKeys[1]} +${maxTbl.pathSingle?.toFixed(1)}` },
+    { key: 'critRate',     delta: maxTbl.crit,     label: `${SL.crit||'会心率'} +${((maxTbl.crit||0)*100).toFixed(1)}%` },
+    { key: 'sympathyRate', delta: maxTbl.affinity, label: `${SL.affinity||'会意率'} +${((maxTbl.affinity||0)*100).toFixed(1)}%` },
+    { key: 'hitRate',      delta: maxTbl.precision, label: `${SL.precision||'命中率'} +${((maxTbl.precision||0)*100).toFixed(1)}%` },
+    { key: 'outerPen',     delta: maxTbl.outerPen, label: `${(window.T&&T.penPhys)||'外功貫通'} +${maxTbl.outerPen}` },
+    { key: 'elemPen',      delta: maxTbl.attrPen,  label: `${(window.T&&T.penVoid)||'無相貫通'} +${maxTbl.attrPen}` },
+    { key: 'stMysticDmg',  delta: maxTbl.mysticDmg, label: `${SL.stMysticDmg||'奇術ダメ'} +${((maxTbl.mysticDmg||0)*100).toFixed(1)}%` },
+    { key: 'allMartialBoost', delta: maxTbl.allWeaponDmg, label: `${SL.allWeaponDmg||'全武学効果'} +${((maxTbl.allWeaponDmg||0)*100).toFixed(1)}%` }
   ].filter(t => t && t.delta != null && t.delta > 0);
   // 並列で全 simulate
   const results = [];
@@ -461,8 +448,9 @@ async function renderAffixRanking(roleInfo, params) {
     </div>
   `).join('');
   root.innerHTML = `
-    <div class="wwm-analysis-card">
-      <div class="wwm-analysis-header"><span class="wwm-analysis-rail">期待値</span><h3>Affix 期待値ランキング</h3></div>
+    <div class="wwm-analysis-card wwm-modal-square">
+      <div class="wwm-modal-bg-icon" style="background-image:url('assets/icons/scales.svg');"></div>
+      <div class="wwm-analysis-header"><h3>${(window.T&&T.affixRankingTitle)||'調律/定音期待値ランキング'}</h3></div>
       <div class="wwm-rank-body">${rows}</div>
     </div>
   `;
@@ -484,29 +472,29 @@ async function renderOptimization(roleInfo, params, opts) {
   // 保存された ratio (slider 値) 取得
   const savedRatio = parseFloat(localStorage.getItem('wwm_opt_target_ratio_v1')) || 0.94;
   const TARGET_RATIO = opts.ratio ?? savedRatio;
-  const MAX_ITER = 15;
+  const MAX_ITER = 30; // best=null で自動停止、上限保険
   // header controls
   const savedSlot = opts.slotFilter ?? (localStorage.getItem('wwm_opt_slot_filter_v1') || 'all');
-  const savedTier = opts.targetTier ?? (localStorage.getItem('wwm_opt_target_tier_v1') || 'none');
-  const SLOT_FILTERS = { all: '全装備', weapon: '主/副武器', accessory: '環/佩び物', armor: '防具' };
-  const TIER_OPTIONS = { none: '制限なし', SS: 'SSまで', S: 'Sまで', A: 'Aまで' };
+  const T_ = window.T || {};
+  const SLOT_FILTERS = {
+    all: T_.optSlotAll || '全装備',
+    weapon: T_.optSlotWeapon || '主/副武器',
+    accessory: T_.optSlotAccessory || '環/佩び物',
+    armor: T_.optSlotArmor || '防具'
+  };
   const headerHtml = `
     <div class="wwm-analysis-header">
-      <span class="wwm-analysis-rail">最適</span>
-      <h3>装備最適化提案</h3>
+      <h3>${T_.optimizationTitle||'装備最適化提案'}</h3>
       <div class="wwm-opt-controls">
         <select class="wwm-opt-select" id="wwmOptSlot" title="対象 slot">
           ${Object.entries(SLOT_FILTERS).map(([k,v]) => `<option value="${k}" ${k===savedSlot?'selected':''}>${v}</option>`).join('')}
         </select>
-        <select class="wwm-opt-select" id="wwmOptTier" title="目標 tier">
-          ${Object.entries(TIER_OPTIONS).map(([k,v]) => `<option value="${k}" ${k===savedTier?'selected':''}>${v}</option>`).join('')}
-        </select>
-        <label class="wwm-opt-ratio-label">目標 <span id="wwmOptRatioVal">${Math.round(TARGET_RATIO*100)}%</span>
+        <label class="wwm-opt-ratio-label">${T_.optTargetRatio||'目標'} <span id="wwmOptRatioVal">${Math.round(TARGET_RATIO*100)}%</span>
           <input type="range" id="wwmOptRatio" min="90" max="100" step="1" value="${Math.round(TARGET_RATIO*100)}">
         </label>
-        <button type="button" class="wwm-opt-btn" id="wwmOptRecalc" title="再計算">↻</button>
+        <button type="button" class="wwm-opt-btn" id="wwmOptRecalc" title="${T_.optRecalc||'再計算'}">↻</button>
         <button type="button" class="wwm-opt-btn" id="wwmOptExport" title="手順をテキストでコピー">📋</button>
-        <button type="button" class="wwm-opt-btn wwm-opt-btn-apply" id="wwmOptApplyAll" title="全 swap を sidebar 反映">全適用</button>
+        <button type="button" class="wwm-opt-btn wwm-opt-btn-apply" id="wwmOptApplyAll">${T_.optApplyAll||'全適用'}</button>
       </div>
     </div>
     <div class="wwm-opt-progress" id="wwmOptProgress"></div>
@@ -519,8 +507,6 @@ async function renderOptimization(roleInfo, params, opts) {
     armor: ['3','4','5','8']
   };
   const slotsAllowed = new Set(SLOT_GROUPS[savedSlot] || SLOT_GROUPS.all);
-  // 目標 tier 閾値
-  const TIER_THRESHOLDS = { SS: 1.0, S: 0.9, A: 0.8, B: 0.6 };
   function _bindControls() {
     const rEl = root.querySelector('#wwmOptRatio');
     const rVal = root.querySelector('#wwmOptRatioVal');
@@ -541,12 +527,7 @@ async function renderOptimization(roleInfo, params, opts) {
     const slEl = root.querySelector('#wwmOptSlot');
     if (slEl) slEl.addEventListener('change', () => {
       localStorage.setItem('wwm_opt_slot_filter_v1', slEl.value);
-      renderOptimization(roleInfo, params, { slotFilter: slEl.value, targetTier: savedTier });
-    });
-    const tiEl = root.querySelector('#wwmOptTier');
-    if (tiEl) tiEl.addEventListener('change', () => {
-      localStorage.setItem('wwm_opt_target_tier_v1', tiEl.value);
-      renderOptimization(roleInfo, params, { slotFilter: savedSlot, targetTier: tiEl.value });
+      renderOptimization(roleInfo, params, { slotFilter: slEl.value });
     });
     root.querySelectorAll('[data-opt-step]').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -557,11 +538,11 @@ async function renderOptimization(roleInfo, params, opts) {
     });
   }
   // 計算中表示
-  root.innerHTML = `<div class="wwm-analysis-card">${headerHtml}<div class="wwm-opt-loading">計算中...</div></div>`;
+  root.innerHTML = `<div class="wwm-analysis-card wwm-modal-square"><div class="wwm-modal-bg-icon" style="background-image:url('assets/icons/anvil-impact.svg');"></div>${headerHtml}<div class="wwm-opt-loading">計算中...</div></div>`;
   _bindControls();
   const setProgress = (iter, max) => {
     const el = root.querySelector('#wwmOptProgress');
-    if (el) el.textContent = `計算中 ${iter}/${max}...`;
+    if (el) el.textContent = max ? `計算中 ${iter}/${max}...` : `計算中 ${iter}...`;
   };
   const state = (() => { try { return JSON.parse(localStorage.getItem('wwm_last_state_v1') || 'null'); } catch(_) { return null; } })();
   await _loadEquipMax();
@@ -577,21 +558,22 @@ async function renderOptimization(roleInfo, params, opts) {
   } catch (e) { return; }
   const steps = [];
   let curScore = startScore;
-  // 目標 score 閾値 (worldLv 由来)
+  // tier 表示用 SS閾値 (worldLv 由来)
   const wl = params?.worldLv || 14;
   const ssThr = 6700 * Math.pow(0.8, 14 - wl);
-  const targetThr = savedTier !== 'none' && TIER_THRESHOLDS[savedTier]
-    ? ssThr * TIER_THRESHOLDS[savedTier] : null;
   let stopReason = null;
   let lastBestNull = false;
   for (let iter = 0; iter < MAX_ITER; iter++) {
     setProgress(iter + 1, MAX_ITER);
-    // 目標 tier 到達で早期終了
-    if (targetThr != null && curScore >= targetThr) { stopReason = `目標 ${savedTier} 到達`; break; }
+    await new Promise(r => setTimeout(r, 0)); // UI更新yield
     const eqDet = working.wearEquipsDetailed || {};
     const slots = ['1','2','3','4','5','8','10','11'].filter(s => eqDet[s] && slotsAllowed.has(s));
     let best = null;
+    let slotIdx = 0;
     for (const slot of slots) {
+      slotIdx++;
+      setProgress(`${iter+1}/${MAX_ITER} (slot ${slotIdx}/${slots.length})`, '');
+      await new Promise(r => setTimeout(r, 0));
       const eq = eqDet[slot];
       const affixes = eq?.exVo?.baseAffixes || [];
       for (let idx = 0; idx < affixes.length; idx++) {
@@ -631,7 +613,20 @@ async function renderOptimization(roleInfo, params, opts) {
       }
     }
     if (!best) {
-      stopReason = iter === 0 ? '改善余地なし (現状最適 or 全 affix max)' : `${iter}回 改善後、追加改善なし`;
+      stopReason = iter === 0 ? '改善余地なし (現状最適 or 全 オプション max)' : `${iter}回 改善後、追加改善なし`;
+      break;
+    }
+    // 微改善で早期収束 (Δ<2)
+    if (best.delta < 2 && iter > 0) {
+      stopReason = `${iter+1}回で収束 (微改善Δ<2)`;
+      steps.push(best);
+      const tgtMicro = working.wearEquipsDetailed[best.slot].exVo.baseAffixes[best.idx].equipmentDetails;
+      const tgtMicroMax = _getAffixMax(window.WWM_AFFIX?.[best.toId]?.statKey, charLv);
+      tgtMicro[0] = best.toId;
+      tgtMicro[1] = tgtMicroMax * TARGET_RATIO;
+      tgtMicro[2] = TARGET_RATIO;
+      tgtMicro[3] = 2;
+      curScore = best.newScore;
       break;
     }
     // 採用: working state 更新
@@ -673,7 +668,7 @@ async function renderOptimization(roleInfo, params, opts) {
       <span class="wwm-opt-change"><span class="wwm-opt-from">${_fmtFromTo(s.fromName, s.fromVal, s.fromRatio, s.fromKey)}</span> ▶ <span class="wwm-opt-to">${_fmtFromTo(s.toName, s.toVal, s.toRatio, s.toKey)}</span></span>
       <span class="wwm-opt-delta">+${Math.round(s.delta).toLocaleString()}</span>
       ${s.tierUp ? `<span class="wwm-opt-tierup">★ ${s.tierUp}</span>` : '<span></span>'}
-      <button type="button" class="wwm-opt-btn wwm-opt-btn-step" data-opt-step="${i}" title="この swap だけ適用">適用</button>
+      <button type="button" class="wwm-opt-btn wwm-opt-btn-step" data-opt-step="${i}" title="この swap だけ適用">${(window.T&&T.optApplyOne)||'適用'}</button>
     </div>
   `).join('') : `<div class="wwm-opt-empty">${stopReason || '改善余地なし'}</div>`;
   const reasonHtml = stopReason && steps.length ? `<div class="wwm-opt-reason">${stopReason}</div>` : '';
@@ -681,7 +676,8 @@ async function renderOptimization(roleInfo, params, opts) {
   _OPT_LAST_STEPS = steps;
   _OPT_LAST_SCORES = { start: Math.round(startScore), end: Math.round(curScore), delta: totalDelta, ratio: TARGET_RATIO };
   root.innerHTML = `
-    <div class="wwm-analysis-card">
+    <div class="wwm-analysis-card wwm-modal-square">
+      <div class="wwm-modal-bg-icon" style="background-image:url('assets/icons/anvil-impact.svg');"></div>
       ${headerHtml.replace('<div class="wwm-opt-progress" id="wwmOptProgress"></div>', '')}
       <div class="wwm-opt-summary">${summary}</div>
       <div class="wwm-opt-body">${rows}</div>
@@ -746,12 +742,30 @@ function _shareBuildUrl() {
   if (!ri) { alert('build データなし。先に import してください。'); return; }
   const state = (() => { try { return JSON.parse(localStorage.getItem('wwm_last_state_v1') || 'null'); } catch(_) { return null; } })();
   const payload = { v: 1, data: ri, state: state || null };
-  let url;
+  let url, b64;
   try {
     const json = JSON.stringify(payload);
-    const b64 = btoa(unescape(encodeURIComponent(json))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+    b64 = btoa(unescape(encodeURIComponent(json))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
     url = location.origin + location.pathname + '#build=' + b64;
   } catch (e) { alert('URL 生成失敗: ' + e.message); return; }
+  // OBS URL は 透明度+背景色+文字色 込みで動的生成
+  const buildObsUrl = (opPct, bgHex, t1Hex, t2Hex, acHex) => {
+    const bg = (bgHex || '#0a0a0a').replace('#','');
+    const t1 = (t1Hex || '#e8d9b8').replace('#','');
+    const t2 = (t2Hex || '#f0d28a').replace('#','');
+    const ac = (acHex || '#c9a45a').replace('#','');
+    return location.origin + location.pathname + '?view=sidebar&op=' + opPct + '&bg=' + bg + '&t1=' + t1 + '&t2=' + t2 + '&ac=' + ac + '#build=' + b64;
+  };
+  // 過去の overlay 設定 復元
+  const OVL_KEY = 'wwm_overlay_settings_v1';
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(OVL_KEY) || '{}'); } catch(_) {}
+  const initOp = Number.isFinite(saved.op) ? saved.op : 0;
+  const initBg = saved.bg || '#0a0a0a';
+  const initT1 = saved.t1 || '#e8d9b8';
+  const initT2 = saved.t2 || '#f0d28a';
+  const initAc = saved.ac || '#c9a45a';
+  let obsUrl = buildObsUrl(initOp, initBg, initT1, initT2, initAc);
   // modal で表示 + clipboard コピー
   const m = document.createElement('div');
   m.className = 'wwm-modal-backdrop';
@@ -762,10 +776,39 @@ function _shareBuildUrl() {
         <button class="wwm-modal-close" aria-label="Close">×</button>
       </div>
       <div class="wwm-modal-body">
-        <p style="font-size:12px;color:var(--paper-mute);margin:0 0 8px;">この URL を共有すると、相手の WWM-DMGCALC で同じ build が表示される。</p>
-        <textarea class="wwm-share-url" readonly>${url}</textarea>
-        <div class="wwm-btn-row" style="margin-top:12px;">
-          <button class="wwm-btn-primary" id="wwmShareCopy">クリップボードにコピー</button>
+        <p style="font-size:12px;color:var(--paper-mute);margin:0 0 12px;">この URL を共有すると、相手の WWM-METRICS で同じ build が表示される。</p>
+        <div style="font-size:11px;color:var(--gold-bright);font-weight:700;letter-spacing:0.1em;margin-bottom:4px;">通常 URL</div>
+        <textarea class="wwm-share-url" id="wwmShareUrlNormal" readonly>${url}</textarea>
+        <div class="wwm-btn-row" style="margin-top:6px;">
+          <button class="wwm-btn-secondary" id="wwmShareCopyNormal">通常 URL コピー</button>
+        </div>
+        <div style="font-size:11px;color:var(--gold-bright);font-weight:700;letter-spacing:0.1em;margin:18px 0 4px;">OBS Browser Source URL</div>
+        <p style="font-size:11px;color:var(--paper-mute);margin:0 0 6px;">OBS の Browser Source に貼り付け。Build変更時は再度コピー&Source URL更新で反映。</p>
+        <div style="display:flex;align-items:center;gap:12px;font-size:11px;color:var(--paper-mute);margin-bottom:8px;flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:6px;">
+            背景色
+            <input type="color" id="wwmObsBg" value="${initBg}" style="width:32px;height:24px;border:1px solid var(--ink-2);background:transparent;cursor:pointer;">
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;">
+            不透明度
+            <input type="range" id="wwmObsOpacity" min="0" max="100" step="1" value="${initOp}" style="width:130px;accent-color:var(--gold);">
+            <span id="wwmObsOpacityVal" style="font-family:var(--f-mono);color:var(--gold-bright);min-width:36px;">${initOp}%</span>
+          </label>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:11px;color:var(--paper-mute);margin-bottom:8px;flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:6px;">文字色1
+            <input type="color" id="wwmObsT1" value="${initT1}" style="width:32px;height:24px;border:1px solid var(--ink-2);background:transparent;cursor:pointer;">
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;">文字色2
+            <input type="color" id="wwmObsT2" value="${initT2}" style="width:32px;height:24px;border:1px solid var(--ink-2);background:transparent;cursor:pointer;">
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;">ラベル色
+            <input type="color" id="wwmObsAc" value="${initAc}" style="width:32px;height:24px;border:1px solid var(--ink-2);background:transparent;cursor:pointer;">
+          </label>
+        </div>
+        <textarea class="wwm-share-url" id="wwmShareUrlObs" readonly>${obsUrl}</textarea>
+        <div class="wwm-btn-row" style="margin-top:6px;">
+          <button class="wwm-btn-primary" id="wwmShareCopyObs">OBS URL コピー</button>
           <button class="wwm-btn-secondary" id="wwmShareClose">閉じる</button>
         </div>
         <div id="wwmShareMsg" style="margin-top:8px;font-size:12px;color:var(--jade-bright);"></div>
@@ -776,15 +819,35 @@ function _shareBuildUrl() {
   const close = () => m.remove();
   m.querySelector('.wwm-modal-close').addEventListener('click', close);
   m.querySelector('#wwmShareClose').addEventListener('click', close);
-  m.querySelector('#wwmShareCopy').addEventListener('click', async () => {
+  const copyTo = async (text, label) => {
     try {
-      await navigator.clipboard.writeText(url);
-      m.querySelector('#wwmShareMsg').textContent = '✓ コピー完了';
+      await navigator.clipboard.writeText(text);
+      m.querySelector('#wwmShareMsg').textContent = `✓ ${label} コピー完了`;
     } catch (e) {
-      m.querySelector('.wwm-share-url').select();
       m.querySelector('#wwmShareMsg').textContent = '手動でコピーしてください';
     }
-  });
+  };
+  m.querySelector('#wwmShareCopyNormal').addEventListener('click', () => copyTo(url, '通常URL'));
+  m.querySelector('#wwmShareCopyObs').addEventListener('click', () => copyTo(obsUrl, 'OBS URL'));
+  const opSlider = m.querySelector('#wwmObsOpacity');
+  const opVal = m.querySelector('#wwmObsOpacityVal');
+  const bgPicker = m.querySelector('#wwmObsBg');
+  const t1Picker = m.querySelector('#wwmObsT1');
+  const t2Picker = m.querySelector('#wwmObsT2');
+  const acPicker = m.querySelector('#wwmObsAc');
+  const obsTa = m.querySelector('#wwmShareUrlObs');
+  const refreshObs = () => {
+    const pct = parseInt(opSlider.value, 10);
+    opVal.textContent = pct + '%';
+    obsUrl = buildObsUrl(pct, bgPicker.value, t1Picker.value, t2Picker.value, acPicker.value);
+    obsTa.value = obsUrl;
+    try { localStorage.setItem(OVL_KEY, JSON.stringify({ op: pct, bg: bgPicker.value, t1: t1Picker.value, t2: t2Picker.value, ac: acPicker.value })); } catch(_) {}
+  };
+  opSlider.addEventListener('input', refreshObs);
+  bgPicker.addEventListener('input', refreshObs);
+  t1Picker.addEventListener('input', refreshObs);
+  t2Picker.addEventListener('input', refreshObs);
+  acPicker.addEventListener('input', refreshObs);
 }
 // hash で build 受信時 復元
 function _loadSharedBuild() {
@@ -810,7 +873,9 @@ if (_loadSharedBuild()) {
 }
 window.WWMShare = { shareUrl: _shareBuildUrl };
 // 起動時 1回 checks
-setTimeout(_checkChangelog, 500);
+if (!document.documentElement.classList.contains('wwm-view-sidebar')) {
+  setTimeout(_checkChangelog, 500);
+}
 
 async function _loadConfig() {
   if (_STAT_CONFIG) return _STAT_CONFIG;
@@ -861,9 +926,18 @@ function _fmtItem(item, params, baseParams) {
 function _renderItem(item, params, depth, baseParams) {
   depth = depth || 0;
   const cls = depth > 0 ? ' wwm-sb-sub' : '';
+  // cap未到達 / 無駄属性ATK 警告
+  const cw = params?._capWarnings?.[item.key];
+  const ww = params?._wasteWarnings?.[item.key];
+  let warnIcon = '';
+  if (cw) warnIcon = ` <span class="wwm-sb-warn" title="cap未到達: ${cw.current}/${cw.threshold}">⚠</span>`;
+  else if (ww != null) {
+    const wTitle = typeof ww === 'string' ? ww : `active path以外の属性ATK (合計 ${ww})`;
+    warnIcon = ` <span class="wwm-sb-warn" title="${wTitle}">⚠</span>`;
+  }
   let html = `
     <div class="wwm-sb-row${cls}" data-item-key="${item.key}">
-      <span class="wwm-sb-label">${_label(item.label, item.key)}</span>
+      <span class="wwm-sb-label">${_label(item.label, item.key)}${warnIcon}</span>
       <span class="wwm-sb-value">${_fmtItem(item, params, baseParams)}</span>
     </div>
   `;
@@ -986,10 +1060,20 @@ async function renderSidebar(params) {
 
 // ── Gear Grid (main 下部) ───────────────────────────────────────
 const _GEAR_SLOT_ORDER = ['1', '2', '3', '4', '21', '10', '11', '5', '8', '9'];
-const _GEAR_SLOT_LABELS = {
+const _GEAR_SLOT_LABELS_JA = {
   '1': '主武器', '2': '副武器', '3': '冠', '4': '胸当て', '21': '弓矢',
   '10': '環', '11': '佩び物', '5': '膝鎧', '8': '小手', '9': '射玦'
 };
+const _GEAR_SLOT_I18N_KEY = {
+  '1': 'slotMain', '2': 'slotSub', '3': 'slotHelm', '4': 'slotChest', '21': 'slotBow',
+  '10': 'slotRing', '11': 'slotPendant', '5': 'slotLegs', '8': 'slotHands', '9': 'slotDisc'
+};
+const _GEAR_SLOT_LABELS = new Proxy({}, {
+  get: (_, slot) => {
+    const key = _GEAR_SLOT_I18N_KEY[slot];
+    return (key && window.T?.[key]) || _GEAR_SLOT_LABELS_JA[slot];
+  }
+});
 // rail 縦書き専用 中国語表記 (武侠雰囲気)
 const _GEAR_RAIL_ZH = {
   '1': '主武器', '2': '副武器',
@@ -1056,7 +1140,7 @@ function renderGearGrid(roleInfo) {
     const isBow = slot === '9' || slot === '21';
     const isArmor = ['3','4','5','8'].includes(slot);
     const setsCat = isBow ? sets.bowSets : (isArmor ? sets.defensiveSets : sets.weaponSets);
-    const setName = setsCat?.[suffix]?.names?.ja || setsCat?.[suffix]?.names?.en || '';
+    const setName = setsCat?.[suffix]?.names?.[lang] || setsCat?.[suffix]?.names?.ja || setsCat?.[suffix]?.names?.en || '';
     const score = calcCardScore(eq);
     let kongfuLine = '';
     if (slot === '1' && roleInfo?.kongfuMain) {
@@ -1254,7 +1338,7 @@ function renderXinfaGrid(roleInfo) {
         <div class="wwm-xinfa-rail"><span class="wwm-xinfa-rail-text">心法${['一','二','三','四'][i]}</span></div>
         ${iconHtml}
         <div class="wwm-xinfa-inner">
-          <div class="wwm-xinfa-header"><b>${name}</b><span class="wwm-xinfa-tier">Tier ${tier}</span></div>
+          <div class="wwm-xinfa-header"><b>${name}</b></div>
         </div>
         <span class="wwm-xinfa-card-score" data-xinfa-score="${i}"><b>...</b></span>
       </div>
@@ -1330,9 +1414,9 @@ function openXinfaEdit(slotIdx) {
   const m = document.createElement('div');
   m.className = 'wwm-modal-backdrop';
   m.innerHTML = `
-    <div class="wwm-modal wwm-modal-wide wwm-modal-square">
+    <div class="wwm-modal wwm-modal-square">
       <div class="wwm-modal-header">
-        <h2>心法比較パネル</h2>
+        <h2>${(window.T&&T.xinfaCompareTitle)||'心法比較 / COMPARISON'}</h2>
         <button class="wwm-modal-close" aria-label="Close">×</button>
       </div>
       <div class="wwm-modal-body">
@@ -1462,6 +1546,16 @@ function _getEffectiveState() {
 }
 window.__WWM_GET_EFFECTIVE_ROLEINFO = _getEffectiveRoleInfo;
 
+function _autoFitText(root) {
+  (root || document).querySelectorAll('.wwm-equip-setname, .wwm-equip-kongfu, .wwm-xinfa-header b').forEach(el => {
+    const len = (el.textContent || '').trim().length;
+    if (len > 22) el.style.fontSize = '0.7em';
+    else if (len > 16) el.style.fontSize = '0.82em';
+    else if (len > 12) el.style.fontSize = '0.92em';
+    else el.style.fontSize = '';
+  });
+}
+window._autoFitText = _autoFitText;
 function _refreshAll() {
   const ri = _getEffectiveRoleInfo();
   if (!ri) return;
@@ -1473,10 +1567,10 @@ function _refreshAll() {
       window.WWMGear.render(ri);
       if (window.WWMXinfa) window.WWMXinfa.render(ri);
       if (window.WWMDiag) window.WWMDiag.render(ri, params);
-      if (window.WWMTierLadder) window.WWMTierLadder.render(ri, params);
       if (window.WWMRanking) window.WWMRanking.render(ri, params);
       if (window.WWMOpt) window.WWMOpt.render(ri, params);
       if (window.WWMHero) window.WWMHero.update(params);
+      _autoFitText();
     }).catch(e => console.error('[WWM] refresh failed:', e));
   }
 }
@@ -1485,7 +1579,7 @@ function _refreshAll() {
 function _affixDisplayName(id) {
   const info = window.WWM_AFFIX?.[id];
   const key = info?.statKey;
-  if (!key) return 'affix#' + id;
+  if (!key) return 'オプション#' + id;
   // _STAT_LABELS は import.js 内 const、 fallback で key そのまま
   return (window._AFFIX_DISPLAY_LABELS?.[key]) || key;
 }
@@ -1922,9 +2016,9 @@ function openGearEdit(slot) {
   const newSetHeader = isSetEditable
     ? `<select class="wwm-cmp-set-select" id="wwmCmpSetSel">${_setOptions(newSuffix)}</select><div class="wwm-cmp-set-effect" id="wwmCmpSetEffect">${_setRaw(newSuffix)}</div>` : '';
   m.innerHTML = `
-    <div class="wwm-modal wwm-modal-wide wwm-modal-square">
+    <div class="wwm-modal wwm-modal-square">
       <div class="wwm-modal-header">
-        <h2>装備比較パネル</h2>
+        <h2>${(window.T&&T.gearCompareTitle)||'装備比較 / COMPARISON'}</h2>
         <button class="wwm-modal-close" aria-label="Close">×</button>
       </div>
       <div class="wwm-modal-body">
@@ -2203,15 +2297,26 @@ function updateHero(params) {
                 : statusScore >= thr2*0.6 ? 'B' : 'C';
   const tbCur = document.getElementById('heroTierBadge');
   if (tbCur) { tbCur.textContent = curTier; tbCur.className = 'tier-badge tier-' + curTier; }
-  // tier に応じたスコア色
-  const TIER_COLOR = { SS: '#ffd970', S: '#ff6b50', A: '#a8d4b4', B: '#c9b88a', C: 'rgba(232,215,180,0.55)' };
-  const TIER_SHADOW = {
-    SS: '0 0 12px rgba(255,217,112,0.95), 0 0 28px rgba(255,180,40,0.7), 0 0 60px rgba(255,100,20,0.55), 0 0 100px rgba(200,60,43,0.4)',
-    S:  '0 0 18px rgba(255,107,80,0.55), 0 0 36px rgba(255,107,80,0.28)',
-    A:  '0 0 18px rgba(168,212,180,0.45), 0 0 36px rgba(168,212,180,0.25)',
-    B:  '0 0 14px rgba(201,184,138,0.45), 0 0 28px rgba(201,184,138,0.22)',
-    C:  '0 0 10px rgba(232,215,180,0.18)'
-  };
+  // tier に応じたスコア色 (theme別)
+  const _isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const TIER_COLOR = _isLight
+    ? { SS: '#b8860b', S: '#c83c2b', A: '#2d5a3a', B: '#7a5a20', C: '#5a4226' }
+    : { SS: '#ffd970', S: '#ff6b50', A: '#a8d4b4', B: '#c9b88a', C: 'rgba(232,215,180,0.55)' };
+  const TIER_SHADOW = _isLight
+    ? {
+        SS: '0 0 8px rgba(184,134,11,0.6), 0 0 18px rgba(184,134,11,0.35)',
+        S:  '0 0 8px rgba(200,60,43,0.5), 0 0 16px rgba(200,60,43,0.25)',
+        A:  '0 0 8px rgba(45,90,58,0.5), 0 0 16px rgba(45,90,58,0.25)',
+        B:  '0 0 6px rgba(122,90,32,0.4)',
+        C:  '0 0 4px rgba(90,66,38,0.3)'
+      }
+    : {
+        SS: '0 0 12px rgba(255,217,112,0.95), 0 0 28px rgba(255,180,40,0.7), 0 0 60px rgba(255,100,20,0.55), 0 0 100px rgba(200,60,43,0.4)',
+        S:  '0 0 18px rgba(255,107,80,0.55), 0 0 36px rgba(255,107,80,0.28)',
+        A:  '0 0 18px rgba(168,212,180,0.45), 0 0 36px rgba(168,212,180,0.25)',
+        B:  '0 0 14px rgba(201,184,138,0.45), 0 0 28px rgba(201,184,138,0.22)',
+        C:  '0 0 10px rgba(232,215,180,0.18)'
+      };
   const numEl = document.getElementById('heroScore');
   if (numEl && TIER_COLOR[curTier]) {
     numEl.style.color = TIER_COLOR[curTier];
@@ -2240,14 +2345,18 @@ function updateHero(params) {
       }
       blTb.textContent = bTier;
       blTb.className = 'tier-badge tier-badge-baseline tier-' + bTier;
-      const TIER_COLOR_B = { SS: '#ffd970', S: '#ff6b50', A: '#a8d4b4', B: '#c9b88a', C: 'rgba(232,215,180,0.55)' };
-      const TIER_SHADOW_B = {
-        SS: '0 0 12px rgba(255,217,112,0.95), 0 0 28px rgba(255,180,40,0.7), 0 0 60px rgba(255,100,20,0.55), 0 0 100px rgba(200,60,43,0.4)',
-        S:  '0 0 18px rgba(255,107,80,0.55), 0 0 36px rgba(255,107,80,0.28)',
-        A:  '0 0 18px rgba(168,212,180,0.45), 0 0 36px rgba(168,212,180,0.25)',
-        B:  '0 0 14px rgba(201,184,138,0.45), 0 0 28px rgba(201,184,138,0.22)',
-        C:  '0 0 10px rgba(232,215,180,0.18)'
-      };
+      const TIER_COLOR_B = _isLight
+        ? { SS: '#b8860b', S: '#c83c2b', A: '#2d5a3a', B: '#7a5a20', C: '#5a4226' }
+        : { SS: '#ffd970', S: '#ff6b50', A: '#a8d4b4', B: '#c9b88a', C: 'rgba(232,215,180,0.55)' };
+      const TIER_SHADOW_B = _isLight
+        ? { SS:'0 0 8px rgba(184,134,11,0.5)', S:'0 0 8px rgba(200,60,43,0.4)', A:'0 0 8px rgba(45,90,58,0.4)', B:'0 0 6px rgba(122,90,32,0.3)', C:'0 0 4px rgba(90,66,38,0.25)' }
+        : {
+            SS: '0 0 12px rgba(255,217,112,0.95), 0 0 28px rgba(255,180,40,0.7), 0 0 60px rgba(255,100,20,0.55), 0 0 100px rgba(200,60,43,0.4)',
+            S:  '0 0 18px rgba(255,107,80,0.55), 0 0 36px rgba(255,107,80,0.28)',
+            A:  '0 0 18px rgba(168,212,180,0.45), 0 0 36px rgba(168,212,180,0.25)',
+            B:  '0 0 14px rgba(201,184,138,0.45), 0 0 28px rgba(201,184,138,0.22)',
+            C:  '0 0 10px rgba(232,215,180,0.18)'
+          };
       if (baseEl && TIER_COLOR_B[bTier]) {
         baseEl.style.color = TIER_COLOR_B[bTier];
         baseEl.style.opacity = '1';
@@ -2403,3 +2512,147 @@ window.WWMXinfa = {
 window.WWMHero = {
   update: updateHero
 };
+
+// ── 武格履歴 (Martial Record) ─────────────────────────────────
+const _HIST_KEY = 'wwm_score_history_v1';
+const _HIST_MAX = 365;
+const _HIST_COLORS = ['#c9a45a','#a8d4b4','#e8a87c','#7ec4cf','#d4a5d0','#f0d28a','#c8786b','#b8d09c'];
+function _histLoad() {
+  try { return JSON.parse(localStorage.getItem(_HIST_KEY) || '[]'); } catch(_) { return []; }
+}
+function _histSave(arr) {
+  try { localStorage.setItem(_HIST_KEY, JSON.stringify(arr)); } catch(_) {}
+}
+function _histRecord(data, scoreInfo) {
+  if (!data || !scoreInfo || typeof scoreInfo.statusScore !== 'number') return;
+  const d = new Date();
+  const date = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  const roleId = String(data.uid || data.roleId || data.roleName || '?') + '|' + String(data.roleName || '');
+  const entry = {
+    ts: Date.now(),
+    date,
+    roleId,
+    roleName: data.roleName || '?',
+    level: data.level || 0,
+    kongfuMain: data.kongfuMain || 0,
+    statusScore: Math.round(scoreInfo.statusScore),
+    expected: Math.round(scoreInfo.expected || 0),
+    tier: scoreInfo.tier || ''
+  };
+  let arr = _histLoad();
+  // 同日同キャラあれば 高い方で上書き
+  const existIdx = arr.findIndex(e => e.date === date && e.roleId === roleId);
+  if (existIdx >= 0) {
+    if (entry.statusScore > arr[existIdx].statusScore) arr[existIdx] = entry;
+    else return; // 既存の方が高い → skip
+  } else {
+    arr.push(entry);
+  }
+  // 件数制限 (古い順 drop)
+  arr.sort((a,b) => a.ts - b.ts);
+  if (arr.length > _HIST_MAX) arr = arr.slice(arr.length - _HIST_MAX);
+  _histSave(arr);
+}
+function _histRoleColor(roleId, roleList) {
+  const idx = roleList.indexOf(roleId);
+  return _HIST_COLORS[idx % _HIST_COLORS.length];
+}
+function _histRender() {
+  const root = document.getElementById('wwmHistory');
+  if (!root) return;
+  const T_ = window.T || {};
+  const arr = _histLoad();
+  if (!arr.length) {
+    root.innerHTML = `<div class="wwm-analysis-card wwm-modal-square">
+      <div class="wwm-modal-bg-icon" style="background-image:url('assets/icons/mountain-road.svg');"></div>
+      <div class="wwm-analysis-header"><h3>${T_.martialHistoryTab || '武格履歴'}</h3></div>
+      <div style="padding:24px;text-align:center;color:var(--paper-mute);font-size:13px;">${T_.historyEmpty || 'まだ履歴がありません。インポート時に自動記録されます。'}</div>
+    </div>`;
+    return;
+  }
+  // キャラ別グルーピング
+  const byRole = {};
+  arr.forEach(e => { (byRole[e.roleId] = byRole[e.roleId] || []).push(e); });
+  const roleList = Object.keys(byRole);
+  // 日付範囲
+  const minTs = Math.min(...arr.map(e => e.ts));
+  const maxTs = Math.max(...arr.map(e => e.ts));
+  const tsRange = Math.max(1, maxTs - minTs);
+  // Score 範囲
+  const minScore = Math.min(...arr.map(e => e.statusScore));
+  const maxScore = Math.max(...arr.map(e => e.statusScore));
+  // padding for y-axis
+  const scoreMin = Math.floor(minScore * 0.92 / 100) * 100;
+  const scoreMax = Math.ceil(maxScore * 1.05 / 100) * 100;
+  const scoreRange = Math.max(1, scoreMax - scoreMin);
+  // SVG dimensions
+  const W = 600, H = 240, PL = 50, PR = 16, PT = 12, PB = 28;
+  const innerW = W - PL - PR, innerH = H - PT - PB;
+  const xOf = ts => PL + ((ts - minTs) / tsRange) * innerW;
+  const yOf = sc => PT + (1 - (sc - scoreMin) / scoreRange) * innerH;
+  // Tier 境界水平線
+  const wl = 14;
+  const ssThr = 6700 * Math.pow(0.8, 14 - wl);
+  const tierLines = [
+    { v: ssThr,        l: 'SS', c: '#f0d28a' },
+    { v: ssThr * 0.9,  l: 'S',  c: '#c9a45a' },
+    { v: ssThr * 0.8,  l: 'A',  c: '#a8d4b4' },
+    { v: ssThr * 0.6,  l: 'B',  c: '#7ec4cf' }
+  ].filter(t => t.v >= scoreMin && t.v <= scoreMax);
+  const tierSvg = tierLines.map(t => {
+    const y = yOf(t.v).toFixed(1);
+    return `<line x1="${PL}" y1="${y}" x2="${W-PR}" y2="${y}" stroke="${t.c}" stroke-opacity="0.25" stroke-dasharray="3,3"/>` +
+           `<text x="${W-PR-2}" y="${y}" dy="-2" text-anchor="end" font-size="9" fill="${t.c}" opacity="0.7">${t.l} ${Math.round(t.v)}</text>`;
+  }).join('');
+  // Y-axis labels (5 ticks)
+  const yTicks = [];
+  for (let i = 0; i <= 4; i++) {
+    const v = scoreMin + (scoreRange * i / 4);
+    const y = yOf(v).toFixed(1);
+    yTicks.push(`<text x="${PL-6}" y="${y}" dy="3" text-anchor="end" font-size="9" fill="var(--paper-mute)">${Math.round(v)}</text>`);
+    yTicks.push(`<line x1="${PL-3}" y1="${y}" x2="${PL}" y2="${y}" stroke="var(--ink-2)"/>`);
+  }
+  // X-axis labels (start/mid/end)
+  const fmtDate = ts => { const d = new Date(ts); return (d.getMonth()+1)+'/'+d.getDate(); };
+  const xLabels = [0, 0.5, 1].map(r => {
+    const ts = minTs + tsRange * r;
+    const x = (PL + r * innerW).toFixed(1);
+    return `<text x="${x}" y="${H - PB + 14}" text-anchor="middle" font-size="10" fill="var(--paper-mute)">${fmtDate(ts)}</text>`;
+  }).join('');
+  // 各キャラの polyline + dots
+  let lines = '';
+  roleList.forEach(rid => {
+    const pts = byRole[rid].sort((a,b) => a.ts - b.ts);
+    const color = _histRoleColor(rid, roleList);
+    const polyPts = pts.map(e => `${xOf(e.ts).toFixed(1)},${yOf(e.statusScore).toFixed(1)}`).join(' ');
+    lines += `<polyline points="${polyPts}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    pts.forEach(e => {
+      const cx = xOf(e.ts).toFixed(1), cy = yOf(e.statusScore).toFixed(1);
+      const tip = `${e.roleName} Lv${e.level} | ${e.statusScore} ${e.tier} | ${e.date}`;
+      lines += `<circle cx="${cx}" cy="${cy}" r="3.5" fill="${color}" stroke="#000" stroke-width="0.5"><title>${tip}</title></circle>`;
+    });
+  });
+  // 凡例
+  const legend = roleList.map(rid => {
+    const last = byRole[rid][byRole[rid].length - 1];
+    const color = _histRoleColor(rid, roleList);
+    return `<span style="display:inline-flex;align-items:center;gap:6px;margin-right:14px;font-size:11px;color:var(--paper);"><span style="width:10px;height:3px;background:${color};display:inline-block;border-radius:2px;"></span>${last.roleName} (Lv${last.level})</span>`;
+  }).join('');
+  root.innerHTML = `
+    <div class="wwm-analysis-card wwm-modal-square">
+      <div class="wwm-modal-bg-icon" style="background-image:url('assets/icons/mountain-road.svg');"></div>
+      <div class="wwm-analysis-header"><h3>${T_.martialHistoryTab || '武格履歴'}</h3></div>
+      <div style="padding:8px 12px;">
+        <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:${H}px;display:block;">
+          <rect x="${PL}" y="${PT}" width="${innerW}" height="${innerH}" fill="rgba(0,0,0,0.15)" stroke="var(--ink-2)" stroke-width="0.5"/>
+          ${tierSvg}
+          ${yTicks.join('')}
+          ${xLabels}
+          ${lines}
+        </svg>
+        <div style="margin-top:8px;line-height:1.8;">${legend}</div>
+      </div>
+    </div>
+  `;
+}
+window.WWMHistory = { record: _histRecord, render: _histRender };

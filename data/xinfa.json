@@ -4,7 +4,7 @@
       "ja": "龍虎の勢",
       "en": "Wind Beneath Wings",
       "zh": "生龙活虎",
-      "ko": ""
+      "ko": "맹호의 질주"
     },
     "modes": {},
     "defaultMode": "default",
@@ -33,7 +33,7 @@
       "ja": "晚雪間",
       "en": "Evening Snow",
       "zh": "晚雪间",
-      "ko": ""
+      "ko": "설한의 균열"
     },
     "modes": {},
     "defaultMode": "default",
@@ -62,7 +62,7 @@
       "ja": "鉄身術",
       "en": "Steadfast Stance",
       "zh": "铁身诀",
-      "ko": ""
+      "ko": "철포삼"
     },
     "modes": {},
     "defaultMode": "default",
@@ -91,7 +91,7 @@
       "ja": "山月無影",
       "en": "Shadow Assault",
       "zh": "山月无影",
-      "ko": ""
+      "ko": "월하의 섬광"
     },
     "modes": {
       "default": {
@@ -127,7 +127,7 @@
       "ja": "血涙不止",
       "en": "Fivefold Bleed",
       "zh": "极乐泣血",
-      "ko": ""
+      "ko": "핏빛 찬가"
     },
     "modes": {},
     "defaultMode": "default",
@@ -159,7 +159,7 @@
       "ja": "砂塵一閃",
       "en": "Sandswirl Tail",
       "zh": "沙摆尾",
-      "ko": ""
+      "ko": "사막의 춤"
     },
     "modes": {},
     "defaultMode": "default",
@@ -188,7 +188,7 @@
       "ja": "征軍帰鄉",
       "en": "Envigorated Warrior",
       "zh": "征人归",
-      "ko": ""
+      "ko": "생명의 귀환"
     },
     "modes": {
       "default": {
@@ -222,7 +222,7 @@
       "ja": "怨念連鎖",
       "en": "Bitter Seasons",
       "zh": "所恨年年",
-      "ko": ""
+      "ko": "천추의 한"
     },
     "modes": {
       "maxStack": {
@@ -258,7 +258,7 @@
       "ja": "帰燕の経",
       "en": "Vital Leech",
       "zh": "归燕经",
-      "ko": ""
+      "ko": "제비의 보은"
     },
     "modes": {},
     "defaultMode": "default",
@@ -287,7 +287,7 @@
       "ja": "怒濤斬馬",
       "en": "Fury Harvest",
       "zh": "怒斩马",
-      "ko": ""
+      "ko": "분노의 참격"
     },
     "modes": {},
     "defaultMode": "default",
@@ -316,7 +316,7 @@
       "ja": "長生無相",
       "en": "Divine Roulette",
       "zh": "长生无相",
-      "ko": ""
+      "ko": "무상의 불멸"
     },
     "modes": {},
     "defaultMode": "default",
@@ -348,7 +348,7 @@
       "ja": "舞影",
       "en": "Evasive Charge",
       "zh": "婆娑影",
-      "ko": ""
+      "ko": "춤추는 그림자"
     },
     "modes": {},
     "defaultMode": "default",
@@ -377,9 +377,9 @@
   "47": {
     "names": {
       "ja": "和光同塵",
-      "en": "",
-      "zh": "",
-      "ko": ""
+      "en": "Light and Shadow Alike",
+      "zh": "明晦同尘",
+      "ko": "빛과 그림자"
     },
     "modes": {},
     "defaultMode": "default",
@@ -410,9 +410,9 @@
   "48": {
     "names": {
       "ja": "赤心筆",
-      "en": "",
-      "zh": "",
-      "ko": ""
+      "en": "Heart of Fire",
+      "zh": "丹心篆",
+      "ko": "단심의 서약"
     },
     "modes": {},
     "defaultMode": "default",
@@ -481,7 +481,7 @@
       "ja": "四季無常",
       "en": "Seasonal Edge",
       "zh": "四时无常",
-      "ko": ""
+      "ko": "계절의 순환"
     },
     "modes": {},
     "defaultMode": "default",
@@ -514,7 +514,7 @@
       "ja": "千山法",
       "en": "Mountain's Might",
       "zh": "千山法",
-      "ko": ""
+      "ko": "천산의 의지"
     },
     "modes": {},
     "defaultMode": "default",
@@ -548,7 +548,7 @@
       "ja": "星火燎原",
       "en": "Wildfire Spark",
       "zh": "燎原星火",
-      "ko": ""
+      "ko": "잿빛의 잔영"
     },
     "modes": {},
     "defaultMode": "default",
@@ -581,7 +581,7 @@
       "ja": "威猛歌",
       "en": "Battle Anthem",
       "zh": "威猛歌",
-      "ko": ""
+      "ko": "맹수의 포효"
     },
     "modes": {
       "vsBoss": {
@@ -617,7 +617,7 @@
       "ja": "無名心法",
       "en": "Sword Morph",
       "zh": "无名心法",
-      "ko": ""
+      "ko": "무명 심법"
     },
     "modes": {
       "maxConsume": {
@@ -653,7 +653,7 @@
       "ja": "逐狼心経",
       "en": "Wolfchaser's Art",
       "zh": "逐狼心经",
-      "ko": ""
+      "ko": "굶주린 늑대"
     },
     "modes": {},
     "defaultMode": "default",
@@ -685,7 +685,7 @@
       "ja": "武芸百般",
       "en": "Adaptive Steel",
       "zh": "武艺百般",
-      "ko": ""
+      "ko": "무공의 경지"
     },
     "modes": {},
     "defaultMode": "default",
@@ -719,7 +719,7 @@
       "ja": "一心不乱",
       "en": "Insightful Strike",
       "zh": "一心不乱",
-      "ko": ""
+      "ko": "통찰의 눈"
     },
     "modes": {
       "default": {
@@ -733,21 +733,20 @@
         "permanent": true,
         "worldLv": 14,
         "needsManualInput": false,
-        "statType": "Bellstrike Attack",
-        "raw": "Bellstrike Attack (Solo Mode Level scaled, rank=purple)",
-        "effects": {},
-        "weaponSpecific": "bellstrike",
-        "pendingImplementation": true,
-        "minPathATK": 10.9,
-        "maxPathATK": 21.7,
+        "statType": "Physical Attack",
+        "raw": "Physical Attack (Solo Mode Level scaled, rank=purple, post 5/28 patch: Bellstrike→外功)",
+        "effects": {
+          "minPhysATKAdd": 19.17,
+          "maxPhysATKAdd": 38.25
+        },
         "derivedFromGold": true
       },
       "tier5": {
         "permanent": true,
-        "effects": {},
-        "raw": "Bellstrike Penetration +6",
-        "weaponSpecific": "bellstrike",
-        "pendingImplementation": true
+        "effects": {
+          "outerPenAdd": 5.1
+        },
+        "raw": "Physical Penetration +5.1 (post 5/28 patch: Bellstrike Pen→外功貫通)"
       }
     },
     "rank": "purple"
@@ -757,7 +756,7 @@
       "ja": "剣気斬波",
       "en": "Sword Horizon",
       "zh": "剑气斩波",
-      "ko": ""
+      "ko": "광풍의 검기"
     },
     "modes": {},
     "defaultMode": "default",
@@ -789,7 +788,7 @@
       "ja": "一得一失",
       "en": "Flying Gourds",
       "zh": "一得一失",
-      "ko": ""
+      "ko": "비상하는 호리병"
     },
     "modes": {},
     "defaultMode": "default",
@@ -821,7 +820,7 @@
       "ja": "春雷一閃",
       "en": "Thunderous Bloom",
       "zh": "春雷一闪",
-      "ko": ""
+      "ko": "춘뢰일섬"
     },
     "modes": {
       "maxStack": {
@@ -858,7 +857,7 @@
       "ja": "摘星の術",
       "en": "Star Reacher",
       "zh": "摘星术",
-      "ko": ""
+      "ko": "천공참"
     },
     "modes": {
       "default": {
@@ -898,7 +897,7 @@
       "ja": "花上月令",
       "en": "Blossom Barrage",
       "zh": "花上月令",
-      "ko": ""
+      "ko": "월광의 계율"
     },
     "modes": {},
     "defaultMode": "default",
@@ -930,7 +929,7 @@
       "ja": "君臣薬",
       "en": "Royal Remedy",
       "zh": "君臣药",
-      "ko": ""
+      "ko": "군신의 묘약"
     },
     "modes": {},
     "defaultMode": "default",
@@ -962,7 +961,7 @@
       "ja": "散花不滅",
       "en": "Restoring Blossom",
       "zh": "散花不灭",
-      "ko": ""
+      "ko": "만개한 복사꽃"
     },
     "modes": {},
     "defaultMode": "default",
@@ -995,7 +994,7 @@
       "ja": "蘇生の術",
       "en": "Esoteric Revival",
       "zh": "苏生术",
-      "ko": ""
+      "ko": "생명의 고서"
     },
     "modes": {},
     "defaultMode": "default",
@@ -1026,7 +1025,7 @@
       "ja": "癒しの糸",
       "en": "Mending Loom",
       "zh": "愈合丝",
-      "ko": ""
+      "ko": "회복의 실"
     },
     "modes": {},
     "defaultMode": "default",
@@ -1058,7 +1057,7 @@
       "ja": "山河絶韻",
       "en": "Exquisite Scenery",
       "zh": "山河绝韵",
-      "ko": ""
+      "ko": "지축의 분노"
     },
     "modes": {},
     "defaultMode": "default",
@@ -1090,7 +1089,7 @@
       "ja": "困獣心経",
       "en": "Trapped Beast",
       "zh": "困兽心经",
-      "ko": ""
+      "ko": "맹수의 혼"
     },
     "modes": {},
     "defaultMode": "default",
@@ -1119,7 +1118,7 @@
       "ja": "堅忍の術",
       "en": "Art of Resistance",
       "zh": "坚忍术",
-      "ko": ""
+      "ko": "저항의 법칙"
     },
     "modes": {},
     "defaultMode": "default",
@@ -1153,7 +1152,7 @@
       "ja": "磐石訣",
       "en": "Rock Solid",
       "zh": "磐石诀",
-      "ko": ""
+      "ko": "강철의 비기"
     },
     "modes": {},
     "defaultMode": "default",
@@ -1182,7 +1181,7 @@
       "ja": "忘川絶響",
       "en": "Echoes of Oblivion",
       "zh": "忘川绝响",
-      "ko": ""
+      "ko": "망각의 울림"
     },
     "modes": {
       "default": {
@@ -1216,7 +1215,7 @@
       "ja": "宿怨結晶",
       "en": "Vendetta",
       "zh": "宿怨结晶",
-      "ko": ""
+      "ko": "심연의 늪"
     },
     "modes": {},
     "defaultMode": "default",
@@ -1226,20 +1225,19 @@
         "permanent": true,
         "worldLv": 14,
         "needsManualInput": false,
-        "statType": "Min Bamboocut Attack",
-        "raw": "Min Bamboocut Attack +32.6 (rank=purple)",
+        "statType": "Min Physical Attack",
+        "raw": "Min Physical Attack +57.51 (rank=purple, post 5/28 patch swap with 454)",
         "effects": {
-          "minBamboocut": 32.6
+          "minPhysATKAdd": 57.51
         },
-        "weaponSpecific": "bamboocut"
+        "derivedFromGold": true
       },
       "tier5": {
         "permanent": true,
         "effects": {
-          "bamboocutPen": 6
+          "outerPenAdd": 5.1
         },
-        "raw": "Bamboocut Penetration +6.0",
-        "weaponSpecific": "bamboocut"
+        "raw": "Physical Penetration +5.1 (post 5/28 patch swap with 454)"
       }
     },
     "rank": "purple"
@@ -1249,7 +1247,7 @@
       "ja": "断石心法",
       "en": "Breaking Point",
       "zh": "断石心法",
-      "ko": ""
+      "ko": "파괴의 서막"
     },
     "modes": {
       "maxStack": {
@@ -1286,7 +1284,7 @@
       "ja": "蒼浪剣訣",
       "en": "Riptide Reflex",
       "zh": "苍浪剑诀",
-      "ko": ""
+      "ko": "파도의 검기"
     },
     "modes": {},
     "defaultMode": "default",
@@ -1296,19 +1294,20 @@
         "permanent": true,
         "worldLv": 14,
         "needsManualInput": false,
-        "statType": "Min Physical Attack",
-        "raw": "Min Physical Attack (Solo Mode Level scaled, rank=purple)",
+        "statType": "Min Bamboocut Attack",
+        "raw": "Min Bamboocut Attack +32.6 (rank=purple, post 5/28 patch swap with 452)",
         "effects": {
-          "minPhysATKAdd": 57.51
+          "minBamboocut": 32.6
         },
-        "derivedFromGold": true
+        "weaponSpecific": "bamboocut"
       },
       "tier5": {
         "permanent": true,
         "effects": {
-          "outerPenAdd": 5.1
+          "bamboocutPen": 6
         },
-        "raw": "Physical Penetration +5.1"
+        "raw": "Bamboocut Penetration +6.0 (post 5/28 patch swap with 452)",
+        "weaponSpecific": "bamboocut"
       }
     },
     "rank": "purple"
@@ -1318,7 +1317,7 @@
       "ja": "千軍の咆哮",
       "en": "Phantom Rally",
       "zh": "千军的咆哮",
-      "ko": ""
+      "ko": "천군의 함성"
     },
     "modes": {},
     "defaultMode": "default",
@@ -1350,7 +1349,7 @@
       "ja": "砂舟行木",
       "en": "Towline Sweep",
       "zh": "砂舟行木",
-      "ko": ""
+      "ko": "이동하는 나무배"
     },
     "modes": {},
     "defaultMode": "default",
@@ -1384,7 +1383,7 @@
       "ja": "灯火詞",
       "en": "Light Anew",
       "zh": "灯火词",
-      "ko": ""
+      "ko": "밝은 등불"
     },
     "modes": {},
     "defaultMode": "default",
@@ -1416,7 +1415,7 @@
       "ja": "大唐歌",
       "en": "Song of Tang",
       "zh": "大唐歌",
-      "ko": ""
+      "ko": "대당의 노래"
     },
     "modes": {
       "maxStack": {
@@ -1450,9 +1449,9 @@
   "551": {
     "names": {
       "ja": "霜天白夜",
-      "en": "",
-      "zh": "",
-      "ko": ""
+      "en": "Frost-Clad Night",
+      "zh": "霜天白夜",
+      "ko": "서리 백야"
     },
     "modes": {},
     "defaultMode": "default",
@@ -1480,9 +1479,9 @@
   "552": {
     "names": {
       "ja": "孤忠不辞",
-      "en": "",
-      "zh": "",
-      "ko": ""
+      "en": "Steadfast Devotion",
+      "zh": "孤忠不辞",
+      "ko": "외로운 충성"
     },
     "modes": {},
     "defaultMode": "default",
@@ -1510,9 +1509,9 @@
   "553": {
     "names": {
       "ja": "穿喉の訣",
-      "en": "",
-      "zh": "",
-      "ko": ""
+      "en": "Throat-Piercing Art",
+      "zh": "穿喉诀",
+      "ko": "관목결"
     },
     "modes": {},
     "defaultMode": "default",
@@ -1542,9 +1541,9 @@
   "554": {
     "names": {
       "ja": "燎原脚",
-      "en": "",
-      "zh": "",
-      "ko": ""
+      "en": "Wildfire Surge",
+      "zh": "燎原踏",
+      "ko": "요원의 불길"
     },
     "modes": {},
     "defaultMode": "default",

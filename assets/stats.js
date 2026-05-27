@@ -205,6 +205,51 @@ async function buildStatParams(roleInfo, state) {
     }
   }
 
+  // 8.6 cap警告 (5行ステ derived cap未到達)
+  r._capWarnings = {};
+  const _fiveKeys = new Set(['body','momentum','defense','agility','power']);
+  for (const kid of [roleInfo?.kongfuMain, roleInfo?.kongfuSub]) {
+    const kf = window.WWM_KONGFU?.[kid];
+    if (!kf?.derived) continue;
+    for (const d of kf.derived) {
+      if (!_fiveKeys.has(d.from)) continue;
+      const cur = r[d.from] || 0;
+      const thr = d.thresholdValue || 0;
+      if (thr > 0 && cur < thr) {
+        const prev = r._capWarnings[d.from];
+        if (!prev || thr > prev.threshold) {
+          r._capWarnings[d.from] = { current: Math.round(cur), threshold: thr };
+        }
+      }
+    }
+  }
+
+  // 8.7 無駄属性ATK警告 (副path に有意な属性ATK)
+  r._wasteWarnings = {};
+  const _PATH_ATK_DISPLAY = {
+    bellstrike: ['minBellstrike','maxBellstrike','bellstrike'],
+    stonesplit: ['minStonesplit','maxStonesplit','stonesplit'],
+    silkbind:   ['minSilkbind','maxSilkbind','silkbind'],
+    bamboocut:  ['minBamboocut','maxBamboocut','bamboocut'],
+    voidAtk:    ['minVoid','maxVoid','voidPath']
+  };
+  let _subPathTotal = 0;
+  const _subPathLabels = [];
+  const _PATH_LABEL_JA = { bellstrike:'鋼鳴', stonesplit:'砕岩', silkbind:'糸操', bamboocut:'瞬嵐', voidAtk:'無相' };
+  for (const [displayKey, [mk, mxk, pathId]] of Object.entries(_PATH_ATK_DISPLAY)) {
+    if (pathId === activePath) continue;
+    const total = (r[mk] || 0) + (r[mxk] || 0);
+    if (total > 50) {
+      r._wasteWarnings[displayKey] = Math.round(total);
+      _subPathTotal += total;
+      _subPathLabels.push(`${_PATH_LABEL_JA[displayKey]}=${Math.round(total)}`);
+    }
+  }
+  // 親 elemAtk 行に集約警告
+  if (_subPathLabels.length > 0) {
+    r._wasteWarnings.elemAtk = `副path属性ATK: ${_subPathLabels.join(', ')}`;
+  }
+
   // 9. 9293025 (武器種武学ダメ ropeDartDmg等) は active weapon class なら specMartialBoost に統合
   // affix.json の statKey が weapon-class specific (swordDmg/spearDmg/ropeDartDmg/umbrellaDmg等) のものを集計
   // weapon-class generic dmg のみ (武術技毎のQ/Charged/Special/Light は move-specific で別カテゴリ)
@@ -380,6 +425,23 @@ async function buildStatParams(roleInfo, state) {
   // 属性強化 (主) = active path 適用 1.5、副 = 1.0
   r.elemBoostMain = 1.5;
   r.elemBoostSub  = 1.0;
+
+  // 最小>最大 の場合 最大=最小 (ゲーム仕様)
+  if (r.minPhys > r.maxPhys) r.maxPhys = r.minPhys;
+  if (r.minPhysATK > r.maxPhysATK) r.maxPhysATK = r.minPhysATK;
+  if (r.minElemMain > r.maxElemMain) r.maxElemMain = r.minElemMain;
+  if (r.minElemSub > r.maxElemSub)   r.maxElemSub  = r.minElemSub;
+  // 5path 各 attack も同様
+  const _PATH_MIN_MAX = [
+    ['minBellstrike','maxBellstrike'],
+    ['minStonesplit','maxStonesplit'],
+    ['minSilkbind','maxSilkbind'],
+    ['minBamboocut','maxBamboocut'],
+    ['minVoid','maxVoid']
+  ];
+  for (const [mk, mxk] of _PATH_MIN_MAX) {
+    if ((r[mk] || 0) > (r[mxk] || 0)) r[mxk] = r[mk];
+  }
 
   return r;
 }

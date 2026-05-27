@@ -255,9 +255,9 @@
   "20402": {
     "names": {
       "ja": "破陣の刀",
-      "en": "",
-      "zh": "",
-      "ko": ""
+      "en": "Phalanxbane Blade",
+      "zh": "十方破阵",
+      "ko": "십방파진"
     },
     "weaponType": "mo_blade",
     "effects": {
@@ -328,7 +328,7 @@
       "ja": "千紅の傘",
       "en": "Crimson Umbrella",
       "zh": "九重春色",
-      "ko": ""
+      "ko": "봄의 선율"
     },
     "weaponType": "umbrella",
     "effects": {
@@ -352,7 +352,7 @@
       "ja": "誘魂の傘",
       "en": "Soulbinding Umbrella",
       "zh": "千香引魂蛊",
-      "ko": ""
+      "ko": "소생의 향"
     },
     "weaponType": "umbrella",
     "effects": {
@@ -384,7 +384,7 @@
       "ja": "醉夢の傘",
       "en": "Drunken Dream Umbrella",
       "zh": "醉梦游春",
-      "ko": ""
+      "ko": "일장춘몽"
     },
     "weaponType": "umbrella",
     "effects": {
@@ -415,7 +415,7 @@
       "ja": "浮塵の縄",
       "en": "Mortal Rope Dart",
       "zh": "粟子游尘",
-      "ko": ""
+      "ko": "운진의 궤적"
     },
     "weaponType": "rope_dart",
     "effects": {
@@ -446,7 +446,7 @@
       "ja": "浮雲の縄",
       "en": "Cloudborne Rope Dart",
       "zh": "粟子行云",
-      "ko": ""
+      "ko": "속세의 지혜"
     },
     "weaponType": "rope_dart",
     "effects": {
@@ -475,9 +475,9 @@
   "20801": {
     "names": {
       "ja": "斬雪の刀",
-      "en": "",
-      "zh": "",
-      "ko": ""
+      "en": "Snowparting Blade",
+      "zh": "斩雪刀法",
+      "ko": "만설의 참격"
     },
     "weaponType": "new_blade",
     "effects": {
