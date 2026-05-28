@@ -445,7 +445,8 @@ async function renderAffixRanking(roleInfo, params) {
     { key: 'stMysticDmg',  delta: maxTbl.mysticDmg, label: `${SL.stMysticDmg||'奇術ダメ'} +${((maxTbl.mysticDmg||0)*100).toFixed(1)}%` },
     { key: 'allMartialBoost', delta: maxTbl.allWeaponDmg, label: `${SL.allWeaponDmg||'全武学効果'} +${((maxTbl.allWeaponDmg||0)*100).toFixed(1)}%` }
   ].filter(t => t && t.delta != null && t.delta > 0);
-  // 並列で全 simulate
+  // 並列で全 simulate (DOM更新 silent化 でチラつき抑制)
+  window._SILENT_COMPUTE = true;
   const results = [];
   for (const t of targets) {
     try {
@@ -465,6 +466,7 @@ async function renderAffixRanking(roleInfo, params) {
       results.push({ label: t.label, delta: newScore - baseScore });
     } catch (e) {}
   }
+  window._SILENT_COMPUTE = false;
   results.sort((a, b) => b.delta - a.delta);
   const top = results;
   const rows = top.map((r, i) => `
@@ -533,6 +535,7 @@ async function renderAffixRanking(roleInfo, params) {
         const delta = isPct ? raw / 100 : raw;
         const statKey = inp.dataset.statkey || null;
         try {
+          window._SILENT_COMPUTE = true;
           let p2;
           if (statKey) {
             const base5 = window.WWM_LV95_BASE?.stats?.[statKey] || 129;
@@ -547,7 +550,10 @@ async function renderAffixRanking(roleInfo, params) {
           const newScore = (window.__WWM_LAST_RESULT?.statusScore || 0) + _set4Bonus(roleInfo);
           const dEl = root.querySelector(`[data-delta-for="${k}"]`);
           if (dEl) dEl.textContent = `+${(newScore - baseScore).toFixed(1)}`;
-        } catch(e) {}
+          // 復元 (base params で 1回再計算 → DOM正常化)
+          window._SILENT_COMPUTE = false;
+          if (window.__WWM_PARAMS) window.computeExpected(window.__WWM_PARAMS);
+        } catch(e) { window._SILENT_COMPUTE = false; }
       }, 250);
     });
   });

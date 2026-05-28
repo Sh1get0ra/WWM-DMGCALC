@@ -106,7 +106,7 @@ function computeExpected(pIn) {
   const result = { expected: expectedTotal, statusScore: statusScore, tier: tier };
   window.__WWM_LAST_RESULT = result;
 
-  // ── donut / 寄与率 DOM 更新 (import 後の effective params 反映) ──
+  // ── donut / 寄与率 DOM 更新 (debounce 16ms化、 連続computeExpected呼出時 最後の値のみ反映)
   try {
     const normT = dmg(avgPhys, avgMain, avgSub);
     const critT = dmg(avgPhys, avgMain, avgSub, 1 + p.critBoost);
@@ -116,13 +116,20 @@ function computeExpected(pIn) {
     const cTotal = cCrit + cSymp + cGraz + cNorm;
     if (cTotal > 0) {
       const dCrit = cCrit / cTotal, dSymp = cSymp / cTotal, dGraz = cGraz / cTotal, dNorm = cNorm / cTotal;
-      if (typeof updateDonut === 'function') updateDonut(dCrit, dSymp, dGraz, dNorm, 'donutDmgSeg');
-      const pctStr = n => (n * 100).toFixed(2) + '%';
-      const setT = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-      setT('dmgCritVal', pctStr(dCrit));
-      setT('dmgSympathyVal', pctStr(dSymp));
-      setT('dmgGrazeVal', pctStr(dGraz));
-      setT('dmgNormalVal', pctStr(dNorm));
+      window._donutPending = { dCrit, dSymp, dGraz, dNorm };
+      if (window._donutTimer) clearTimeout(window._donutTimer);
+      window._donutTimer = setTimeout(() => {
+        const d = window._donutPending;
+        if (!d) return;
+        if (typeof updateDonut === 'function') updateDonut(d.dCrit, d.dSymp, d.dGraz, d.dNorm, 'donutDmgSeg');
+        const pctStr = n => (n * 100).toFixed(2) + '%';
+        const setT = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+        setT('dmgCritVal', pctStr(d.dCrit));
+        setT('dmgSympathyVal', pctStr(d.dSymp));
+        setT('dmgGrazeVal', pctStr(d.dGraz));
+        setT('dmgNormalVal', pctStr(d.dNorm));
+        window._donutPending = null;
+      }, 16);
     }
   } catch(e) {}
 
