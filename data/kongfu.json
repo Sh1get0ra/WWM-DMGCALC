@@ -15,7 +15,7 @@
     "path": "bellstrike",
     "derived": [
       {
-        "from": "power",
+        "from": "momentum",
         "thresholdValue": 225,
         "maxBoost": 0.0337,
         "appliesTo": "sympathyRate",
@@ -48,7 +48,7 @@
     "path": "bellstrike",
     "derived": [
       {
-        "from": "power",
+        "from": "momentum",
         "thresholdValue": 225,
         "maxBoost": 59.4,
         "appliesTo": "minPhysATK",
@@ -81,7 +81,7 @@
     "path": "bellstrike",
     "derived": [
       {
-        "from": "power",
+        "from": "momentum",
         "thresholdValue": 225,
         "maxBoost": 59.4,
         "appliesTo": "minPhysATK",
@@ -113,7 +113,7 @@
     "path": "bellstrike",
     "derived": [
       {
-        "from": "power",
+        "from": "momentum",
         "thresholdValue": 225,
         "maxBoost": 0.0337,
         "appliesTo": "sympathyRate",
@@ -202,7 +202,7 @@
     "path": "stonesplit",
     "derived": [
       {
-        "from": "max(body,power)",
+        "from": "max(body,momentum)",
         "thresholdValue": 225,
         "maxBoost": 2250,
         "appliesTo": "maxHp",
@@ -236,7 +236,7 @@
     "path": "stonesplit",
     "derived": [
       {
-        "from": "power",
+        "from": "max(body,momentum)",
         "thresholdValue": 225,
         "maxBoost": 0.068,
         "appliesTo": "critRate",
@@ -268,7 +268,7 @@
     "path": "stonesplit",
     "derived": [
       {
-        "from": "power",
+        "from": "agility",
         "thresholdValue": 225,
         "maxBoost": 0.068,
         "appliesTo": "critRate",

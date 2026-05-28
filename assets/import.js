@@ -959,26 +959,33 @@ function _autoLoadLastImport() {
     return;
   }
   if (window.WWMStats && window.WWMSidebar) {
-    window.WWMStats.buildStatParams(stored.data, stored.state).then(params => {
-      window.__WWM_PARAMS = params;
-      window.__WWM_ROLEINFO = stored.data;
-      window.WWMSidebar.render(params);
-      if (window.WWMGear) window.WWMGear.render(stored.data);
-      if (window.WWMXinfa) window.WWMXinfa.render(stored.data);
-      if (window.WWMDiag) window.WWMDiag.render(stored.data, params);
-      if (window.WWMRanking) window.WWMRanking.render(stored.data, params);
-      if (window.WWMOpt) window.WWMOpt.render(stored.data, params);
-      if (window.WWMHero) window.WWMHero.update(params);
-      // baseline 自動生成 (未保存 or tier 欠落の場合)
+    window.__WWM_ROLEINFO = stored.data;
+    // virtual反映付き refresh (effective ri 使用)
+    if (typeof window._refreshAll === 'function') {
+      window._refreshAll();
+    } else {
+      window.WWMStats.buildStatParams(stored.data, stored.state).then(params => {
+        window.__WWM_PARAMS = params;
+        window.WWMSidebar.render(params);
+        if (window.WWMGear) window.WWMGear.render(stored.data);
+        if (window.WWMXinfa) window.WWMXinfa.render(stored.data);
+        if (window.WWMDiag) window.WWMDiag.render(stored.data, params);
+        if (window.WWMRanking) window.WWMRanking.render(stored.data, params);
+        if (window.WWMOpt) window.WWMOpt.render(stored.data, params);
+        if (window.WWMHero) window.WWMHero.update(params);
+      }).catch(e => console.error('[WWM] auto-load failed:', e));
+    }
+    // baseline 自動生成 (未保存 or tier 欠落)
+    setTimeout(() => {
       const res = window.__WWM_LAST_RESULT;
       const bl = window.__WWM_BASELINE;
       if (res && (!bl || typeof bl.statusScore !== 'number' || !bl.tier)) {
         const bonus = (typeof window.__WWM_SET4_BONUS_OF === 'function') ? window.__WWM_SET4_BONUS_OF(stored.data) : 0;
         window.__WWM_BASELINE = { expected: res.expected, statusScore: res.statusScore + bonus, tier: res.tier, ts: Date.now() };
         try { localStorage.setItem('wwm_baseline_score_v1', JSON.stringify(window.__WWM_BASELINE)); } catch(e) {}
-        if (window.WWMHero) window.WWMHero.update(params);
+        if (window.WWMHero && window.__WWM_PARAMS) window.WWMHero.update(window.__WWM_PARAMS);
       }
-    }).catch(e => console.error('[WWM] auto-load failed:', e));
+    }, 200);
   }
 }
 

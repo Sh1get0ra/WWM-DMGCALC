@@ -13,7 +13,15 @@ function v(id)  { return parseFloat(document.getElementById(id).value) || 0; }
 function vp(id) { return (parseFloat(document.getElementById(id).value) || 0) / 100; }
 
 // ── 純粋関数：期待ダメージ ────────────────────────────────────────
-function computeExpected(p) {
+function computeExpected(pIn) {
+  // 裏加算 merge (xinfa T0/T1/T3/T4/T6 等、ステ表示反映せず計算寄与のみ)
+  const p = (pIn && pIn._hiddenAdditive) ? Object.assign({}, pIn) : pIn;
+  if (pIn && pIn._hiddenAdditive) {
+    for (const [k, v] of Object.entries(pIn._hiddenAdditive)) {
+      if (typeof v !== 'number') continue;
+      p[k] = (p[k] || 0) + v;
+    }
+  }
   const hiddenBonus  = p.worldLv + p.martialLv + 1;
   const physPenDiff  = p.outerPen - p.physRes;
   // 穿透 ≥ 抗性: overflow は /200 (半減)、< の場合: 不足分は /100 (フル軽減)
@@ -25,7 +33,7 @@ function computeExpected(p) {
   const innerElem    = 1 + p.elemAtkBoost;
   // 奇術ダメは重み 0.2 で寄与 (発動頻度想定30%未満)
   const mysticContrib = ((p.stMysticDmg || 0) + (p.areaMysticDmg || 0)) * 0.1;
-  const outerBoost   = 1 + p.allMartialBoost + p.specMartialBoost + p.bossBoost + (p.playerBoost || 0) + mysticContrib + p.enemyDebuff;
+  const outerBoost   = 1 + p.allMartialBoost + p.specMartialBoost + p.bossBoost + (p.playerBoost || 0) + mysticContrib + p.enemyDebuff + (p.globalDmgBoost || 0);
   const reductionZone= (1 - p.dmgReduce1) * (1 - p.dmgReduce2);
 
   const sympathyRateAdj = p.judgeRes === 0 ? p.sympathyRate : p.sympathyRate / p.judgeRes;
@@ -78,11 +86,12 @@ function computeExpected(p) {
     const ee = sElem(em, es) * (1 + elemPenZone) * innerElem;
     return (pp + ee) * outerBoost * reductionZone * mul;
   }
-  const statusScore =
+  const statusScoreRaw =
         sDmg(avgPhys, avgMain, avgSub) * pNormal
       + sDmg(avgPhys, avgMain, avgSub, 1 + p.critBoost) * pCrit
       + sDmg(p.maxPhysATK, p.maxElemMain, p.maxElemSub, 1 + p.sympathyBoost) * pSympathy
       + sDmg(p.minPhysATK, p.minElemMain, p.minElemSub) * pGraze;
+  const statusScore = statusScoreRaw + (p._fixedScoreBonus || 0);
 
   // tier 判定
   const worldLv = p.worldLv || 1;
@@ -256,6 +265,7 @@ function calculate() {
   const elemBoostMain = v('elemBoostMain'), elemBoostSub = v('elemBoostSub');
   let critBoost         = vp('critBoost');
   let allMartialBoost   = vp('allMartialBoost');
+  let globalDmgBoost    = vp('globalDmgBoost');
   let sympathyBoost     = vp('sympathyBoost');
   let specMartialBoost  = vp('specMartialBoost');
   let outerPen          = v('outerPen');
@@ -320,7 +330,7 @@ function calculate() {
   // 増伤レイヤー分離: 内側(外功/属性別の伤害加成) と 外側(全体増伤、加算合計)
   const innerPhys     = 1 + weaponBonus;
   const innerElem     = 1 + elemAtkBoost;
-  const outerBoost    = 1 + allMartialBoost + specMartialBoost + bossBoost + enemyDebuff;
+  const outerBoost    = 1 + allMartialBoost + specMartialBoost + bossBoost + enemyDebuff + globalDmgBoost;
   const reductionZone = (1 - dmgReduce1) * (1 - dmgReduce2);
 
   const sympathyRateAdj = judgeRes === 0 ? sympathyRate : sympathyRate / judgeRes;

@@ -161,7 +161,21 @@ finalScore = statusScore + 4-set bonus (該当時)</pre>
   m.querySelector('.wwm-modal-close').addEventListener('click', close);
   m.querySelector('#wwmHelpClose').addEventListener('click', close);
 }
-window.WWMHelp = { showScoreFormula: _showScoreFormula };
+function _resetAllVirtuals() {
+  const hasV = (window.__WWM_VIRTUAL && Object.keys(window.__WWM_VIRTUAL).length)
+            || (window.__WWM_VIRTUAL_KONGFU && Object.keys(window.__WWM_VIRTUAL_KONGFU).length)
+            || (window.__WWM_VIRTUAL_XINFA && ((window.__WWM_VIRTUAL_XINFA.passive&&window.__WWM_VIRTUAL_XINFA.passive.length) || Object.keys(window.__WWM_VIRTUAL_XINFA.tiers||{}).length))
+            || window.__WWM_VIRTUAL_ARSENAL;
+  if (!hasV) { alert('リセット対象なし'); return; }
+  if (!confirm('新装備/心法/武術/武庫 全てを現装備値に戻す。よろしい?')) return;
+  window.__WWM_VIRTUAL = {};
+  window.__WWM_VIRTUAL_KONGFU = {};
+  window.__WWM_VIRTUAL_XINFA = null;
+  delete window.__WWM_VIRTUAL_ARSENAL;
+  try { localStorage.removeItem('wwm_virtual_v1'); } catch(_) {}
+  if (typeof window._refreshAll === 'function') window._refreshAll();
+}
+window.WWMHelp = { showScoreFormula: _showScoreFormula, resetAllVirtuals: _resetAllVirtuals };
 
 // ── 弱点指摘 / Diagnostics ──────────────────────────────────────
 // i18n: affix 表記 (ja=オプション / en=affix 等)
@@ -425,9 +439,9 @@ async function renderAffixRanking(roleInfo, params) {
     { key: 'hitRate',      delta: maxTbl.precision, label: `${SL.precision||'命中率'} +${((maxTbl.precision||0)*100).toFixed(1)}%` },
     { key: 'outerPen',     delta: maxTbl.outerPen, label: `${(window.T&&T.penPhys)||'外功貫通'} +${maxTbl.outerPen}` },
     { key: 'elemPen',      delta: maxTbl.attrPen,  label: `${(window.T&&T.penVoid)||'無相貫通'} +${maxTbl.attrPen}` },
-    { key: '_momentum',  delta: maxTbl.stat5, label: `${SL.momentum||'力'} +${maxTbl.stat5?.toFixed(1)}`, derivedPatch: (p,d) => { p.minPhysATK = (p.minPhysATK||0) + d*0.225; p.maxPhysATK = (p.maxPhysATK||0) + d*1.36; } },
-    { key: '_agility',   delta: maxTbl.stat5, label: `${SL.agility||'速'} +${maxTbl.stat5?.toFixed(1)}`, derivedPatch: (p,d) => { p.minPhysATK = (p.minPhysATK||0) + d*0.9; if ((p.critRate||0) < 0.8) p.critRate = Math.min(0.8, (p.critRate||0) + d*0.00076); } },
-    { key: '_power',     delta: maxTbl.stat5, label: `${SL.power||'会'} +${maxTbl.stat5?.toFixed(1)}`, derivedPatch: (p,d) => { p.maxPhysATK = (p.maxPhysATK||0) + d*0.9; if ((p.sympathyRate||0) < 0.4) p.sympathyRate = Math.min(0.4, (p.sympathyRate||0) + d*0.00038); } },
+    { key: '_momentum',  delta: maxTbl.stat5, label: `${SL.momentum||'力'} +${maxTbl.stat5?.toFixed(1)}`, statKey: 'momentum' },
+    { key: '_agility',   delta: maxTbl.stat5, label: `${SL.agility||'速'} +${maxTbl.stat5?.toFixed(1)}`, statKey: 'agility' },
+    { key: '_power',     delta: maxTbl.stat5, label: `${SL.power||'会'} +${maxTbl.stat5?.toFixed(1)}`, statKey: 'power' },
     { key: 'stMysticDmg',  delta: maxTbl.mysticDmg, label: `${SL.stMysticDmg||'奇術ダメ'} +${((maxTbl.mysticDmg||0)*100).toFixed(1)}%` },
     { key: 'allMartialBoost', delta: maxTbl.allWeaponDmg, label: `${SL.allWeaponDmg||'全武学効果'} +${((maxTbl.allWeaponDmg||0)*100).toFixed(1)}%` }
   ].filter(t => t && t.delta != null && t.delta > 0);
@@ -435,11 +449,15 @@ async function renderAffixRanking(roleInfo, params) {
   const results = [];
   for (const t of targets) {
     try {
-      const p2 = await window.WWMStats.buildStatParams(roleInfo, state);
-      if (t.derivedPatch) {
-        // 5行ステ → derived 手動加算 (buildStatParams は roleInfo.statN 読まない)
-        t.derivedPatch(p2, t.delta);
+      let p2;
+      if (t.statKey) {
+        // 5行ステ → roleInfo override で buildStatParams再呼出 (武術 derived cap適用)
+        const base5 = window.WWM_LV95_BASE?.stats?.[t.statKey] || 129;
+        const riPatched = JSON.parse(JSON.stringify(roleInfo));
+        riPatched[t.statKey] = (riPatched[t.statKey] || base5) + t.delta;
+        p2 = await window.WWMStats.buildStatParams(riPatched, state);
       } else {
+        p2 = await window.WWMStats.buildStatParams(roleInfo, state);
         p2[t.key] = (p2[t.key] || 0) + t.delta;
       }
       window.computeExpected(p2);
@@ -1075,8 +1093,8 @@ async function renderSidebar(params) {
       <div class="wwm-sb-info">
         ${charName ? `<div class="wwm-sb-charname">${charName}</div>` : ''}
         <div class="wwm-sb-power"><span class="wwm-muted">${powerLabel}</span> <b>${totalPower}</b></div>
+        <div class="wwm-sb-martial"><span class="wwm-muted">${(window.T&&T.martialIndex)||'武格指数'}</span> <b id="wwmSbMartialScore">-</b> <span class="wwm-sb-tier-badge" id="wwmSbTierBadge"></span></div>
       </div>
-      <button type="button" class="wwm-sb-import-btn" onclick="importData()" data-i18n="importBtn">${importBtnLabel}</button>
     </div>
   `;
   const collapsedSet = _getCollapsedSet();
@@ -1426,8 +1444,47 @@ function renderXinfaGrid(roleInfo) {
       </div>
     `;
   }).join('');
-  root.innerHTML = cards;
+  // 武庫カード (5枚目) — virtual反映
+  const effState = (typeof _getEffectiveState === 'function') ? _getEffectiveState() : state;
+  const arsenalState = effState?.arsenal || state?.arsenal || null;
+  const pathKey = arsenalState?.path || 'phys';
+  const pathLabelMap = { phys: 'pathPhys', bellstrike: 'pathBellstrike', stonesplit: 'pathStonesplit', silkbind: 'pathSilkbind', bamboocut: 'pathBamboocut' };
+  const pathName = (window.T && window.T[pathLabelMap[pathKey]]) || pathKey;
+  const arsenalCard = `
+    <div class="wwm-xinfa-slot wwm-arsenal-slot" data-arsenal-slot onclick="WWMXinfa.openArsenalEdit()">
+      <div class="wwm-xinfa-rail"><span class="wwm-xinfa-rail-text">武庫</span></div>
+      <img class="wwm-xinfa-icon" src="assets/icons/open-treasure-chest.svg" alt="">
+      <div class="wwm-xinfa-inner">
+        <div class="wwm-xinfa-header"><b>${pathName}</b></div>
+      </div>
+      <span class="wwm-xinfa-card-score" data-arsenal-score><b>...</b></span>
+    </div>
+  `;
+  root.innerHTML = cards + arsenalCard;
   _computeXinfaCardScores(roleInfo);
+  _computeArsenalCardScore(roleInfo);
+}
+
+async function _computeArsenalCardScore(roleInfo) {
+  if (!window.WWMStats?.buildStatParams || typeof window.computeExpected !== 'function') return;
+  const state = (typeof _getEffectiveState === 'function') ? _getEffectiveState() : (() => { try { return JSON.parse(localStorage.getItem('wwm_last_state_v1') || 'null'); } catch(_) { return null; } })();
+  try {
+    // base = 武庫込
+    const baseParams = await window.WWMStats.buildStatParams(roleInfo, state);
+    window.computeExpected(baseParams);
+    const baseScore = _scoreWithBonus(roleInfo);
+    // 武庫無 = state.arsenal を空に
+    const stateNoArs = JSON.parse(JSON.stringify(state || {}));
+    if (stateNoArs.arsenal) stateNoArs.arsenal = { path: stateNoArs.arsenal.path, tiers: {} };
+    const noArsParams = await window.WWMStats.buildStatParams(roleInfo, stateNoArs);
+    window.computeExpected(noArsParams);
+    const noArsScore = _scoreWithBonus(roleInfo);
+    const contrib = Math.round(baseScore - noArsScore);
+    const el = document.querySelector('[data-arsenal-score] b');
+    if (el) el.textContent = contrib.toLocaleString();
+    // base 復元
+    window.computeExpected(baseParams);
+  } catch(e) {}
 }
 
 async function _computeXinfaCardScores(roleInfo) {
@@ -1482,15 +1539,102 @@ function openXinfaEdit(slotIdx) {
       .map(([id, x]) => `<option value="${id}" ${String(id)===String(selectedId)?'selected':''}>${x.names?.[lang]||x.names?.ja||id}</option>`)
       .join('');
   }
+  // xinfa effects key → i18n key + 表示形式
+  const _XINFA_EFFECT_LABEL = {
+    allMartialBoost: { tkey: 'allMartialBoost', pct: true },
+    globalDmgBoost:  { tkey: 'globalDmgBoost',  pct: true },
+    critRateAdj:     { tkey: 'critRate',        pct: true },
+    critRate:        { tkey: 'critRate',        pct: true },
+    crit:            { tkey: 'critRate',        pct: true },
+    critBoost:       { tkey: 'critBoost',       pct: true },
+    sympathyRate:    { tkey: 'sympathyRate',    pct: true },
+    affinity:        { tkey: 'sympathyRate',    pct: true },
+    sympathyBoost:   { tkey: 'sympathyBoost',   pct: true },
+    affinityDmgBonus:{ tkey: 'sympathyBoost',   pct: true },
+    elemAtkBoost:    { tkey: 'elemAtkBoost',    pct: true },
+    attrDmgBonus:    { tkey: 'elemAtkBoost',    pct: true },
+    weaponBonus:     { tkey: 'weaponBonus',     pct: true },
+    physDmgBonus:    { tkey: 'weaponBonus',     pct: true },
+    outerPen:        { tkey: 'penPhys',         pct: false },
+    outerPenAdd:     { tkey: 'penPhys',         pct: false },
+    physPen:         { tkey: 'penPhys',         pct: false },
+    elemPen:         { tkey: 'penVoid',         pct: false },
+    attrPen:         { tkey: 'penVoid',         pct: false },
+    bossBoost:       { tkey: 'bossDmg',         pct: true },
+    bossDmg:         { tkey: 'bossDmg',         pct: true },
+    minPhys:         { tkey: 'minPhysATK',      pct: false },
+    maxPhys:         { tkey: 'maxPhysATK',      pct: false },
+    minPhysATK:      { tkey: 'minPhysATK',      pct: false },
+    maxPhysATK:      { tkey: 'maxPhysATK',      pct: false },
+    minPhysATKAdd:   { tkey: 'minPhysATK',      pct: false },
+    maxPhysATKAdd:   { tkey: 'maxPhysATK',      pct: false },
+    addCritRate:     { tkey: 'addCritRate',     pct: true },
+    directCrit:      { tkey: 'addCritRate',     pct: true },
+    addSympathyRate: { tkey: 'addSympathyRate', pct: true },
+    directAffinity:  { tkey: 'addSympathyRate', pct: true },
+    fixedScoreBonus: { tkey: 'martialIndex',    pct: false, scoreCustom: true }
+  };
+  function _xinfaFmtEffect(k, v) {
+    const T = window.T || {};
+    const def = _XINFA_EFFECT_LABEL[k];
+    const label = (def && T[def.tkey]) || k;
+    if (def?.scoreCustom) {
+      if (!v) return `${label} +? (${T.effectUnset || '未代入'})`;
+      return `${label} +${v}`;
+    }
+    const isPct = def?.pct;
+    let valStr;
+    if (isPct) {
+      const pctVal = (Math.abs(v) < 1 ? v * 100 : v);
+      valStr = `${pctVal.toFixed(1)}%`;
+    } else {
+      valStr = String(v);
+    }
+    return `${label} +${valStr}`;
+  }
   function _effectsText(id, tier) {
     if (!id) return '';
     const x = xinfaMap[id];
     if (!x?.attributeBuff) return '';
-    if (typeof window._xinfaEffectsText === 'function') return window._xinfaEffectsText(x, tier);
-    const parts = [];
-    if (tier >= 2 && x.attributeBuff.tier2?.effects) parts.push('T2: ' + Object.entries(x.attributeBuff.tier2.effects).map(([k,v])=>`${k}+${v}`).join(', '));
-    if (tier >= 5 && x.attributeBuff.tier5?.effects) parts.push('T5: ' + Object.entries(x.attributeBuff.tier5.effects).map(([k,v])=>`${k}+${v}`).join(', '));
-    return parts.join(' / ');
+    const effRi = (typeof _getEffectiveRoleInfo === 'function') ? _getEffectiveRoleInfo() : (window.__WWM_ROLEINFO || {});
+    const myKfs = [effRi?.kongfuMain, effRi?.kongfuSub].filter(Boolean).map(v => String(v));
+    const lines = [];
+    for (let t = 0; t <= 6; t++) {
+      const def = x.attributeBuff[`tier${t}`];
+      const isActive = t <= tier;
+      if (!def) {
+        lines.push(`<div class="wwm-cmp-tier-line wwm-tier-empty">T${t}: <span class="wwm-tier-dash">—</span></div>`);
+        continue;
+      }
+      const isTwoFive = (t === 2 || t === 5);
+      const needsKf = !isTwoFive && Array.isArray(def.kongfuRequired) && def.kongfuRequired.length;
+      const kfOk = !needsKf || def.kongfuRequired.some(k => myKfs.includes(String(k)));
+      const effects = def.effects || {};
+      const hasEff = Object.keys(effects).length > 0;
+      // labelOverride: tier毎に effects key → 表示label の上書き (i18n対応)
+      const lang = (typeof _curLang === 'function') ? _curLang() : 'ja';
+      const labelOv = def.labelOverride || null;
+      const effStr = hasEff
+        ? Object.entries(effects).map(([k,v]) => {
+            if (labelOv && labelOv[k]) {
+              const ovLabel = labelOv[k][lang] || labelOv[k].ja || labelOv[k].en || k;
+              // 値整形は通常通り
+              const _def = (typeof _XINFA_EFFECT_LABEL !== 'undefined') ? _XINFA_EFFECT_LABEL[k] : null;
+              if (_def?.scoreCustom) return `${ovLabel} +${v || '?'}`;
+              const isPct = _def?.pct;
+              const valStr = isPct ? `${(Math.abs(v) < 1 ? v*100 : v).toFixed(1)}%` : String(v);
+              return `${ovLabel} +${valStr}`;
+            }
+            return _xinfaFmtEffect(k, v);
+          }).join(', ')
+        : (def.raw || '-');
+      let cls = 'wwm-tier-active';
+      let warn = '';
+      if (!isActive) { cls = 'wwm-tier-unrel'; warn = ' <span class="wwm-tier-warn" title="未解放">⏳</span>'; }
+      else if (needsKf && !kfOk) { cls = 'wwm-tier-kfmiss'; warn = ' <span class="wwm-tier-warn" title="武器条件未満">⚠</span>'; }
+      lines.push(`<div class="wwm-cmp-tier-line ${cls}">T${t}${warn}: ${effStr}</div>`);
+    }
+    return lines.join('');
   }
   const origName = _xName(origPassive[slotIdx]);
   const m = document.createElement('div');
@@ -1566,14 +1710,14 @@ function openXinfaEdit(slotIdx) {
   xSel.addEventListener('change', () => {
     newXinfaId = parseInt(xSel.value, 10);
     const eff = m.querySelector('#wwmCmpXinfaEffect');
-    if (eff) eff.textContent = _effectsText(newXinfaId, newTier);
+    if (eff) eff.innerHTML = _effectsText(newXinfaId, newTier);
     _schedule();
   });
   const tSel = m.querySelector('#wwmCmpXinfaTierSel');
   tSel.addEventListener('change', () => {
     newTier = parseInt(tSel.value, 10);
     const eff = m.querySelector('#wwmCmpXinfaEffect');
-    if (eff) eff.textContent = _effectsText(newXinfaId, newTier);
+    if (eff) eff.innerHTML = _effectsText(newXinfaId, newTier);
     _schedule();
   });
   _schedule();
@@ -1613,17 +1757,22 @@ function _getEffectiveRoleInfo() {
   if (vxi?.passive) merged.passiveSlots = [...vxi.passive];
   return merged;
 }
-// effective state (xinfa tier virtual 込み)
+// effective state (xinfa tier virtual + arsenal virtual 込み)
 function _getEffectiveState() {
   const base = (() => { try { return JSON.parse(localStorage.getItem('wwm_last_state_v1') || 'null'); } catch(_) { return null; } })();
   const vxi = window.__WWM_VIRTUAL_XINFA;
-  if (!vxi?.tiers || !Object.keys(vxi.tiers).length) return base;
+  const vAr = window.__WWM_VIRTUAL_ARSENAL;
+  const hasVxi = vxi?.tiers && Object.keys(vxi.tiers).length;
+  if (!hasVxi && !vAr) return base;
   const merged = JSON.parse(JSON.stringify(base || {}));
-  if (!merged.xinfaTiers) merged.xinfaTiers = {};
-  for (const [k, v] of Object.entries(vxi.tiers)) {
-    merged.xinfaTiers[k] = v;
-    merged.xinfaTiers[String(k)] = v;
+  if (hasVxi) {
+    if (!merged.xinfaTiers) merged.xinfaTiers = {};
+    for (const [k, v] of Object.entries(vxi.tiers)) {
+      merged.xinfaTiers[k] = v;
+      merged.xinfaTiers[String(k)] = v;
+    }
   }
+  if (vAr) merged.arsenal = JSON.parse(JSON.stringify(vAr));
   return merged;
 }
 window.__WWM_GET_EFFECTIVE_ROLEINFO = _getEffectiveRoleInfo;
@@ -1638,14 +1787,48 @@ function _autoFitText(root) {
   });
 }
 window._autoFitText = _autoFitText;
+
+// ── virtual装備 永続化 (gear/kongfu/xinfa) ───────────────────
+const _VIRTUAL_KEY = 'wwm_virtual_v1';
+function _saveVirtuals() {
+  try {
+    const data = {
+      gear:    window.__WWM_VIRTUAL || null,
+      kongfu:  window.__WWM_VIRTUAL_KONGFU || null,
+      xinfa:   window.__WWM_VIRTUAL_XINFA || null,
+      arsenal: window.__WWM_VIRTUAL_ARSENAL || null
+    };
+    const empty = (!data.gear || !Object.keys(data.gear).length)
+               && (!data.kongfu || !Object.keys(data.kongfu).length)
+               && (!data.xinfa || (!(data.xinfa.passive&&data.xinfa.passive.length) && !Object.keys(data.xinfa.tiers||{}).length))
+               && (!data.arsenal);
+    if (empty) localStorage.removeItem(_VIRTUAL_KEY);
+    else localStorage.setItem(_VIRTUAL_KEY, JSON.stringify(data));
+  } catch(_) {}
+}
+function _loadVirtuals() {
+  try {
+    const raw = localStorage.getItem(_VIRTUAL_KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.gear)    window.__WWM_VIRTUAL = d.gear;
+    if (d.kongfu)  window.__WWM_VIRTUAL_KONGFU = d.kongfu;
+    if (d.xinfa)   window.__WWM_VIRTUAL_XINFA = d.xinfa;
+    if (d.arsenal) window.__WWM_VIRTUAL_ARSENAL = d.arsenal;
+  } catch(_) {}
+}
+window._saveVirtuals = _saveVirtuals;
+window._loadVirtuals = _loadVirtuals;
+_loadVirtuals();
+
 function _refreshAll() {
   const ri = _getEffectiveRoleInfo();
   if (!ri) return;
   const state = _getEffectiveState();
   if (window.WWMStats) {
-    window.WWMStats.buildStatParams(ri, state).then(params => {
+    window.WWMStats.buildStatParams(ri, state).then(async params => {
       window.__WWM_PARAMS = params;
-      window.WWMSidebar.render(params);
+      await window.WWMSidebar.render(params);
       window.WWMGear.render(ri);
       if (window.WWMXinfa) window.WWMXinfa.render(ri);
       if (window.WWMDiag) window.WWMDiag.render(ri, params);
@@ -1653,6 +1836,7 @@ function _refreshAll() {
       if (window.WWMOpt) window.WWMOpt.render(ri, params);
       if (window.WWMHero) window.WWMHero.update(params);
       _autoFitText();
+      _saveVirtuals();
     }).catch(e => console.error('[WWM] refresh failed:', e));
   }
 }
@@ -2449,6 +2633,18 @@ function updateHero(params) {
                 : statusScore >= thr2*0.6 ? 'B' : 'C';
   const tbCur = document.getElementById('heroTierBadge');
   if (tbCur) { tbCur.textContent = curTier; tbCur.className = 'tier-badge tier-' + curTier; }
+  // sidebar 武格指数行 tier badge + score — 現在の装備 (baseline) 基準
+  const sbTb = document.getElementById('wwmSbTierBadge');
+  const sbMs = document.getElementById('wwmSbMartialScore');
+  if (sbTb) {
+    const baselineTier = window.__WWM_BASELINE?.tier || curTier;
+    sbTb.textContent = baselineTier;
+    sbTb.className = 'wwm-sb-tier-badge tier-' + baselineTier;
+  }
+  if (sbMs) {
+    const baselineScore = window.__WWM_BASELINE?.statusScore;
+    sbMs.textContent = (typeof baselineScore === 'number') ? Math.round(baselineScore).toLocaleString() : Math.round(statusScore).toLocaleString();
+  }
   // tier に応じたスコア色 (theme別)
   const _isLight = document.documentElement.getAttribute('data-theme') === 'light';
   const TIER_COLOR = _isLight
@@ -2659,8 +2855,211 @@ window.WWMGear = {
 };
 window.WWMXinfa = {
   render: renderXinfaGrid,
-  openEdit: openXinfaEdit
+  openEdit: openXinfaEdit,
+  openArsenalEdit: () => openArsenalEdit()
 };
+function openArsenalEdit() {
+  const T_ = window.T || {};
+  const state = (() => { try { return JSON.parse(localStorage.getItem('wwm_last_state_v1') || 'null'); } catch(_) { return null; } })();
+  const origArsenal = state?.arsenal || { path: 'phys', tiers: {} };
+  const virtArsenal = window.__WWM_VIRTUAL_ARSENAL;
+  // 新側 初期値 = virtual あれば virtual、なければ orig コピー
+  const newArsenal = virtArsenal
+    ? JSON.parse(JSON.stringify(virtArsenal))
+    : JSON.parse(JSON.stringify(origArsenal));
+  const PATHS = [
+    { key: 'phys',       labelKey: 'pathPhys',       minStat: 'minPhys',       maxStat: 'maxPhys' },
+    { key: 'bellstrike', labelKey: 'pathBellstrike', minStat: 'minBellstrike', maxStat: 'maxBellstrike' },
+    { key: 'stonesplit', labelKey: 'pathStonesplit', minStat: 'minStonesplit', maxStat: 'maxStonesplit' },
+    { key: 'silkbind',   labelKey: 'pathSilkbind',   minStat: 'minSilkbind',   maxStat: 'maxSilkbind' },
+    { key: 'bamboocut',  labelKey: 'pathBamboocut',  minStat: 'minBamboocut',  maxStat: 'maxBamboocut' }
+  ];
+  const TIERS = [86, 81, 71, 61, 56, 51, 41];
+  const TIER_PRESET = { 41: { min: 12, max: 25 }, default: { min: 17, max: 34 } };
+  const SL = window._AFFIX_DISPLAY_LABELS || {};
+  const statLabels = (pk) => {
+    const p = PATHS.find(x => x.key === pk) || PATHS[0];
+    return { min: SL[p.minStat] || p.minStat, max: SL[p.maxStat] || p.maxStat };
+  };
+  const pathLabel = (k) => {
+    const p = PATHS.find(x => x.key === k);
+    return p ? ((window.T && window.T[p.labelKey]) || p.key) : k;
+  };
+  const m = document.createElement('div');
+  m.className = 'wwm-modal-backdrop';
+  function _curRows(ars) {
+    const sL = statLabels(ars.path);
+    return TIERS.map(lv => {
+      const t = ars.tiers?.[lv];
+      const peaked = !!t?.peaked;
+      const preset = lv === 41 ? TIER_PRESET[41] : TIER_PRESET.default;
+      const minV = t?.min ?? preset.min;
+      const maxV = t?.max ?? preset.max;
+      const valTxt = peaked
+        ? `<span style="color:var(--gold-bright);">頂点 ✓</span> <span style="color:var(--gold-bright);font-size:11px;">${sL.min}+${minV} ${sL.max}+${maxV}</span>`
+        : `<span style="color:var(--paper-mute);">未突破</span> <span style="color:var(--gold-bright);font-size:11px;">${sL.min}+${minV} ${sL.max}+${maxV}</span>`;
+      return `<div class="wwm-cmp-row" style="grid-template-columns:50px 1fr;"><span style="font-family:var(--f-mono);font-weight:700;">Lv${lv}</span><span>${valTxt}</span></div>`;
+    }).join('');
+  }
+  function _newRows(ars) {
+    const sL = statLabels(ars.path);
+    return TIERS.map(lv => {
+      const t = ars.tiers?.[lv] || {};
+      const peaked = !!t.peaked;
+      const preset = lv === 41 ? TIER_PRESET[41] : TIER_PRESET.default;
+      const minV = t.min ?? preset.min;
+      const maxV = t.max ?? preset.max;
+      const inputArea = peaked
+        ? `<span style="color:var(--gold-bright);font-size:11px;">${sL.min}+${minV} ${sL.max}+${maxV}</span>`
+        : `<span style="display:inline-flex;gap:6px;font-size:11px;color:var(--gold-bright);align-items:center;">
+             <span>${sL.min}</span><input type="number" class="wwm-num-input" data-tier-min="${lv}" min="0" max="${preset.min}" step="1" value="${minV}" style="width:50px;">
+             <span>${sL.max}</span><input type="number" class="wwm-num-input" data-tier-max="${lv}" min="0" max="${preset.max}" step="1" value="${maxV}" style="width:50px;">
+           </span>`;
+      return `<div class="wwm-cmp-row" style="grid-template-columns:50px 1fr;align-items:center;"><span style="font-family:var(--f-mono);font-weight:700;">Lv${lv}</span>
+        <span style="display:flex;flex-direction:column;gap:2px;">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" data-tier="${lv}" ${peaked?'checked':''}> <span>頂点</span></label>
+          ${inputArea}
+        </span>
+      </div>`;
+    }).join('');
+  }
+  function _pathRadios(curKey) {
+    return PATHS.map(p => `<label class="wwm-radio-label" style="display:inline-flex;align-items:center;gap:4px;margin-right:8px;cursor:pointer;"><input type="radio" name="wwmArsenalEditPath" value="${p.key}" ${p.key===curKey?'checked':''}>${pathLabel(p.key)}</label>`).join('');
+  }
+  m.innerHTML = `
+    <div class="wwm-modal wwm-modal-wide wwm-modal-square">
+      <div class="wwm-modal-bg-icon" style="background-image:url('assets/icons/open-treasure-chest.svg');"></div>
+      <div class="wwm-modal-header">
+        <h2>武庫編集 / ARSENAL</h2>
+        <button class="wwm-modal-close" aria-label="Close">×</button>
+      </div>
+      <div class="wwm-modal-body">
+        <div class="wwm-cmp-grid">
+          <div class="wwm-cmp-col wwm-cmp-current">
+            <div class="wwm-cmp-title">現在の武庫</div>
+            <div class="wwm-cmp-kongfu-header" style="margin-bottom:8px;">${pathLabel(origArsenal.path)}</div>
+            <div class="wwm-cmp-rows">${_curRows(origArsenal)}</div>
+          </div>
+          <div class="wwm-cmp-col wwm-cmp-new">
+            <div class="wwm-cmp-title">新しい武庫</div>
+            <div style="margin-bottom:8px;flex-wrap:wrap;display:flex;" id="wwmArsenalEditPaths">${_pathRadios(newArsenal.path)}</div>
+            <div class="wwm-cmp-rows" id="wwmArsenalEditRows">${_newRows(newArsenal)}</div>
+          </div>
+        </div>
+        <div class="wwm-cmp-delta-row" id="wwmArsenalEditDelta" style="margin-top:12px;"></div>
+        <div class="wwm-btn-row" style="margin-top:16px;">
+          <button class="wwm-btn-primary" id="wwmArsenalEditApply">適用 (sidebar反映)</button>
+          <button class="wwm-btn-secondary" id="wwmArsenalEditReset">元に戻す</button>
+          <button class="wwm-btn-secondary" id="wwmArsenalEditCancel">キャンセル</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(m);
+  const close = () => m.remove();
+  m.querySelector('.wwm-modal-close').addEventListener('click', close);
+  m.querySelector('#wwmArsenalEditCancel').addEventListener('click', close);
+  function _rerenderNew() {
+    const rowsEl = m.querySelector('#wwmArsenalEditRows');
+    if (rowsEl) rowsEl.innerHTML = _newRows(newArsenal);
+    bindRowEvents();
+    _schedulePreview();
+  }
+  m.querySelectorAll('[name="wwmArsenalEditPath"]').forEach(r => {
+    r.addEventListener('change', () => {
+      newArsenal.path = r.value;
+      _rerenderNew();
+    });
+  });
+  function bindRowEvents() {
+    m.querySelectorAll('#wwmArsenalEditRows input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const lv = parseInt(cb.dataset.tier, 10);
+        if (!newArsenal.tiers) newArsenal.tiers = {};
+        const preset = lv === 41 ? TIER_PRESET[41] : TIER_PRESET.default;
+        if (!newArsenal.tiers[lv]) newArsenal.tiers[lv] = { peaked: false, min: preset.min, max: preset.max };
+        newArsenal.tiers[lv].peaked = cb.checked;
+        _rerenderNew();
+      });
+    });
+    m.querySelectorAll('#wwmArsenalEditRows input[data-tier-min]').forEach(inp => {
+      inp.addEventListener('input', () => {
+        const lv = parseInt(inp.dataset.tierMin, 10);
+        let v = parseInt(inp.value, 10);
+        const preset = lv === 41 ? TIER_PRESET[41] : TIER_PRESET.default;
+        if (isNaN(v)) v = 0;
+        if (v > preset.min) { v = preset.min; inp.value = preset.min; }
+        if (v < 0) { v = 0; inp.value = 0; }
+        if (!newArsenal.tiers) newArsenal.tiers = {};
+        if (!newArsenal.tiers[lv]) newArsenal.tiers[lv] = { peaked: false, min: 0, max: 0 };
+        newArsenal.tiers[lv].min = v;
+        _schedulePreview();
+      });
+    });
+    m.querySelectorAll('#wwmArsenalEditRows input[data-tier-max]').forEach(inp => {
+      inp.addEventListener('input', () => {
+        const lv = parseInt(inp.dataset.tierMax, 10);
+        let v = parseInt(inp.value, 10);
+        const preset = lv === 41 ? TIER_PRESET[41] : TIER_PRESET.default;
+        if (isNaN(v)) v = 0;
+        if (v > preset.max) { v = preset.max; inp.value = preset.max; }
+        if (v < 0) { v = 0; inp.value = 0; }
+        if (!newArsenal.tiers) newArsenal.tiers = {};
+        if (!newArsenal.tiers[lv]) newArsenal.tiers[lv] = { peaked: false, min: 0, max: 0 };
+        newArsenal.tiers[lv].max = v;
+        _schedulePreview();
+      });
+    });
+  }
+  bindRowEvents();
+  let previewTimer = null;
+  async function _schedulePreview() {
+    clearTimeout(previewTimer);
+    previewTimer = setTimeout(_runPreview, 150);
+  }
+  async function _runPreview() {
+    const ri = (typeof _getEffectiveRoleInfo === 'function') ? _getEffectiveRoleInfo() : window.__WWM_ROLEINFO;
+    if (!ri || !window.WWMStats?.buildStatParams) return;
+    const baseState = (typeof _getEffectiveState === 'function') ? _getEffectiveState() : (() => { try { return JSON.parse(localStorage.getItem('wwm_last_state_v1') || 'null'); } catch(_) { return null; } })();
+    try {
+      // 現 (virtual_arsenal 無視 = 元 arsenal)
+      const baseStateNoVirtArs = JSON.parse(JSON.stringify(baseState || {}));
+      const origState = (() => { try { return JSON.parse(localStorage.getItem('wwm_last_state_v1') || 'null'); } catch(_) { return null; } })();
+      if (origState?.arsenal) baseStateNoVirtArs.arsenal = origState.arsenal;
+      const p1 = await window.WWMStats.buildStatParams(ri, baseStateNoVirtArs);
+      window.computeExpected(p1);
+      const baseScore = _scoreWithBonus(ri);
+      // 新
+      const newState = JSON.parse(JSON.stringify(baseState || {}));
+      newState.arsenal = newArsenal;
+      const p2 = await window.WWMStats.buildStatParams(ri, newState);
+      window.computeExpected(p2);
+      const newScore = _scoreWithBonus(ri);
+      const delta = Math.round(newScore - baseScore);
+      const deltaEl = m.querySelector('#wwmArsenalEditDelta');
+      if (deltaEl) {
+        const sign = delta >= 0 ? '+' : '';
+        const color = delta > 0 ? 'var(--jade-bright,#a8d4b4)' : delta < 0 ? 'var(--vermilion-bright,#e8513a)' : 'var(--paper-mute)';
+        deltaEl.innerHTML = `<span style="font-size:12px;color:var(--paper-mute);">Δ Score: </span><span style="font-family:var(--f-mono);font-weight:700;color:${color};">${sign}${delta.toLocaleString()}</span> <span style="color:var(--paper-mute);">(${Math.round(newScore).toLocaleString()})</span>`;
+      }
+      // 復元
+      window.computeExpected(p1);
+    } catch(e) {}
+  }
+  _schedulePreview();
+  m.querySelector('#wwmArsenalEditApply').addEventListener('click', () => {
+    window.__WWM_VIRTUAL_ARSENAL = newArsenal;
+    if (typeof window._saveVirtuals === 'function') window._saveVirtuals();
+    close();
+    if (typeof window._refreshAll === 'function') window._refreshAll();
+  });
+  m.querySelector('#wwmArsenalEditReset').addEventListener('click', () => {
+    delete window.__WWM_VIRTUAL_ARSENAL;
+    if (typeof window._saveVirtuals === 'function') window._saveVirtuals();
+    close();
+    if (typeof window._refreshAll === 'function') window._refreshAll();
+  });
+}
 window.WWMHero = {
   update: updateHero
 };

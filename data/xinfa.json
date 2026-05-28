@@ -185,19 +185,27 @@
   },
   "41": {
     "names": {
-      "ja": "征軍帰鄉",
+      "ja": "征軍帰郷",
       "en": "Envigorated Warrior",
       "zh": "征人归",
       "ko": "생명의 귀환"
     },
-    "modes": {
-      "default": {
-        "allMartialBoost": 0.05
-      }
-    },
-    "defaultMode": "default",
     "description": "+5% all damage/healing / -5s cooldown after hit / +5% damage taken (Cage)",
     "attributeBuff": {
+      "tier0": {
+        "permanent": true,
+        "effects": {
+          "globalDmgBoost": 0.05
+        },
+        "raw": "全ダメージ/治癒+5%、 被撃後5s 無敵化、 cage debuff +5%被ダメ/stack"
+      },
+      "tier1": {
+        "permanent": true,
+        "effects": {
+          "fixedScoreBonus": 50
+        },
+        "raw": "cage debuff 5%→3%軽減 (被害減少、 攻撃計算外)"
+      },
       "tier2": {
         "permanent": true,
         "worldLv": 14,
@@ -207,12 +215,33 @@
         },
         "raw": "Min Physical Attack +57.5"
       },
+      "tier3": {
+        "permanent": true,
+        "effects": {
+          "fixedScoreBonus": 50
+        },
+        "raw": "攻撃命中後5s 無敵化 (防御系)"
+      },
+      "tier4": {
+        "permanent": true,
+        "effects": {
+          "globalDmgBoost": 0.03
+        },
+        "raw": "ベース 5%→8% (T0からの差分+3%、 累計0.08)"
+      },
       "tier5": {
         "permanent": true,
         "effects": {
           "outerPenAdd": 5.1
         },
         "raw": "Physical Penetration +5.1"
+      },
+      "tier6": {
+        "permanent": true,
+        "effects": {
+          "fixedScoreBonus": 50
+        },
+        "raw": "marked target hit時 無敵化リセット保護"
       }
     },
     "rank": "purple"
@@ -443,19 +472,22 @@
       "zh": "易水歌",
       "ko": "결의의 노래"
     },
-    "modes": {
-      "default": {
-        "outerPenAdd": 10,
-        "allMartialBoost": 0.05
-      },
-      "ccBuff": {
-        "outerPenAdd": 10,
-        "allMartialBoost": 0.1
-      }
-    },
-    "defaultMode": "default",
-    "description": "5 stack × (+2 物理貫通, +1% damage·heal, 12s)。CC中 stack 倍 (Tier3)。Tier5 +4.6% 直接会心率",
+    "description": "5 stack × (+2 物理貫通, +1% damage·heal, 12s)。衰弱中 stack/効果 倍 (Tier3)。Tier5 +4.6% 直接会心率",
     "attributeBuff": {
+      "tier0": {
+        "permanent": true,
+        "effects": {
+          "globalDmgBoost": 0.05
+        },
+        "raw": "与ダメ/治癒+1%/stack × max5stack = +5% (常時発動仮定)"
+      },
+      "tier1": {
+        "permanent": true,
+        "effects": {
+          "outerPen": 10
+        },
+        "raw": "外功貫通+2/stack × max5stack = +10"
+      },
       "tier2": {
         "permanent": true,
         "worldLv": 14,
@@ -466,12 +498,33 @@
         },
         "raw": "Physical Attack +21.3 ~ +42.5"
       },
+      "tier3": {
+        "permanent": true,
+        "effects": {
+          "fixedScoreBonus": 50
+        },
+        "raw": "衰弱中 与ダメ倍 (条件発動、常時想定不可)"
+      },
+      "tier4": {
+        "permanent": true,
+        "effects": {
+          "fixedScoreBonus": 50
+        },
+        "raw": "確率100%+12s持続 (max stack維持安定化)"
+      },
       "tier5": {
         "permanent": true,
         "effects": {
           "addCritRate": 0.046
         },
         "raw": "Direct Critical Rate +4.6%"
+      },
+      "tier6": {
+        "permanent": true,
+        "effects": {
+          "fixedScoreBonus": 50
+        },
+        "raw": "max stack時 ボーナスダメ発動 (衰弱時2回、CD 10s)"
       }
     },
     "rank": "gold"
@@ -1191,6 +1244,20 @@
     "defaultMode": "default",
     "description": "ignore 10% Physical Defense and 10% Bamboocut Resistance。物理防御無視 (Bamboocut 武術専用)",
     "attributeBuff": {
+      "tier0": {
+        "permanent": true,
+        "kongfuRequired": [20501],
+        "effects": {},
+        "raw": "外功防御10%/瞬嵐耐性10無視"
+      },
+      "tier1": {
+        "permanent": true,
+        "kongfuRequired": [20501],
+        "effects": {
+          "globalDmgBoost": 0.05
+        },
+        "raw": "悪身&苦果対象攻撃で 10s輪廻獲得、 輪廻時 与ダメ+5% (輪廻常時発動仮定)"
+      },
       "tier2": {
         "permanent": true,
         "worldLv": 14,
@@ -1200,12 +1267,36 @@
         },
         "raw": "Critical Rate +7.4%"
       },
+      "tier3": {
+        "permanent": true,
+        "kongfuRequired": [20501],
+        "effects": {
+          "fixedScoreBonus": 50
+        },
+        "raw": "完全回避→輪廻獲得、 輪廻時ダメ→業火+1"
+      },
+      "tier4": {
+        "permanent": true,
+        "kongfuRequired": [20501],
+        "effects": {
+          "fixedScoreBonus": 50
+        },
+        "raw": "輪廻時ダメ→業火+1"
+      },
       "tier5": {
         "permanent": true,
         "effects": {
           "critBoost": 0.044
         },
         "raw": "Critical DMG Bonus +4.4%"
+      },
+      "tier6": {
+        "permanent": true,
+        "kongfuRequired": [20501],
+        "effects": {
+          "globalDmgBoost": 0.05
+        },
+        "raw": "怒炎軽撃 悪身+苦果同時付与、 輪廻時 与ダメ+10% (T1から差分+5%、累計0.10)"
       }
     },
     "rank": "gold"
@@ -1217,10 +1308,24 @@
       "zh": "宿怨结晶",
       "ko": "심연의 늪"
     },
-    "modes": {},
-    "defaultMode": "default",
-    "description": "+5s duration / +20 Tokens of Gratitude。リソース系。",
+    "description": "浮塵の縄 鼠召喚強化心法。 鼠ダメ = 与ダメ50%想定。",
     "attributeBuff": {
+      "tier0": {
+        "permanent": true,
+        "kongfuRequired": [20701],
+        "effects": {
+          "fixedScoreBonus": 50
+        },
+        "raw": "敵討令/鼠の威力/力溜め召喚ねずみ 持続時間 10s→15s、 恩文字の札+20回復"
+      },
+      "tier1": {
+        "permanent": true,
+        "kongfuRequired": [20701],
+        "effects": {
+          "fixedScoreBonus": 50
+        },
+        "raw": "回復速度+30%、 敵デバフ持続+延長 (20s)"
+      },
       "tier2": {
         "permanent": true,
         "worldLv": 14,
@@ -1232,12 +1337,46 @@
         },
         "derivedFromGold": true
       },
+      "tier3": {
+        "permanent": true,
+        "kongfuRequired": [20701],
+        "effects": {
+          "globalDmgBoost": 0.06
+        },
+        "synergyKongfu": [20501],
+        "synergyMultiplier": 2.0,
+        "labelOverride": {
+          "globalDmgBoost": { "ja": "鼠ダメージ強化", "en": "Rat DMG Boost", "zh": "鼠伤害强化", "ko": "쥐 피해 증가" }
+        },
+        "raw": "鼠ダメージの30%追加ダメージ (20s時限、 base 鼠10%、 獄炎同装備時 鼠20% ×2)"
+      },
+      "tier4": {
+        "permanent": true,
+        "kongfuRequired": [20701],
+        "effects": {
+          "fixedScoreBonus": 50
+        },
+        "raw": "恩文字の札 回復速度 30→50%、 札2枚消費で持続20s延長"
+      },
       "tier5": {
         "permanent": true,
         "effects": {
           "outerPenAdd": 5.1
         },
         "raw": "Physical Penetration +5.1 (post 5/28 patch swap with 454)"
+      },
+      "tier6": {
+        "permanent": true,
+        "kongfuRequired": [20701],
+        "effects": {
+          "globalDmgBoost": 0.06
+        },
+        "synergyKongfu": [20501],
+        "synergyMultiplier": 2.0,
+        "labelOverride": {
+          "globalDmgBoost": { "ja": "鼠ダメージ強化", "en": "Rat DMG Boost", "zh": "鼠伤害强化", "ko": "쥐 피해 증가" }
+        },
+        "raw": "鼠ダメージ+30% (base 鼠10%、 獄炎同装備時 鼠20% ×2)"
       }
     },
     "rank": "purple"

@@ -49,6 +49,8 @@ const _CALCJS_TO_WWM = {
   hitRate:         'precision',
   minPhysATKAdd:   'minPhys',
   maxPhysATKAdd:   'maxPhys',
+  minPhysATK:      'minPhys',
+  maxPhysATK:      'maxPhys',
   outerPenAdd:     'physPen',
   elemPenAdd:      'attrPen',
   physDmgBoost:    'physDmgBonus',
@@ -69,6 +71,10 @@ async function buildStatParams(roleInfo, state) {
   await _ensureDicts();
   const base = window.WWM_LV95_BASE?.stats || {};
   const r = Object.assign({}, base);
+  // roleInfo の 5行ステ override (ranking 力/速/会 シミュ用)
+  for (const k of ['body','momentum','defense','agility','power']) {
+    if (typeof roleInfo?.[k] === 'number') r[k] = roleInfo[k];
+  }
 
   // 1. 装備 baseAttrs
   const eqDet = roleInfo?.wearEquipsDetailed || {};
@@ -97,14 +103,18 @@ async function buildStatParams(roleInfo, state) {
   //    現状 sidebar 加算を除外。隠し効果が判明したら再有効化。
   // (実装保留: 元 Lv 0-50 線形補間で minPhys/maxPhys に加算する想定だった)
 
-  // 4. 武庫
+  // 4. 武庫 (path key に加算 + 別途 sum 保持で副属性枠に使う)
+  let _arsMinSum = 0, _arsMaxSum = 0;
   if (state?.arsenal?.path) {
     const keys = _PATH_KEY_MAP[state.arsenal.path] || _PATH_KEY_MAP.phys;
     for (const tier of Object.values(state.arsenal.tiers || {})) {
-      if (tier.min) _acc(r, keys.min, tier.min);
-      if (tier.max) _acc(r, keys.max, tier.max);
+      if (tier.min) { _acc(r, keys.min, tier.min); _arsMinSum += tier.min; }
+      if (tier.max) { _acc(r, keys.max, tier.max); _arsMaxSum += tier.max; }
     }
   }
+  r._arsMinSum = _arsMinSum;
+  r._arsMaxSum = _arsMaxSum;
+  r._arsPath = state?.arsenal?.path || null;
 
   // 4.5 武術 (kongfu) effects: 主+副 の minElemMainAdd/maxElemMainAdd → path-specific min/max のみ
   for (const kid of [roleInfo?.kongfuMain, roleInfo?.kongfuSub]) {
@@ -115,24 +125,72 @@ async function buildStatParams(roleInfo, state) {
     const ef = kf.effects || {};
     if (ef.minElemMainAdd) _acc(r, kKeys.min, ef.minElemMainAdd);
     if (ef.maxElemMainAdd) _acc(r, kKeys.max, ef.maxElemMainAdd);
+    // path特定 key (例: minStonesplitAdd / maxBamboocutAdd)
+    const minAddKey = kKeys.min + 'Add';
+    const maxAddKey = kKeys.max + 'Add';
+    if (ef[minAddKey]) _acc(r, kKeys.min, ef[minAddKey]);
+    if (ef[maxAddKey]) _acc(r, kKeys.max, ef[maxAddKey]);
   }
 
-  // 5. 心法 (state.xinfaTiers の Tier値で適用、Tier>=2 で tier2、Tier>=5 で tier5)
+  // 5. 心法 (state.xinfaTiers の Tier値で適用、tier0-6 順次解放)
+  //   T2/T5 = 武器条件なし常時、 他Tier = kongfuRequired あれば 主or副 一致必要
   const tiers = state?.xinfaTiers || { 0:6, 1:6, 2:6, 3:6 };
   const passive = roleInfo?.passiveSlots || [];
+  const _myKfs = [roleInfo?.kongfuMain, roleInfo?.kongfuSub].filter(Boolean);
+  const _TIER_KEYS = ['tier0','tier1','tier2','tier3','tier4','tier5','tier6'];
   for (let i = 0; i < passive.length; i++) {
     const xinfaId = passive[i];
     const x = window.WWM_XINFA?.[xinfaId];
     if (!x?.attributeBuff) continue;
     const tier = tiers[i] ?? tiers[String(i)] ?? 6;
-    const apply = (tk) => {
-      const eff = x.attributeBuff[tk]?.effects || {};
-      for (const [k, v] of Object.entries(eff)) {
-        if (typeof v === 'number') _accMapped(r, k, v);
+    // 武器専用心法判定: 任意Tierに kongfuRequired あれば 武器専用 → 全effects × 0.5
+    let _weaponLocked = false;
+    for (const tk of _TIER_KEYS) {
+      const dd = x.attributeBuff[tk];
+      if (dd && Array.isArray(dd.kongfuRequired) && dd.kongfuRequired.length) {
+        _weaponLocked = true; break;
       }
-    };
-    if (tier >= 2) apply('tier2');
-    if (tier >= 5) apply('tier5');
+    }
+    const _factor = _weaponLocked ? 0.5 : 1.0;
+    // 集計: visible(T2/T5,ステ反映) / hidden(他Tier,_hiddenAdditive)
+    // 全部加算 (上書きしたい場合は xinfa.json 側で下位Tier effects 空にする)
+    const visibleSums = {};
+    const hiddenSums = {};
+    let fixedScoreBonus = 0;
+    for (let t = 0; t <= tier; t++) {
+      const tk = _TIER_KEYS[t];
+      const def = x.attributeBuff[tk];
+      if (!def) continue;
+      const isTwoFiveTier = (tk === 'tier2' || tk === 'tier5');
+      // T2/T5 以外は kongfuRequired check (定義あれば)
+      if (!isTwoFiveTier && Array.isArray(def.kongfuRequired) && def.kongfuRequired.length) {
+        const ok = def.kongfuRequired.some(k => _myKfs.includes(k) || _myKfs.includes(String(k)) || _myKfs.includes(Number(k)));
+        if (!ok) continue;
+      }
+      const eff = def.effects || {};
+      // synergyKongfu: 指定武術 と同時装備で synergyMultiplier 倍
+      const synKfs = Array.isArray(def.synergyKongfu) ? def.synergyKongfu : [];
+      const synActive = synKfs.length > 0 && synKfs.some(k => _myKfs.includes(String(k)) || _myKfs.includes(Number(k)));
+      const synMul = synActive ? (def.synergyMultiplier || 1) : 1;
+      for (const [k, v] of Object.entries(eff)) {
+        if (typeof v !== 'number') continue;
+        const vAdj = v * synMul;
+        if (k === 'fixedScoreBonus') {
+          fixedScoreBonus += vAdj;
+        } else if (isTwoFiveTier) {
+          visibleSums[k] = (visibleSums[k] || 0) + vAdj;
+        } else {
+          hiddenSums[k] = (hiddenSums[k] || 0) + vAdj;
+        }
+      }
+    }
+    // 集計適用: T2/T5 (visible) + fixedScoreBonus は固定 ×1.0、 hidden のみ ×factor (武器専用心法 ×0.5)
+    for (const [k, v] of Object.entries(visibleSums)) _accMapped(r, k, v);
+    for (const [k, v] of Object.entries(hiddenSums)) {
+      if (!r._hiddenAdditive) r._hiddenAdditive = {};
+      r._hiddenAdditive[k] = (r._hiddenAdditive[k] || 0) + v * _factor;
+    }
+    r._fixedScoreBonus = (r._fixedScoreBonus || 0) + fixedScoreBonus;
   }
 
   // 6. セット pieces2 (suffix が 2個以上で発動)
@@ -171,9 +229,24 @@ async function buildStatParams(roleInfo, state) {
   const pathKeys = _PATH_KEY_MAP[activePath] || _PATH_KEY_MAP.bamboocut;
   r.minElemMain = r[pathKeys.min] || 0;
   r.maxElemMain = r[pathKeys.max] || 0;
-  r.minElemSub  = 0;
-  r.maxElemSub  = 0;
+  // 表示専用: 全path合計 (ゲーム「属性攻撃」表示準拠、計算には未使用)
+  r.minElemDisp = (r.minBellstrike||0) + (r.minStonesplit||0) + (r.minSilkbind||0) + (r.minBamboocut||0) + (r.minVoid||0);
+  r.maxElemDisp = (r.maxBellstrike||0) + (r.maxStonesplit||0) + (r.maxSilkbind||0) + (r.maxBamboocut||0) + (r.maxVoid||0);
+  // 副属性枠 = 武庫加算分のみ (arsenal.path != activePath 時のみ)
+  // 装備 path別 affix は 主path のみ計算反映 (それ以外は死に枠 = ゲーム仕様)
+  const arsPath = state?.arsenal?.path;
+  let subPath = null;
+  // 汎用(phys)武庫 は minPhys/maxPhys に既加算済 → 副属性枠流入禁止 (二重カウント防止)
+  if (arsPath && arsPath !== 'phys' && arsPath !== activePath) {
+    subPath = arsPath;
+    r.minElemSub = _arsMinSum;
+    r.maxElemSub = _arsMaxSum;
+  } else {
+    r.minElemSub = 0;
+    r.maxElemSub = 0;
+  }
   r._activePath = activePath;
+  r._subPath = subPath;
 
   // 8.5 kongfu derived (主+副 両方 適用、ただし crit/affinity 系は 主のみ重複防止)
   const derivedDedupKeys = new Set(['crit','critRate','affinity','sympathyRate']);
@@ -185,9 +258,15 @@ async function buildStatParams(roleInfo, state) {
       const wwmKey = _CALCJS_TO_WWM[d.appliesTo] || d.appliesTo;
       // 重複防止 (例: 主・副 両方の agility→crit 重複)
       if (derivedDedupKeys.has(wwmKey) && derivedSeen.has(wwmKey)) continue;
-      const fromVal = (d.from === 'minElemMain') ? r.minElemMain
-                    : (d.from === 'maxElemMain') ? r.maxElemMain
-                    : (r[d.from] || 0);
+      // d.from 解析: 'momentum'/'body'/単純key or 'max(a,b)' 形式
+      const _parseFromVal = (from) => {
+        if (from === 'minElemMain') return r.minElemMain || 0;
+        if (from === 'maxElemMain') return r.maxElemMain || 0;
+        const m = /^max\(([^,]+),([^)]+)\)$/.exec(from || '');
+        if (m) return Math.max(r[m[1].trim()] || 0, r[m[2].trim()] || 0);
+        return r[from] || 0;
+      };
+      const fromVal = _parseFromVal(d.from);
       // elemPen 系は active path 別の pen key に
       let applyKey = d.appliesTo;
       if (applyKey === 'elemPen') {
@@ -212,13 +291,35 @@ async function buildStatParams(roleInfo, state) {
     const kf = window.WWM_KONGFU?.[kid];
     if (!kf?.derived) continue;
     for (const d of kf.derived) {
-      if (!_fiveKeys.has(d.from)) continue;
-      const cur = r[d.from] || 0;
+      // 5行ステ単独 or max(...,5行ステ) パターンを抽出
+      const fromStr = d.from || '';
+      let warnKeys = [];
+      let curVal = 0;
+      if (_fiveKeys.has(fromStr)) {
+        warnKeys = [fromStr];
+        curVal = r[fromStr] || 0;
+      } else {
+        const m = /^max\(([^,]+),([^)]+)\)$/.exec(fromStr);
+        if (m) {
+          const a = m[1].trim(), b = m[2].trim();
+          const aVal = r[a] || 0, bVal = r[b] || 0;
+          curVal = Math.max(aVal, bVal);
+          // 5行ステ含むkey のみ警告対象 (cap到達側の stat 警告)
+          if (_fiveKeys.has(a) && _fiveKeys.has(b)) {
+            // 両方5行ステ → cap到達してない方を警告 (大きい方 < threshold なら大きい側key)
+            warnKeys = [curVal === aVal ? a : b];
+          } else if (_fiveKeys.has(a)) warnKeys = [a];
+          else if (_fiveKeys.has(b)) warnKeys = [b];
+        }
+      }
+      if (!warnKeys.length) continue;
       const thr = d.thresholdValue || 0;
-      if (thr > 0 && cur < thr) {
-        const prev = r._capWarnings[d.from];
-        if (!prev || thr > prev.threshold) {
-          r._capWarnings[d.from] = { current: Math.round(cur), threshold: thr };
+      if (thr > 0 && curVal < thr) {
+        for (const wk of warnKeys) {
+          const prev = r._capWarnings[wk];
+          if (!prev || thr > prev.threshold) {
+            r._capWarnings[wk] = { current: Math.round(curVal), threshold: thr };
+          }
         }
       }
     }
@@ -364,6 +465,13 @@ async function buildStatParams(roleInfo, state) {
   // 13. 最終会心率/会意率 (calc.js式準拠: cap内 + directCrit/Affinity 加算)
   r.finalSympathy = Math.min(0.4, r.appliedSympathy) + (r.directAffinity || 0);
   r.finalCrit     = Math.min(1 - r.finalSympathy, Math.min(0.8, r.appliedCrit) + (r.directCrit || 0));
+  // 最終発動率 (calc.js pCrit/pSympathy/pGraze/pNormal 同等)
+  r.pSympathy = r.finalSympathy;
+  r.pCrit     = r.appliedHit * r.finalCrit;
+  r.pGraze    = (1 - r.appliedHit) * (1 - r.pSympathy);
+  r.pNormal   = Math.max(0, 1 - r.pCrit - r.pSympathy - r.pGraze);
+  r.finalCritSym = r.pCrit + r.pSympathy;
+  r.grazeConvert = 0;  // 軽傷転換率 (現状 affix なし、固定0)
 
   // 9. calc.js param 名 マッピング
   r.hitRate         = r.precision      || 0;
