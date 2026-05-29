@@ -3558,3 +3558,81 @@ html[data-theme="light"] {
   --chart-graze: #8b8170;
   --chart-normal: #c8bda6;
 }
+
+/* ── Polish primitives (将来再利用用、CSS-only) ─────────── */
+
+/* tooltip — native title= の代替、JS付与 data-tooltip="..." で発火 */
+[data-tooltip] {
+  position: relative;
+}
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--space-1) var(--space-2);
+  background: var(--overlay-heavy);
+  color: var(--paper);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: var(--z-tooltip);
+}
+[data-tooltip]:hover::after,
+[data-tooltip]:focus-visible::after {
+  opacity: 1;
+}
+
+/* empty-state — データ無し共通表示 */
+.wwm-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6) var(--space-3);
+  color: var(--paper-mute);
+  font-size: var(--text-12);
+  text-align: center;
+  gap: var(--space-2);
+}
+.wwm-empty-state-icon {
+  font-size: var(--text-24);
+  opacity: 0.5;
+}
+
+/* skeleton — ロード中表示 */
+.wwm-skeleton {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--hover-trace), var(--hover-soft), var(--hover-trace));
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+  min-height: 1em;
+  color: transparent;
+}
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wwm-skeleton { animation: none; }
+}
+
+/* error-banner — エラー通知共通 */
+.wwm-error-banner {
+  padding: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-3);
+  background: var(--vermilion-soft);
+  border-left: 3px solid var(--vermilion-strong);
+  font-size: var(--text-12);
+  color: #ffb39e;
+  border-radius: 4px;
+}
+html[data-theme="light"] .wwm-error-banner {
+  background: var(--vermilion-tint);
+  color: var(--vermilion-deep);
+}
