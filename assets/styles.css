@@ -3575,7 +3575,7 @@ html[data-theme="light"] {
    ═══════════════════════════════════════════════════════════════ */
 .hero.hero-wuxia {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
+  grid-template-columns: minmax(0, 1fr) auto;
   padding: 16px 24px;
   background: linear-gradient(180deg, rgba(30,23,17,.92), rgba(16,12,11,.96));
   border: 1px solid var(--gold-deep);
