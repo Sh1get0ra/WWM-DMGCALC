@@ -3897,6 +3897,43 @@ html[data-theme="light"] {
   margin-left: auto;
 }
 
+/* ── Light theme override: hero-wuxia ─────────────────── */
+html[data-theme="light"] .hero.hero-wuxia {
+  background: linear-gradient(180deg, #e8dcc0, #d4c5a0);
+  border-color: var(--gold-deep);
+  box-shadow: inset 0 0 40px rgba(122,90,32,.18);
+}
+html[data-theme="light"] .hero-wuxia .hero-label .ja {
+  color: var(--vermilion-deep);
+}
+html[data-theme="light"] .hero-wuxia .hero-label .en {
+  color: var(--paper-mute);
+  opacity: .8;
+}
+html[data-theme="light"] .hero-wuxia .hero-number {
+  color: var(--ink-0);  /* 墨黒 */
+  text-shadow: 0 2px 1px rgba(255,247,216,.6), 0 4px 12px rgba(0,0,0,.15);
+}
+html[data-theme="light"] .hero-wuxia .hero-next-val {
+  color: var(--gold-deep);
+}
+html[data-theme="light"] .hero-wuxia .hero-next-label,
+html[data-theme="light"] .hero-wuxia .hero-next-arrow {
+  color: var(--paper-mute);
+}
+html[data-theme="light"] .hero-wuxia .luopan-center-label {
+  color: var(--vermilion-deep);
+}
+html[data-theme="light"] .hero-wuxia .judge-name {
+  color: var(--ink-1);
+}
+/* 朱墨筆を弱める (paper地で目立ちすぎ防止) */
+html[data-theme="light"] .hero-wuxia .ink-stroke { opacity: .5; }
+/* 4隅L字 gold-deep (paper地でcontrast) */
+html[data-theme="light"] .hero-wuxia .l-bracket {
+  border-color: var(--gold-deep) !important;
+}
+
 /* ── Polish primitives (将来再利用用、CSS-only) ─────────── */
 
 /* tooltip — native title= の代替、JS付与 data-tooltip="..." で発火 */
