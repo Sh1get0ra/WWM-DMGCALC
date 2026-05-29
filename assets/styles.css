@@ -3911,8 +3911,8 @@ html[data-theme="light"] .hero-wuxia .hero-label .en {
   opacity: .8;
 }
 html[data-theme="light"] .hero-wuxia .hero-number {
-  color: var(--ink-0);  /* 墨黒 */
-  text-shadow: 0 2px 1px rgba(255,247,216,.6), 0 4px 12px rgba(0,0,0,.15);
+  color: #3a2a20;  /* 濃茶 (墨黒より明るめ) */
+  text-shadow: 0 2px 1px rgba(255,247,216,.6), 0 4px 12px rgba(0,0,0,.12);
 }
 html[data-theme="light"] .hero-wuxia .hero-next-val {
   color: var(--gold-deep);
