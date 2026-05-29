@@ -2806,27 +2806,21 @@ function openGearEdit(slot) {
   function _bindRowEvents() {
   m.querySelectorAll('.wwm-cmp-edit-row').forEach(row => {
     const idx = parseInt(row.dataset.affixIdx, 10);
-    // val input: 矢印キー操作後/blur時に小数第1位丸め (浮動小数点誤差吸収)
+    // val input: 第2位以下を入力できないように 即丸め (input毎にチェック)
     const valEl = row.querySelector('.wwm-cmp-val-input');
     if (valEl) {
-      const roundFirstDecimal = () => {
-        if (valEl.value === '') return;
-        const v = parseFloat(valEl.value);
-        if (isNaN(v)) return;
-        valEl.value = (Math.round(v * 10) / 10).toFixed(1);
-      };
-      valEl.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-          // ブラウザ default の step 増減後、 次tick で正規化 + input再発火
-          setTimeout(() => {
-            roundFirstDecimal();
-            valEl.dispatchEvent(new Event('input'));
-          }, 0);
+      valEl.addEventListener('input', () => {
+        const v = valEl.value;
+        if (v === '' || v.endsWith('.') || v === '-') return; // 中間状態
+        const f = parseFloat(v);
+        if (isNaN(f)) return;
+        const rounded = Math.round(f * 10) / 10;
+        // 整数部 + 第1位のみ。 第2位以下があれば切り捨て
+        if (Math.abs(f - rounded) > 1e-9 || /\.\d{2,}/.test(v)) {
+          const cursorEnd = valEl.selectionEnd;
+          valEl.value = rounded.toFixed(1);
+          try { valEl.setSelectionRange(cursorEnd, cursorEnd); } catch(_) {}
         }
-      });
-      valEl.addEventListener('blur', () => {
-        roundFirstDecimal();
-        valEl.dispatchEvent(new Event('input'));
       });
     }
     row.querySelectorAll('[data-field]').forEach(el => {
