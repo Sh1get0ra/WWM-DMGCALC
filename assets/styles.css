@@ -2330,6 +2330,7 @@ body.wwm-layout-active .wwm-sidebar-test {
   z-index: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--gold-deep) transparent;
+  scrollbar-gutter: stable;
   border-left: none !important;
   background: transparent !important;
   padding: 0 !important;
