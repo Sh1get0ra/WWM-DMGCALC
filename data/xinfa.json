@@ -972,14 +972,14 @@
       "tier0": {
         "permanent": true,
         "effects": {
-          "globalDmgBoost": 0.013
+          "globalDmgBoost": 0.01
         },
         "raw": "武変技後 春/夏/秋/冬 1効果ランダム獲得 (10s持続、 30s CD)"
       },
       "tier1": {
         "permanent": true,
         "effects": {
-          "globalDmgBoost": 0.013
+          "globalDmgBoost": 0.01
         },
         "raw": "ステ上昇効果 持続時間 10s→12s"
       },
@@ -998,14 +998,14 @@
       "tier3": {
         "permanent": true,
         "effects": {
-          "globalDmgBoost": 0.013
+          "globalDmgBoost": 0.01
         },
         "raw": "30%確率 効果2個ランダム獲得"
       },
       "tier4": {
         "permanent": true,
         "effects": {
-          "globalDmgBoost": 0.013
+          "globalDmgBoost": 0.01
         },
         "raw": "武変技ダメ/回復成功時もランダム発動、 春/冬確率大幅減"
       },
@@ -1019,7 +1019,7 @@
       "tier6": {
         "permanent": true,
         "effects": {
-          "globalDmgBoost": 0.013
+          "globalDmgBoost": 0.01
         },
         "raw": "15%確率 3個獲得、 5%確率 4個全部獲得 (5m未満 冬非獲得)"
       }
