@@ -99,6 +99,13 @@
   --text-xl:    22px;  /* パネル見出し */
   --text-2xl:   28px;  /* breakdown数値 */
   --text-hero:  92px;  /* EXPECTED ヒーロー */
+
+  /* Ratio gradient (パフォーマンス指示色、ratio→色マップ用) */
+  --ratio-excellent: #4caf50;  /* >= 0.9 */
+  --ratio-good:      #8bc34a;  /* >= 0.75 */
+  --ratio-ok:        #ffc107;  /* >= 0.6 */
+  --ratio-warn:      #ff9800;  /* >= 0.4 */
+  --ratio-bad:       #e74c3c;  /* < 0.4 */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -3477,4 +3484,19 @@ html[data-theme="light"] .wwm-diag-modal .wwm-modal-bg-icon {
 .wwm-equip-affix .wwm-rank-blue   { color: #4a9eff; }
 .wwm-equip-affix .wwm-rank-purple { color: #c389ff; }
 .wwm-equip-affix .wwm-rank-gold   { color: #d4af37; }
-.wwm-affix-useful { color: #ffc107; font-weight: 700; cursor: help; }
+.wwm-affix-useful { color: var(--ratio-ok); font-weight: 700; cursor: help; }
+
+/* ── changelog notice (lang制限注記) ───────────────────────── */
+.wwm-cl-notice {
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  background: rgba(201,164,90,0.08);
+  border-left: 3px solid var(--gold);
+  font-size: var(--text-xs);
+  color: var(--paper-dim);
+  border-radius: 4px;
+}
+html[data-theme="light"] .wwm-cl-notice {
+  background: rgba(201,164,90,0.12);
+  color: var(--paper-mute);
+}

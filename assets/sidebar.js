@@ -2,6 +2,16 @@
 let _STAT_CONFIG = null;
 let _CURRENT_PARAMS = null;
 
+// ratio (0-1) → CSS変数色 (styles.css --ratio-* に対応)
+function _ratioColor(r) {
+  if (r == null) return 'var(--paper-mute)';
+  if (r >= 0.9)  return 'var(--ratio-excellent)';
+  if (r >= 0.75) return 'var(--ratio-good)';
+  if (r >= 0.6)  return 'var(--ratio-ok)';
+  if (r >= 0.4)  return 'var(--ratio-warn)';
+  return 'var(--ratio-bad)';
+}
+
 // ── Esc キーで最前面 modal 閉じる ────────────────────────────────
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
@@ -56,7 +66,7 @@ function _showChangelogModal(entries, currentVer, manual) {
         <button class="wwm-modal-close" aria-label="Close">×</button>
       </div>
       <div class="wwm-modal-body">
-        <div class="wwm-cl-notice" style="padding:8px 12px;margin-bottom:12px;background:rgba(201,164,90,0.08);border-left:3px solid var(--gold,#c9a45a);font-size:12px;color:var(--ink-muted,#888);border-radius:4px;">${(window.T&&T.changelogLangNotice)||'※ Changelog: Japanese only / 日本語のみ / 일본어 한정'}</div>
+        <div class="wwm-cl-notice">${(window.T&&T.changelogLangNotice)||'※ Changelog: Japanese only / 日本語のみ / 일본어 한정'}</div>
         ${body}
         <div class="wwm-btn-row" style="margin-top:16px;">
           <button class="wwm-btn-primary" id="wwmClClose">${(window.T&&T.close)||'閉じる'}</button>
@@ -91,7 +101,7 @@ function _showScoreFormula() {
         <button class="wwm-modal-close" aria-label="Close">×</button>
       </div>
       <div class="wwm-modal-body wwm-help-body">
-        <div class="wwm-cl-notice" style="padding:8px 12px;margin-bottom:12px;background:rgba(201,164,90,0.08);border-left:3px solid var(--gold,#c9a45a);font-size:12px;color:var(--ink-muted,#888);border-radius:4px;">${(window.T&&T.changelogLangNotice)||'※ Japanese only / 日本語のみ / 일본어 한정'}</div>
+        <div class="wwm-cl-notice">${(window.T&&T.changelogLangNotice)||'※ Japanese only / 日本語のみ / 일본어 한정'}</div>
         <h3>概要</h3>
         <p>武格指数 は装備/心法/武学/セットを総合してダメージ期待値を <b>固定係数</b> で算出した指標。装備変更や心法 swap の影響を一元的に比較可。</p>
 
@@ -2336,12 +2346,7 @@ function openGearEdit(slot) {
       const rkCls = rank===3?'gold':rank===2?'purple':'blue';
       const usefulAuto = _isUsefulAffix(id, origRi);
       const pct = (ratio != null) ? (ratio * 100).toFixed(0) : null;
-      const pctColor = pct == null ? 'var(--paper-mute)'
-        : ratio >= 0.9 ? '#4caf50'
-        : ratio >= 0.75 ? '#8bc34a'
-        : ratio >= 0.6 ? '#ffc107'
-        : ratio >= 0.4 ? '#ff9800'
-        : '#e74c3c';
+      const pctColor = _ratioColor(ratio);
       const pctHtml = pct != null ? `<span class="wwm-cmp-ratio" style="color:${pctColor};font-size:11px;font-family:var(--f-mono);margin-left:6px;">${pct}%</span>` : '';
       return `
         <div class="wwm-cmp-row">
@@ -2393,12 +2398,7 @@ function openGearEdit(slot) {
       const initRatio = (maxInternal != null && maxInternal > 0 && typeof val === 'number')
         ? Math.min(1, val / maxInternal) : null;
       const initPct = initRatio != null ? (initRatio * 100).toFixed(0) : '';
-      const initColor = initRatio == null ? 'var(--paper-mute)'
-        : initRatio >= 0.9 ? '#4caf50'
-        : initRatio >= 0.75 ? '#8bc34a'
-        : initRatio >= 0.6 ? '#ffc107'
-        : initRatio >= 0.4 ? '#ff9800'
-        : '#e74c3c';
+      const initColor = _ratioColor(initRatio);
       return `
         <div class="wwm-cmp-row wwm-cmp-edit-row" data-affix-idx="${idx}" data-max-internal="${maxInternal||''}">
           <select class="wwm-cmp-stat-select wwm-rank-${rkCls}" data-field="stat" data-stat-el>${optsHtml}</select>
@@ -2649,13 +2649,8 @@ function openGearEdit(slot) {
     if (inp.dataset.pctmul === '1') v = v / 100;
     const ratio = Math.min(1, Math.max(0, v / maxInt));
     const pct = (ratio * 100).toFixed(0);
-    const c = ratio >= 0.9 ? '#4caf50'
-      : ratio >= 0.75 ? '#8bc34a'
-      : ratio >= 0.6 ? '#ffc107'
-      : ratio >= 0.4 ? '#ff9800'
-      : '#e74c3c';
     el.textContent = pct + '%';
-    el.style.color = c;
+    el.style.color = _ratioColor(ratio);
   }
 
   function _bindRowEvents() {
@@ -3378,12 +3373,8 @@ function _qualSlotLabel(slot) {
   return (window.T && window.T[k]) || slot;
 }
 function _qualColor(r) {
-  // ratio 0-1 → 赤(0)→黄(0.5)→緑(1)
-  if (r >= 0.9) return '#4caf50';
-  if (r >= 0.75) return '#8bc34a';
-  if (r >= 0.6) return '#ffc107';
-  if (r >= 0.4) return '#ff9800';
-  return '#e74c3c';
+  // ratio 0-1 → 赤(0)→黄(0.5)→緑(1)、CSS変数経由
+  return _ratioColor(r);
 }
 function _qualRender() {
   const root = document.getElementById('wwmQuality');
