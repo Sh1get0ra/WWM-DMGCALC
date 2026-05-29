@@ -514,10 +514,10 @@ a.icon-btn { text-decoration: none; }
   overflow: hidden;
 }
 .hero::before {
-  /* corner kanji watermark — 太毛筆 (Ma Shan Zheng 中国行書) */
+  /* corner kanji watermark — 明朝 (Noto Serif JP black) */
   content: '斬'; position: absolute; right: -10px; bottom: -40px;
-  font-family: 'Ma Shan Zheng', 'ZCOOL QingKe HuangYou', 'Yuji Mai', 'Kaisei Decol', var(--f-display);
-  font-weight: 700;
+  font-family: var(--f-display);
+  font-weight: var(--fw-black);
   font-size: 260px; color: rgba(232,81,58,0.12);
   pointer-events: none; line-height: 1;
 }
