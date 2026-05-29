@@ -2660,7 +2660,7 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
   border-radius: 0 !important;
   padding: 16px 14px 14px !important;
   position: relative !important;
-  overflow: hidden !important;
+  overflow: visible !important;
 }
 .wwm-cmp-modal-a .wwm-cmp-current {
   border-left: 3px solid var(--vermilion) !important;
@@ -2673,12 +2673,9 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
   font-weight: 900 !important;
   font-size: 11px !important;
   letter-spacing: 0.32em !important;
-  position: absolute !important;
-  top: -8px !important; left: 12px !important;
-  background: var(--surf-1) !important;
-  padding: 0 8px !important;
-  margin: 0 !important;
-  z-index: 2;
+  position: relative !important;
+  margin: 0 0 10px !important;
+  padding: 0 !important;
   display: flex; align-items: center; gap: 6px;
   text-transform: uppercase;
 }
@@ -2701,7 +2698,7 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
   font-size: 13px !important;
   color: var(--paper) !important;
   background: rgba(201,164,90,0.06) !important;
-  border-left: 2px solid var(--gold) !important;
+  border: none !important;
   border-radius: 0 !important;
   padding: 6px 8px !important;
   margin-bottom: 8px !important;
@@ -2710,7 +2707,6 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
 .wwm-cmp-modal-a .wwm-cmp-kongfu-select {
   background: rgba(201,164,90,0.06) !important;
   border: 1px solid var(--gold-deep) !important;
-  border-left: 2px solid var(--gold) !important;
   border-radius: 0 !important;
   color: var(--paper) !important;
   font-family: var(--f-display, 'Noto Serif JP') !important;
@@ -2721,7 +2717,7 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
 .wwm-cmp-modal-a .wwm-cmp-set-header,
 .wwm-cmp-modal-a .wwm-cmp-set-select {
   background: linear-gradient(90deg, rgba(240,210,138,0.12), transparent) !important;
-  border-left: 2px solid var(--gold-bright) !important;
+  border: none !important;
   border-radius: 0 !important;
   color: var(--gold-bright) !important;
   text-shadow: 0 0 6px rgba(240,210,138,0.4) !important;
@@ -2730,7 +2726,6 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
 }
 .wwm-cmp-modal-a .wwm-cmp-set-select {
   border: 1px solid var(--gold-deep) !important;
-  border-left: 2px solid var(--gold-bright) !important;
 }
 .wwm-cmp-modal-a .wwm-cmp-rows {
   display: flex !important;
@@ -2862,7 +2857,10 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
   color: var(--gold);
   letter-spacing: 0.32em;
   margin-left: 4px;
+  align-self: flex-end;
+  padding-bottom: 2px;
 }
+.wwm-cmp-modal-a .wwm-modal-header h2 { align-items: flex-end !important; }
 /* 背景の赤いradial-gradient を消す */
 .wwm-cmp-modal-a {
   background: linear-gradient(180deg, var(--surf-1), var(--surf-2)) !important;
