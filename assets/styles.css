@@ -2237,18 +2237,10 @@ body.wwm-layout-active .wwm-app-body .container {
   padding: 0 6px 16px 0;
   box-sizing: border-box;
   overflow-y: auto;
-  overflow-x: clip;  /* clip = visible互換、子のpush-outも切らず描画 */
   scrollbar-width: thin;
   scrollbar-color: var(--gold-deep) transparent;
   scrollbar-gutter: stable;
 }
-/* hero (negative margin) は overflow-x制約を超えて描画したい */
-body.wwm-layout-active .wwm-app-body .container .hero.hero-wuxia {
-  position: relative;
-  /* clipされても描画されるよう、container を一時 visible にする */
-}
-body.wwm-layout-active .wwm-app-body { overflow: visible !important; }
-body.wwm-layout-active .wwm-app-body .container { overflow-x: visible !important; }
 body.wwm-layout-active .wwm-app-body .container::-webkit-scrollbar { width: 6px; }
 body.wwm-layout-active .wwm-app-body .container::-webkit-scrollbar-thumb { background: var(--gold-deep); border-radius: 3px; }
 body.wwm-layout-active .wwm-footer {
@@ -3650,15 +3642,6 @@ html[data-theme="light"] {
   overflow: hidden;
   position: relative;
   height: 195px;
-  z-index: 5;  /* sidebar/preset被り防止 */
-  /* sidebar越え左端まで延伸 (negative margin trick) */
-  margin-left: calc(-300px - var(--space-4));
-  width: calc(100% + 300px + var(--space-4));
-}
-/* sidebar 全体を hero高さ分下げる */
-body.wwm-layout-active .wwm-sidebar-test {
-  margin-top: calc(195px + var(--space-4)) !important;
-  height: calc(100% - 195px - var(--space-4)) !important;
 }
 .hero-wuxia .l-bracket {
   position: absolute;
