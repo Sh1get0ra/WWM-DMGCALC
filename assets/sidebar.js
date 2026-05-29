@@ -2845,7 +2845,10 @@ function openGearEdit(slot) {
         } else if (f === 'val') {
           const isPct = el.dataset.pct === '1';
           const needsMul = el.dataset.pctmul === '1';
-          const raw = parseFloat(el.value) || 0;
+          // 小数第1位に強制丸め (入力第2位以下は切り捨て)
+          const rawFull = parseFloat(el.value) || 0;
+          const raw = Math.round(rawFull * 10) / 10;
+          if (rawFull !== raw) el.value = raw.toFixed(1);
           let internal = (isPct && needsMul) ? raw / 100 : raw;
           const curSk = window.WWM_AFFIX?.[d[0]]?.statKey;
           let max = _getAffixMax(curSk, charLv);
