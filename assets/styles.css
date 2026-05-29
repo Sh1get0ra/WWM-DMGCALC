@@ -2200,11 +2200,18 @@ body.wwm-layout-active .wwm-app-body {
   width: 100%;
   display: grid;
   grid-template-columns: 300px minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "hero hero"
+    "sidebar main";
   gap: var(--space-4);
   padding: 16px 16px 0;
   box-sizing: border-box;
   overflow: hidden;
 }
+body.wwm-layout-active .wwm-app-body > .hero.hero-wuxia { grid-area: hero; }
+body.wwm-layout-active .wwm-app-body > script + script,
+body.wwm-layout-active .wwm-app-body > script { display: none; }
 /* 大画面でも main column が無限に広がらないよう max-width 制限 */
 body.wwm-layout-active .wwm-sidebar-test {
   position: relative !important;
@@ -2217,8 +2224,7 @@ body.wwm-layout-active .wwm-sidebar-test {
   max-height: none !important;
   min-height: 0 !important;
   overflow-y: auto !important;
-  grid-column: 1;
-  grid-row: 1;
+  grid-area: sidebar;
   z-index: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--gold-deep) transparent;
@@ -2226,8 +2232,7 @@ body.wwm-layout-active .wwm-sidebar-test {
 body.wwm-layout-active .wwm-sidebar-test::-webkit-scrollbar { width: 6px; }
 body.wwm-layout-active .wwm-sidebar-test::-webkit-scrollbar-thumb { background: var(--gold-deep); border-radius: 3px; }
 body.wwm-layout-active .wwm-app-body .container {
-  grid-column: 2;
-  grid-row: 1;
+  grid-area: main;
   min-width: 0;
   min-height: 0;
   height: 100%;
