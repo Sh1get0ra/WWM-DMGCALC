@@ -1644,6 +1644,7 @@ function openXinfaEdit(slotIdx) {
     attrDmgBonus:    { tkey: 'elemAtkBoost',    pct: true },
     weaponBonus:     { tkey: 'weaponBonus',     pct: true },
     physDmgBonus:    { tkey: 'weaponBonus',     pct: true },
+    physDmgBoost:    { tkey: 'weaponBonus',     pct: true },
     outerPen:        { tkey: 'penPhys',         pct: false },
     outerPenAdd:     { tkey: 'penPhys',         pct: false },
     physPen:         { tkey: 'penPhys',         pct: false },
