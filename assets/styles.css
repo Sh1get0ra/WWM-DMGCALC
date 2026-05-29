@@ -271,7 +271,10 @@ header.topbar::after {
 }
 html[data-theme="light"] .wwm-brand-seal { opacity: 0.8; }
 /* light: hero::before「斬」watermark 視認性up (vermilion-trace 0.05 → 濃化) */
-html[data-theme="light"] .hero::before { color: rgba(160,28,18,0.18) !important; }
+html[data-theme="light"] .hero::before {
+  color: rgba(160,28,18,0.18) !important;
+  -webkit-text-stroke: 2px rgba(160,28,18,0.18) !important;
+}
 html[data-theme="light"] .wwm-brand-vert { color: var(--vermilion); border-color: var(--gold); }
 html[data-theme="light"] .wwm-brand-en { color: var(--gold); opacity: 0.75; }
 html[data-theme="light"] .wwm-brand-sub { color: var(--vermilion-bright); opacity: 0.85; }
@@ -512,11 +515,12 @@ a.icon-btn { text-decoration: none; }
   overflow: hidden;
 }
 .hero::before {
-  /* corner kanji watermark — 毛筆 (Yuji Mai) */
+  /* corner kanji watermark — 毛筆 (Yuji Mai) + text-stroke で太字化 */
   content: '斬'; position: absolute; right: -10px; bottom: -40px;
   font-family: 'Yuji Mai', 'Yuji Boku', 'Klee One', var(--f-display);
   font-weight: 400;
   font-size: 260px; color: rgba(232,81,58,0.12);
+  -webkit-text-stroke: 2px rgba(232,81,58,0.12);
   pointer-events: none; line-height: 1;
 }
 /* 古紙テクスチャ overlay (SVG turbulence + blend) — テスト用に強度UP */
