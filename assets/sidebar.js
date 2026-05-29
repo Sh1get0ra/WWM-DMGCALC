@@ -2806,6 +2806,19 @@ function openGearEdit(slot) {
   function _bindRowEvents() {
   m.querySelectorAll('.wwm-cmp-edit-row').forEach(row => {
     const idx = parseInt(row.dataset.affixIdx, 10);
+    // val input: blur時に小数第1位丸め
+    const valEl = row.querySelector('.wwm-cmp-val-input');
+    if (valEl) {
+      valEl.addEventListener('blur', () => {
+        if (valEl.value === '') return;
+        const v = parseFloat(valEl.value);
+        if (isNaN(v)) return;
+        const rounded = Math.round(v * 10) / 10;
+        valEl.value = rounded.toFixed(1);
+        // input event 発火で再計算
+        valEl.dispatchEvent(new Event('input'));
+      });
+    }
     row.querySelectorAll('[data-field]').forEach(el => {
       const evt = el.tagName === 'SELECT' ? 'change' : 'input';
       el.addEventListener(evt, () => {
@@ -2845,10 +2858,8 @@ function openGearEdit(slot) {
         } else if (f === 'val') {
           const isPct = el.dataset.pct === '1';
           const needsMul = el.dataset.pctmul === '1';
-          // 小数第1位に強制丸め (入力第2位以下は切り捨て)
-          const rawFull = parseFloat(el.value) || 0;
-          const raw = Math.round(rawFull * 10) / 10;
-          if (rawFull !== raw) el.value = raw.toFixed(1);
+          // 入力中は丸めず raw値で計算 (矢印キー操作 / 第2位 中間入力可)
+          const raw = parseFloat(el.value) || 0;
           let internal = (isPct && needsMul) ? raw / 100 : raw;
           const curSk = window.WWM_AFFIX?.[d[0]]?.statKey;
           let max = _getAffixMax(curSk, charLv);
