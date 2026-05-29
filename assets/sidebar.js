@@ -2006,26 +2006,16 @@ function _refreshAll() {
     window.WWMStats.buildStatParams(ri, state).then(async params => {
       window.__WWM_PARAMS = params;
       await window.WWMSidebar.render(params);
-      // donut transition 一旦無効化 (sync opt 中の transition 途中凍結を回避)
-      const _dsegs = ['Crit','Sympathy','Graze','Normal']
-        .map(k => document.getElementById('donutDmgSeg'+k)).filter(Boolean);
-      _dsegs.forEach(el => { el.style.transition = 'none'; });
-      // donut/hero を最適化前に先行更新 (transition なしで即snap反映)
+      // donut/hero を最適化前に先行反映 (opt前なので通常更新)
       if (window.WWMHero) window.WWMHero.update(params);
-      _dsegs.forEach(el => { void el.getBoundingClientRect().width; }); // reflow
       window.WWMGear.render(ri);
       if (window.WWMXinfa) window.WWMXinfa.render(ri);
       if (window.WWMDiag) window.WWMDiag.render(ri, params);
       if (window.WWMRanking) window.WWMRanking.render(ri, params);
       // 1tick 譲ってブラウザに paint 機会を与えてから重い最適化
       await new Promise(r => requestAnimationFrame(() => r()));
-      window.__WWM_OPT_RUNNING = true;
-      try { if (window.WWMOpt) window.WWMOpt.render(ri, params); }
-      finally {
-        window.__WWM_OPT_RUNNING = false;
-        // transition 復活
-        _dsegs.forEach(el => { el.style.transition = ''; });
-      }
+      // flag/donut snap は renderOptimization 内で一元管理 (await して flag衝突回避)
+      if (window.WWMOpt) await window.WWMOpt.render(ri, params);
       _autoFitText();
       _saveVirtuals();
     }).catch(e => console.error('[WWM] refresh failed:', e));
