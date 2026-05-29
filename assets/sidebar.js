@@ -1999,6 +1999,8 @@ function _refreshAll() {
       if (window.WWMXinfa) window.WWMXinfa.render(ri);
       if (window.WWMDiag) window.WWMDiag.render(ri, params);
       if (window.WWMRanking) window.WWMRanking.render(ri, params);
+      // 1tick 譲ってブラウザに paint 機会を与えてから重い最適化
+      await new Promise(r => requestAnimationFrame(() => r()));
       if (window.WWMOpt) window.WWMOpt.render(ri, params);
       _autoFitText();
       _saveVirtuals();

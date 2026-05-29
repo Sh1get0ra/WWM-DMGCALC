@@ -136,20 +136,14 @@ function computeExpected(pIn) {
     const cTotal = cCrit + cSymp + cGraz + cNorm;
     if (cTotal > 0) {
       const dCrit = cCrit / cTotal, dSymp = cSymp / cTotal, dGraz = cGraz / cTotal, dNorm = cNorm / cTotal;
-      window._donutPending = { dCrit, dSymp, dGraz, dNorm };
-      if (window._donutTimer) clearTimeout(window._donutTimer);
-      window._donutTimer = setTimeout(() => {
-        const d = window._donutPending;
-        if (!d) return;
-        if (typeof updateDonut === 'function') updateDonut(d.dCrit, d.dSymp, d.dGraz, d.dNorm, 'donutDmgSeg');
-        const pctStr = n => (n * 100).toFixed(2) + '%';
-        const setT = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-        setT('dmgCritVal', pctStr(d.dCrit));
-        setT('dmgSympathyVal', pctStr(d.dSymp));
-        setT('dmgGrazeVal', pctStr(d.dGraz));
-        setT('dmgNormalVal', pctStr(d.dNorm));
-        window._donutPending = null;
-      }, 16);
+      // donut 即時反映 (setTimeout 撤廃)
+      if (typeof updateDonut === 'function') updateDonut(dCrit, dSymp, dGraz, dNorm, 'donutDmgSeg');
+      const pctStr = n => (n * 100).toFixed(2) + '%';
+      const setT = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+      setT('dmgCritVal', pctStr(dCrit));
+      setT('dmgSympathyVal', pctStr(dSymp));
+      setT('dmgGrazeVal', pctStr(dGraz));
+      setT('dmgNormalVal', pctStr(dNorm));
     }
   } catch(e) {}
 
