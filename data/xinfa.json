@@ -2774,7 +2774,7 @@
         "worldLv": 14,
         "needsManualInput": false,
         "effects": {
-          "critRateAdj": 0.074
+          "critRate": 0.074
         },
         "raw": "Critical Rate +7.4%"
       },
