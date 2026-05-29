@@ -4007,6 +4007,7 @@ html[data-theme="light"] .hero-wuxia .hero-tier.tier-SS {
 }
 html[data-theme="light"] .hero-wuxia .hero-tier.tier-SS::before {
   background: linear-gradient(105deg, transparent 25%, rgba(255,250,220,0.7) 50%, transparent 75%) !important;
+  background-size: 250% 100% !important;
 }
 html[data-theme="light"] .hero-wuxia .hero-tier.tier-S {
   background: linear-gradient(135deg, #f4a89a 0%, #e87862 50%, #c83c2b 100%);
