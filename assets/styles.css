@@ -3646,9 +3646,10 @@ html[data-theme="light"] {
   margin-left: calc(-300px - var(--space-4));
   width: calc(100% + 300px + var(--space-4));
 }
-/* sidebar を hero高さ分下げる */
+/* sidebar 全体を hero高さ分下げる */
 body.wwm-layout-active .wwm-sidebar-test {
-  padding-top: calc(195px + var(--space-4)) !important;
+  margin-top: calc(195px + var(--space-4)) !important;
+  height: calc(100% - 195px - var(--space-4)) !important;
 }
 .hero-wuxia .l-bracket {
   position: absolute;
