@@ -2103,7 +2103,7 @@ function _affixDisplayName(id) {
   return (window._AFFIX_DISPLAY_LABELS?.[key]) || key;
 }
 
-// 👍 自動判定: 火力寄与statKey true、 防御系 false
+// <span class="wwm-good-icon"><svg viewBox="0 0 24 24"><path d="M2 21h4V9H2v12zm20-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L13.17 1 7.59 6.59C7.22 6.95 7 7.45 7 8v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1z"/></svg></span> 自動判定: 火力寄与statKey true、 防御系 false
 // 会心率 (crit) = 全武器 useful
 // 会意率 (affinity) = 指定 kongfu のみ useful (九変/無銘の剣/蛇神/無銘の槍)
 // 指定武術効果強化 (swordDmg等) + 武術攻撃強化系 (lightAtkDmg等) = その装備に出現したら確定 useful
@@ -2131,7 +2131,7 @@ const _USEFUL_KEYS = new Set([
 const _AFFINITY_USEFUL_KONGFU = new Set([10101, 10102, 10201, 10202, '10101', '10102', '10201', '10202']);
 
 // 武学固有強化 affix statKey prefix → 対応 kongfu IDs
-// その武学装備中のみ 👍
+// その武学装備中のみ <span class="wwm-good-icon"><svg viewBox="0 0 24 24"><path d="M2 21h4V9H2v12zm20-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L13.17 1 7.59 6.59C7.22 6.95 7 7.45 7 8v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1z"/></svg></span>
 const _KONGFU_SPECIFIC_AFFIX = [
   { prefix: 'namelessSword',       kongfus: [10102] },  // 無銘の剣
   { prefix: 'namelessSpear',       kongfus: [10202] },  // 無銘の槍
@@ -2465,7 +2465,7 @@ function openGearEdit(slot) {
   // 新装備 = virtual あれば virtual、なければ original コピー
   const virtualEq = window.__WWM_VIRTUAL?.[slot];
   const newAffixes = JSON.parse(JSON.stringify((virtualEq || origEq).exVo?.baseAffixes || []));
-  // 👍 自動判定で d[4] 上書き (newKongfu 基準)
+  // <span class="wwm-good-icon"><svg viewBox="0 0 24 24"><path d="M2 21h4V9H2v12zm20-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L13.17 1 7.59 6.59C7.22 6.95 7 7.45 7 8v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1z"/></svg></span> 自動判定で d[4] 上書き (newKongfu 基準)
   function _recalcUseful() {
     const ri = _virtRi(newKongfuId);
     for (const a of newAffixes) {
@@ -2490,7 +2490,7 @@ function openGearEdit(slot) {
       const pctHtml = pct != null ? `<span class="wwm-cmp-ratio" style="color:${pctColor};font-size:11px;font-family:var(--f-mono);margin-left:6px;">${pct}%</span>` : '';
       return `
         <div class="wwm-cmp-row">
-          <span class="wwm-cmp-name wwm-rank-${rkCls}" title="ID:${id}">${name}${usefulAuto?' 👍':''}</span>
+          <span class="wwm-cmp-name wwm-rank-${rkCls}" title="ID:${id}">${name}${usefulAuto?' <span class="wwm-good-icon"><svg viewBox="0 0 24 24"><path d="M2 21h4V9H2v12zm20-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L13.17 1 7.59 6.59C7.22 6.95 7 7.45 7 8v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1z"/></svg></span>':''}</span>
           <span class="wwm-cmp-val">${_fmtAffixVal(val, sk)}${pctHtml}</span>
         </div>
       `;
@@ -2542,7 +2542,7 @@ function openGearEdit(slot) {
       return `
         <div class="wwm-cmp-row wwm-cmp-edit-row" data-affix-idx="${idx}" data-max-internal="${maxInternal||''}">
           <select class="wwm-cmp-stat-select wwm-rank-${rkCls}" data-field="stat" data-stat-el>${optsHtml}</select>
-          <div class="wwm-cmp-useful-mark" data-useful-el>${useful?'👍':''}</div>
+          <div class="wwm-cmp-useful-mark" data-useful-el>${useful?'<span class="wwm-good-icon"><svg viewBox="0 0 24 24"><path d="M2 21h4V9H2v12zm20-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L13.17 1 7.59 6.59C7.22 6.95 7 7.45 7 8v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1z"/></svg></span>':''}</div>
           <div class="wwm-cmp-val-wrap">
             <input type="number" class="wwm-num-input wwm-cmp-val-input" step="${step}" min="0" ${maxAttr} value="${displayVal}" data-field="val" data-pct="${isPct?1:0}" data-pctmul="${needsMul?1:0}">
             <span class="wwm-cmp-unit" data-unit-el>${isPct?'%':''}</span>
@@ -2759,7 +2759,7 @@ function openGearEdit(slot) {
     const sel = row.querySelector('[data-stat-el]');
     if (sel) sel.className = 'wwm-cmp-stat-select wwm-rank-' + cls;
     const usefulEl = row.querySelector('[data-useful-el]');
-    if (usefulEl) usefulEl.textContent = d[4] ? '👍' : '';
+    if (usefulEl) usefulEl.innerHTML = d[4] ? '<span class="wwm-good-icon"><svg viewBox="0 0 24 24"><path d="M2 21h4V9H2v12zm20-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L13.17 1 7.59 6.59C7.22 6.95 7 7.45 7 8v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1z"/></svg></span>' : '';
     const valInp = row.querySelector('.wwm-cmp-val-input');
     if (valInp) {
       valInp.dataset.pct = isPct ? '1' : '0';
@@ -3583,7 +3583,7 @@ function _qualRender() {
     const c = _qualColor(r.avg);
     const tip = r.details.map(d => {
       const nm = (window._AFFIX_DISPLAY_LABELS && d.id) ? (window._AFFIX_DISPLAY_LABELS[window.WWM_AFFIX?.[d.id]?.statKey] || ('affix#'+d.id)) : '';
-      const useful = d.useful ? ' 👍' : '';
+      const useful = d.useful ? ' <span class="wwm-good-icon"><svg viewBox="0 0 24 24"><path d="M2 21h4V9H2v12zm20-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L13.17 1 7.59 6.59C7.22 6.95 7 7.45 7 8v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1z"/></svg></span>' : '';
       return nm + ' ' + ((d.ratio||0)*100).toFixed(0) + '%' + useful;
     }).join('\n');
     return '<div class="wwm-qual-row" title="'+tip.replace(/"/g,'&quot;')+'" style="display:grid;grid-template-columns:80px 1fr 50px;gap:8px;align-items:center;padding:4px 6px;font-size:12px;background:var(--surf-shade);border-radius:3px;">'
