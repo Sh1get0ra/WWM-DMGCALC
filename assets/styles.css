@@ -2330,6 +2330,9 @@ body.wwm-layout-active .wwm-sidebar-test {
   z-index: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--gold-deep) transparent;
+  border-left: none !important;
+  background: transparent !important;
+  padding: 0 !important;
 }
 body.wwm-layout-active .wwm-sidebar-test::-webkit-scrollbar { width: 6px; }
 body.wwm-layout-active .wwm-sidebar-test::-webkit-scrollbar-thumb { background: var(--gold-deep); border-radius: 3px; }
