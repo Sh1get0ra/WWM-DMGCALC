@@ -3936,6 +3936,24 @@ html[data-theme="light"] .hero-wuxia .ink-stroke {
 html[data-theme="light"] .hero-wuxia .l-bracket {
   border-color: var(--gold-deep) !important;
 }
+/* 羅盤 tick ring 全line濃化 */
+html[data-theme="light"] .hero-wuxia .luopan-ticks line {
+  stroke: var(--gold-deep) !important;
+  stroke-opacity: .85;
+}
+html[data-theme="light"] .hero-wuxia .luopan-ticks line[stroke-width="1.5"] {
+  stroke: var(--vermilion-deep) !important;
+  stroke-opacity: 1;
+}
+/* 羅盤 arc 背景 circle 濃化 */
+html[data-theme="light"] .hero-wuxia .luopan-arc circle[stroke^="rgba(232,215,180"] {
+  stroke: rgba(122,90,32,.35) !important;
+}
+/* 内側 donut 背景 circle 濃化 */
+html[data-theme="light"] .hero-wuxia .luopan-inner svg circle.donut-bg,
+html[data-theme="light"] .hero-wuxia .luopan-inner svg circle[stroke^="rgba(232,215,180"] {
+  stroke: rgba(122,90,32,.3) !important;
+}
 
 /* ── Polish primitives (将来再利用用、CSS-only) ─────────── */
 
