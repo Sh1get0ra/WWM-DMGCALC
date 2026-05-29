@@ -643,9 +643,11 @@ async function renderOptimization(roleInfo, params, opts) {
   // 最適化中 donut/score の中間更新を suppress
   window.__WWM_OPT_RUNNING = true;
   try {
-  return await _renderOptimizationInner(roleInfo, params, opts, root);
+    return await _renderOptimizationInner(roleInfo, params, opts, root);
   } finally {
     window.__WWM_OPT_RUNNING = false;
+    // 最終 donut/score を確実に反映 (suppress中に動いていない可能性)
+    try { if (window.WWMHero) window.WWMHero.update(params); } catch(_) {}
   }
 }
 async function _renderOptimizationInner(roleInfo, params, opts, root) {
