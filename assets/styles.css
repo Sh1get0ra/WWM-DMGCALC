@@ -4012,11 +4012,13 @@ html[data-theme="light"] .hero-wuxia .hero-tier.tier-SS::before {
   bottom: 0 !important;
   left: -150% !important;
   right: auto !important;
-  width: 80% !important;
+  width: 60% !important;
   height: 100% !important;
-  background: linear-gradient(110deg, transparent 0%, rgba(255,250,220,0.95) 50%, transparent 100%) !important;
+  background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.4) 35%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0.4) 65%, transparent 100%) !important;
   background-size: 100% 100% !important;
   background-position: 0 0 !important;
+  mix-blend-mode: screen !important;
+  filter: blur(1px) !important;
   animation: tier-ss-shimmer-light 2.8s linear infinite !important;
   pointer-events: none !important;
   z-index: 1 !important;
