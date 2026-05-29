@@ -869,7 +869,8 @@ function applyImport(data, importedAt, state) {
         const bonus = (typeof window.__WWM_SET4_BONUS_OF === 'function')
           ? window.__WWM_SET4_BONUS_OF(data) : 0;
         window.__WWM_BASELINE = { expected: res.expected, statusScore: res.statusScore + bonus, tier: res.tier, ts: Date.now() };
-        try { localStorage.setItem('wwm_baseline_score_v1', JSON.stringify(window.__WWM_BASELINE)); } catch(e) {}
+        if (window.WWMBaseline) window.WWMBaseline.save(window.__WWM_BASELINE);
+        else { try { localStorage.setItem('wwm_baseline_score_v1', JSON.stringify(window.__WWM_BASELINE)); } catch(e) {} }
         if (window.WWMHero) window.WWMHero.update(params);
         if (window.WWMHistory) window.WWMHistory.record(data, { statusScore: res.statusScore + bonus, expected: res.expected, tier: res.tier });
       }
@@ -949,8 +950,13 @@ function _autoLoadLastImport() {
   if ((location.hash || '').startsWith(IMPORT_HASH_PREFIX)) return;  // hash flow が処理
   // baseline 復元
   try {
-    const bl = localStorage.getItem('wwm_baseline_score_v1');
-    if (bl) window.__WWM_BASELINE = JSON.parse(bl);
+    if (window.WWMBaseline) {
+      const bl = window.WWMBaseline.load();
+      if (bl) window.__WWM_BASELINE = bl;
+    } else {
+      const bl = localStorage.getItem('wwm_baseline_score_v1');
+      if (bl) window.__WWM_BASELINE = JSON.parse(bl);
+    }
   } catch(e) {}
   const stored = _loadStored();
   if (!stored?.data) {

@@ -1,3 +1,52 @@
+// ── Baseline 保存 (Base64 + checksum、 軽い改竄抑止) ───────────────
+(function(){
+  const KEY = 'wwm_baseline_score_v1';
+  function _sum(s) {
+    let h = 5381;
+    for (let i = 0; i < s.length; i++) h = ((h * 33) ^ s.charCodeAt(i)) >>> 0;
+    return h.toString(36);
+  }
+  function _enc(obj) {
+    if (!obj) return null;
+    try {
+      const json = JSON.stringify(obj);
+      const b64 = btoa(unescape(encodeURIComponent(json)));
+      return JSON.stringify({ d: b64, s: _sum(json), v: 2 });
+    } catch(_) { return null; }
+  }
+  function _dec(raw) {
+    if (!raw) return null;
+    try {
+      const w = JSON.parse(raw);
+      // v2: encoded + checksum
+      if (w && w.v === 2 && w.d && w.s) {
+        const json = decodeURIComponent(escape(atob(w.d)));
+        if (_sum(json) !== w.s) {
+          console.warn('[WWM] baseline integrity check failed');
+          return null;
+        }
+        return JSON.parse(json);
+      }
+      // 旧形式 (生 JSON) → 互換読込 + 即座 v2 で再保存
+      if (w && typeof w === 'object' && w.statusScore != null) {
+        try { localStorage.setItem(KEY, _enc(w)); } catch(_) {}
+        return w;
+      }
+      return null;
+    } catch(_) { return null; }
+  }
+  window.WWMBaseline = {
+    save(obj) {
+      const enc = _enc(obj);
+      if (enc) { try { localStorage.setItem(KEY, enc); } catch(_) {} }
+    },
+    load() {
+      try { return _dec(localStorage.getItem(KEY)); } catch(_) { return null; }
+    },
+    KEY
+  };
+})();
+
 // ── 言語切替 ──────────────────────────────────────────────────────
 function setLang(lang) {
   currentLang = lang;
@@ -308,7 +357,8 @@ function loadPreset(i) {
     }
     if (p.baseline) {
       window.__WWM_BASELINE = p.baseline;
-      try { localStorage.setItem('wwm_baseline_score_v1', JSON.stringify(p.baseline)); } catch(_) {}
+      if (window.WWMBaseline) window.WWMBaseline.save(p.baseline);
+      else { try { localStorage.setItem('wwm_baseline_score_v1', JSON.stringify(p.baseline)); } catch(_) {} }
     }
   } catch(_) {}
   if (p.importSnap?.data) {
