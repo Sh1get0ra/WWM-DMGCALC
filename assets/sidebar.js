@@ -2584,6 +2584,7 @@ function openGearEdit(slot) {
             ${curSetHeader}
             ${isAffixEditable ? `<div class="wwm-cmp-rows">${renderCurrentRows()}</div>` : ''}
           </div>
+          <div class="wwm-cmp-divider"></div>
           <div class="wwm-cmp-col wwm-cmp-new${isBowSetSlot?' wwm-cmp-bow':''}" id="wwmCmpNewCol">
             ${bgIconHtml}
             <h3 class="wwm-cmp-title">${(window.T&&T.cmpNew)||'新置'}${(() => {
@@ -2599,14 +2600,17 @@ function openGearEdit(slot) {
             ${isAffixEditable ? `<div class="wwm-cmp-rows" id="wwmCmpNewRows">${renderNewRows()}</div>` : ''}
           </div>
         </div>
-        <div class="wwm-cmp-preview" id="wwmCmpPreview">
-          <span class="wwm-cmp-preview-label">Δ Score:</span>
-          <span class="wwm-cmp-preview-value" id="wwmCmpPreviewDelta">計算中...</span>
-        </div>
-        <div class="wwm-btn-row wwm-cmp-btn-row" style="margin-top:12px;">
-          <button class="wwm-btn-primary" id="wwmEditApply">${(window.T&&T.cmpApply)||'採用'}</button>
-          <button class="wwm-btn-secondary" id="wwmEditReset">${(window.T&&T.cmpReset)||'復元'}</button>
-          <button class="wwm-btn-secondary" id="wwmEditCancel">${(window.T&&T.cmpCancel)||'離脱'}</button>
+        <div class="wwm-cmp-footer-a">
+          <div class="wwm-cmp-delta-block">
+            <span class="wwm-cmp-delta-label">${(window.T&&T.cmpDeltaLabel)||'武格変動'}</span>
+            <span class="wwm-cmp-preview-value" id="wwmCmpPreviewDelta">+0</span>
+            <span class="wwm-cmp-delta-base" id="wwmCmpPreviewBase">—</span>
+          </div>
+          <div class="wwm-btn-row wwm-cmp-btn-row">
+            <button class="wwm-btn-primary" id="wwmEditApply">${(window.T&&T.cmpApply)||'採用'}</button>
+            <button class="wwm-btn-secondary" id="wwmEditReset">${(window.T&&T.cmpReset)||'復元'}</button>
+            <button class="wwm-btn-secondary" id="wwmEditCancel">${(window.T&&T.cmpCancel)||'離脱'}</button>
+          </div>
         </div>
       </div>
     </div>
@@ -2657,8 +2661,10 @@ function openGearEdit(slot) {
       }
       const delta = Math.round(vScore - baseScore);
       const sign = delta > 0 ? '+' : '';
-      el.textContent = `${sign}${delta.toLocaleString()} (${Math.round(vScore).toLocaleString()})`;
+      el.textContent = `${sign}${delta.toLocaleString()}`;
       el.className = 'wwm-cmp-preview-value ' + (delta > 0 ? 'pos' : delta < 0 ? 'neg' : 'zero');
+      const baseEl = m.querySelector('#wwmCmpPreviewBase');
+      if (baseEl) baseEl.textContent = `${Math.round(baseScore).toLocaleString()} → ${Math.round(vScore).toLocaleString()}`;
     } catch (e) {
       console.error('[Preview]', e);
       el.textContent = 'error';

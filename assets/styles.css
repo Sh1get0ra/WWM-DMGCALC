@@ -2776,11 +2776,53 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
   border-color: rgba(232,81,58,0.4) !important;
 }
 .wwm-cmp-modal-a .wwm-cmp-grid {
-  gap: 20px !important;
+  grid-template-columns: 1fr 1px 1fr !important;
+  gap: 16px !important;
 }
-.wwm-cmp-modal-a .wwm-modal-body {
-  padding: 24px 20px 16px !important;
+.wwm-cmp-modal-a .wwm-modal-body { padding: 20px 20px 16px !important; }
+.wwm-cmp-modal-a .wwm-cmp-divider {
+  background: linear-gradient(180deg, transparent, var(--gold-deep), transparent);
+  position: relative;
 }
+.wwm-cmp-modal-a .wwm-cmp-divider::before,
+.wwm-cmp-modal-a .wwm-cmp-divider::after {
+  content: ''; position: absolute; left: 50%; transform: translateX(-50%);
+  width: 6px; height: 6px;
+  background: var(--vermilion);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--vermilion);
+}
+.wwm-cmp-modal-a .wwm-cmp-divider::before { top: 30%; }
+.wwm-cmp-modal-a .wwm-cmp-divider::after  { bottom: 30%; }
+
+.wwm-cmp-footer-a {
+  margin-top: 16px;
+  padding: 14px 0 4px;
+  border-top: 1px solid rgba(201,164,90,0.2);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.wwm-cmp-delta-block {
+  display: flex; align-items: baseline; gap: 12px;
+}
+.wwm-cmp-delta-label {
+  font-family: var(--f-display, 'Noto Serif JP');
+  font-size: 11px; font-weight: 900;
+  color: var(--paper-mute);
+  letter-spacing: 0.32em;
+}
+.wwm-cmp-modal-a .wwm-cmp-preview-value {
+  font-size: 28px !important;
+  line-height: 1 !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-preview-value.pos { color: var(--jade-bright, #b8e0c4) !important; text-shadow: 0 0 18px rgba(168,212,180,0.6) !important; }
+.wwm-cmp-modal-a .wwm-cmp-preview-value.neg { color: var(--vermilion) !important; text-shadow: 0 0 18px rgba(232,81,58,0.6) !important; }
+.wwm-cmp-modal-a .wwm-cmp-preview-value.zero { color: var(--paper-mute) !important; text-shadow: none !important; }
+.wwm-cmp-delta-base {
+  font-family: var(--f-mono, 'Rajdhani');
+  font-size: 11px; color: var(--paper-mute);
+}
+.wwm-cmp-modal-a .wwm-cmp-bg-icon { opacity: 0 !important; }
 
 .wwm-cmp-grid {
   display: grid; grid-template-columns: 1fr 1fr;
