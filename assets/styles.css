@@ -2284,6 +2284,27 @@ body.wwm-layout-active .wwm-app-body .container {
   scrollbar-width: thin;
   scrollbar-color: var(--gold-deep) transparent;
   scrollbar-gutter: stable;
+  display: flex;
+  flex-direction: column;
+}
+body.wwm-layout-active .wwm-app-body .container > * { flex-shrink: 0; }
+/* タブパネル wrap を container の余白に追従させる */
+body.wwm-layout-active .wwm-app-body .container > .wwm-analysis-grid {
+  flex: 1 1 auto;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+body.wwm-layout-active .wwm-app-body .container > .wwm-analysis-grid > div {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+body.wwm-layout-active #wwmAffixRanking .wwm-analysis-card,
+body.wwm-layout-active #wwmOptimization .wwm-analysis-card,
+body.wwm-layout-active #wwmHistory .wwm-analysis-card,
+body.wwm-layout-active #wwmQuality .wwm-analysis-card {
+  height: 100% !important;
+  min-height: 500px;
 }
 body.wwm-layout-active .wwm-app-body .container::-webkit-scrollbar { width: 6px; }
 body.wwm-layout-active .wwm-app-body .container::-webkit-scrollbar-thumb { background: var(--gold-deep); border-radius: 3px; }
