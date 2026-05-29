@@ -963,14 +963,14 @@ select.field-select-wide { width: 100%; max-width: 100%; min-width: 140px; font-
 
 /* ── Tier バッジ ──────────────────────────────────────────── */
 .tier-badge:empty { display: none; }
-/* sidebar 総合武力 横 tier badge (グロウなしシンプル) */
+/* sidebar 総合武力 横 tier badge (グロウなしシンプル) — 1.5倍サイズ */
 .wwm-sb-tier-badge {
   display: inline-flex; align-items: center; justify-content: center;
-  font-family: var(--f-latin); font-weight: 800; font-size: 11px;
-  letter-spacing: 0.05em; padding: 1px 6px; margin-left: 6px;
+  font-family: var(--f-latin); font-weight: 800; font-size: 16.5px;
+  letter-spacing: 0.05em; padding: 1.5px 9px; margin-left: 9px;
   border: 1px solid currentColor; border-radius: 2px; line-height: 1;
-  vertical-align: middle;
-  position: relative; overflow: hidden;
+  vertical-align: baseline;
+  position: relative; top: -2px; overflow: hidden;
 }
 .wwm-sb-tier-badge:empty { display: none; }
 /* SS/S 拡散glow を sidebar 用に縮小 (box-shadow override) */
