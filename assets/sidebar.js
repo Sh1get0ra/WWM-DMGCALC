@@ -22,6 +22,52 @@ document.addEventListener('keydown', (e) => {
   e.stopPropagation();
 });
 
+// ── modal a11y自動付与 + focus trap (MutationObserver経由、既存呼出無改変) ─
+function _setupModalA11y(modal) {
+  if (modal._a11ySetup) return;
+  modal._a11ySetup = true;
+  if (!modal.getAttribute('role')) modal.setAttribute('role', 'dialog');
+  if (!modal.getAttribute('aria-modal')) modal.setAttribute('aria-modal', 'true');
+  // 開いた時に最初のfocusable要素へfocus
+  const _focusSel = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  // 最後にフォーカスされていた要素を覚えて、close時に戻す
+  modal._prevFocus = document.activeElement;
+  setTimeout(() => {
+    const focusable = modal.querySelectorAll(_focusSel);
+    const closeBtn = modal.querySelector('.wwm-modal-close');
+    const target = closeBtn || focusable[0];
+    if (target) try { target.focus(); } catch(_) {}
+  }, 0);
+  // Tab循環 (focus trap)
+  modal.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    const focusable = modal.querySelectorAll(_focusSel);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault(); first.focus();
+    }
+  });
+}
+const _modalObserver = new MutationObserver((mutations) => {
+  for (const mut of mutations) {
+    for (const node of mut.addedNodes) {
+      if (node.nodeType !== 1) continue;
+      if (node.classList?.contains('wwm-modal-backdrop')) _setupModalA11y(node);
+    }
+    for (const node of mut.removedNodes) {
+      if (node.nodeType !== 1) continue;
+      if (node.classList?.contains('wwm-modal-backdrop') && node._prevFocus) {
+        try { node._prevFocus.focus(); } catch(_) {}
+      }
+    }
+  }
+});
+_modalObserver.observe(document.body, { childList: true });
+
 // ── Changelog ポップアップ ───────────────────────────────────────
 const _CHANGELOG_KEY = 'wwm_last_seen_version_v1';
 function _semver(a, b) {

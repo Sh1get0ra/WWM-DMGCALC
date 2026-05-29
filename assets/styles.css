@@ -72,7 +72,7 @@
   --paper:       #ede4d0;
   --paper-2:     #c8bda6;
   --paper-dim:   #8b8170;
-  --paper-mute:  #6a6053;
+  --paper-mute:  #7a7060;  /* AA contrast対応 (旧 #6a6053 から +0.3:1) */
 
   /* Type */
   --f-display: 'Noto Serif JP', 'Yu Mincho', 'Hiragino Mincho ProN', serif;
@@ -1518,10 +1518,13 @@ html[data-theme="light"] .tier-C { color: var(--paper-mute);  background: rgba(5
     flex-wrap: nowrap;
   }
   .lang-switcher { flex: 1; min-width: 0; }
-  .lang-btn { padding: 7px 0; font-size: var(--text-xs); flex: 1; text-align: center; min-width: 0; }
+  /* a11y mobile tap target ≥36px (WCAG 2.5.5 推奨) */
+  .lang-btn { padding: 9px 0; font-size: var(--text-xs); flex: 1; text-align: center; min-width: 0; min-height: 36px; }
   .icon-btn { width: 36px; height: 36px; flex-shrink: 0; }
   .icon-btn.export-btn,
   .icon-btn.import-btn { width: auto; height: 36px; padding: 0 10px; font-size: var(--text-xs); flex-shrink: 0; }
+  .wwm-modal-close { width: 36px; height: 36px; }
+  .preset-btn { min-height: 32px; }
 
   /* ─────────────────────────────────────────────────────────────────
      PRESET BAR
