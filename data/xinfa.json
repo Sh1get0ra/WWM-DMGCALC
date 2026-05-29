@@ -1972,9 +1972,7 @@
         "kongfuRequired": [
           10302
         ],
-        "effects": {
-          "globalDmgBoost": 0.002
-        },
+        "effects": {},
         "raw": "対象 真気<30%or力尽き時 滞骨15%/浮遊25%に追加上昇"
       },
       "tier4": {
@@ -1982,9 +1980,7 @@
         "kongfuRequired": [
           10302
         ],
-        "effects": {
-          "globalDmgBoost": 0.002
-        },
+        "effects": {},
         "raw": "外功攻撃力上昇 持続8s→12s"
       },
       "tier5": {
@@ -1999,9 +1995,7 @@
         "kongfuRequired": [
           10302
         ],
-        "effects": {
-          "globalDmgBoost": 0.002
-        },
+        "effects": {},
         "raw": "浮遊/滞骨対象 — 自気血>75%で与ダメ+3%、≤75%で与ダメ10%気血回復"
       }
     },
