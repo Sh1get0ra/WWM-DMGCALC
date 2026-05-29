@@ -4014,11 +4014,11 @@ html[data-theme="light"] .hero-wuxia .hero-tier.tier-SS::before {
   right: auto !important;
   width: 60% !important;
   height: 100% !important;
-  background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.4) 35%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0.4) 65%, transparent 100%) !important;
+  background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.15) 40%, rgba(255,255,255,0.45) 50%, rgba(255,255,255,0.15) 60%, transparent 100%) !important;
   mix-blend-mode: screen !important;
-  filter: blur(1px) !important;
+  filter: blur(1.5px) !important;
   transform: translateX(-250%);
-  animation: tier-ss-shimmer-light 2.8s linear infinite !important;
+  animation: tier-ss-shimmer-light 3.6s linear infinite !important;
   pointer-events: none !important;
   z-index: 1 !important;
 }
