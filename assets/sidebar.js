@@ -746,8 +746,7 @@ async function _renderOptimizationInner(roleInfo, params, opts, root) {
   // 初期 baseline
   let startScore = 0;
   try {
-    const p = await window.WWMStats.buildStatParams(working, state);
-    window.computeExpected(p);
+    await window.WWMStats.buildStatParams(working, state);
     startScore = _scoreWithBonus(working);
   } catch (e) { return; }
   const steps = [];
