@@ -1993,12 +1993,13 @@ function _refreshAll() {
     window.WWMStats.buildStatParams(ri, state).then(async params => {
       window.__WWM_PARAMS = params;
       await window.WWMSidebar.render(params);
+      // donut/hero を最適化前に先行更新 (重い WWMOpt の前に視覚反映)
+      if (window.WWMHero) window.WWMHero.update(params);
       window.WWMGear.render(ri);
       if (window.WWMXinfa) window.WWMXinfa.render(ri);
       if (window.WWMDiag) window.WWMDiag.render(ri, params);
       if (window.WWMRanking) window.WWMRanking.render(ri, params);
       if (window.WWMOpt) window.WWMOpt.render(ri, params);
-      if (window.WWMHero) window.WWMHero.update(params);
       _autoFitText();
       _saveVirtuals();
     }).catch(e => console.error('[WWM] refresh failed:', e));
