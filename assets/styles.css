@@ -4056,8 +4056,7 @@ html[data-theme="light"] .hero-wuxia .hero-tier.tier-C {
 }
 html[data-theme="light"] .hero-wuxia .ink-stroke {
   opacity: 1;
-  mix-blend-mode: multiply;
-  filter: saturate(3.5) brightness(.45) contrast(2.2);
+  filter: saturate(2.8) brightness(.8) contrast(1.5) hue-rotate(-12deg);
 }
 /* 4隅L字 gold-deep (paper地でcontrast) */
 html[data-theme="light"] .hero-wuxia .l-bracket {
