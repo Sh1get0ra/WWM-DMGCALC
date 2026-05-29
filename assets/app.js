@@ -65,8 +65,39 @@ function _showLangPicker() {
       const lang = b.dataset.langPick;
       setLang(lang);
       m.remove();
+      // 言語選択直後にIMPORT位置ヒント表示 (一度のみ)
+      try {
+        if (!localStorage.getItem('wwm_import_hinted')) {
+          setTimeout(_showImportHint, 250);
+        }
+      } catch(_) {}
     });
   });
+}
+function _showImportHint() {
+  const btn = document.getElementById('importBtn');
+  if (!btn || document.getElementById('wwmImportHint')) return;
+  const r = btn.getBoundingClientRect();
+  const o = document.createElement('div');
+  o.id = 'wwmImportHint';
+  o.className = 'wwm-import-hint';
+  o.style.left = (r.left + r.width/2) + 'px';
+  o.style.top  = (r.bottom + 12) + 'px';
+  const T_ = window.T || {};
+  const label = T_.importHintLabel || 'まずここからインポート';
+  o.innerHTML = `
+    <div class="wwm-import-hint-arrow" aria-hidden="true">▲</div>
+    <div class="wwm-import-hint-label">${label}</div>
+  `;
+  document.body.appendChild(o);
+  const dismiss = () => {
+    o.classList.add('wwm-import-hint-out');
+    setTimeout(() => o.remove(), 350);
+    try { localStorage.setItem('wwm_import_hinted', '1'); } catch(_) {}
+    document.removeEventListener('click', dismiss, true);
+  };
+  setTimeout(() => document.addEventListener('click', dismiss, true), 50);
+  setTimeout(dismiss, 8000);
 }
 
 // ── カウントアップ ────────────────────────────────────────────────

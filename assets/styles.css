@@ -3955,6 +3955,52 @@ html[data-theme="light"] .hero-wuxia .luopan-inner svg circle[stroke^="rgba(232,
   stroke: rgba(122,90,32,.3) !important;
 }
 
+/* ── IMPORT位置ヒント (初回言語選択後) ─────────── */
+.wwm-import-hint {
+  position: fixed;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center;
+  z-index: var(--z-tooltip);
+  pointer-events: none;
+  animation: wwm-hint-in 0.4s cubic-bezier(.2,1.4,.5,1);
+}
+.wwm-import-hint-arrow {
+  font-size: 28px;
+  color: var(--vermilion-bright);
+  text-shadow: 0 0 12px rgba(232,81,58,.8), 0 0 22px rgba(232,81,58,.5);
+  animation: wwm-hint-bounce 1.2s ease-in-out infinite;
+  line-height: 1;
+}
+.wwm-import-hint-label {
+  margin-top: 6px;
+  padding: 8px 14px;
+  background: linear-gradient(135deg, rgba(180,40,28,.95), rgba(100,20,14,.92));
+  border: 1px solid rgba(240,210,138,.6);
+  border-radius: 4px;
+  color: var(--gold-bright);
+  font-family: var(--f-body);
+  font-size: var(--text-12);
+  font-weight: var(--fw-bold);
+  letter-spacing: .05em;
+  white-space: nowrap;
+  box-shadow: 0 4px 18px rgba(0,0,0,.5), 0 0 24px rgba(232,81,58,.4);
+}
+.wwm-import-hint-out { animation: wwm-hint-out 0.3s forwards; }
+@keyframes wwm-hint-bounce {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-8px); }
+}
+@keyframes wwm-hint-in {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(-12px); }
+  100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+@keyframes wwm-hint-out {
+  to { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wwm-import-hint, .wwm-import-hint-arrow { animation: none; }
+}
+
 /* ── Polish primitives (将来再利用用、CSS-only) ─────────── */
 
 /* tooltip — native title= の代替、JS付与 data-tooltip="..." で発火 */
