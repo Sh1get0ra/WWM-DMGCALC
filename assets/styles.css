@@ -2701,7 +2701,15 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
 .wwm-cmp-modal-a .wwm-cmp-title { color: transparent !important; font-size: 0 !important; }
 .wwm-cmp-modal-a .wwm-cmp-title .wwm-cmp-lv {
   color: var(--paper-mute) !important;
-  font-size: 10px !important;
+  font-family: var(--f-mono, 'Rajdhani') !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  border: 1px solid var(--paper-mute) !important;
+  padding: 2px 7px !important;
+  border-radius: 2px !important;
+  background: #1a1410 !important;
+  line-height: 1 !important;
 }
 .wwm-cmp-modal-a .wwm-cmp-col {
   margin-top: 4px;
