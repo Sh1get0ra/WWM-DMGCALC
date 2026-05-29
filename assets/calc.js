@@ -136,14 +136,16 @@ function computeExpected(pIn) {
     const cTotal = cCrit + cSymp + cGraz + cNorm;
     if (cTotal > 0) {
       const dCrit = cCrit / cTotal, dSymp = cSymp / cTotal, dGraz = cGraz / cTotal, dNorm = cNorm / cTotal;
-      // donut 即時反映 (setTimeout 撤廃)
-      if (typeof updateDonut === 'function') updateDonut(dCrit, dSymp, dGraz, dNorm, 'donutDmgSeg');
-      const pctStr = n => (n * 100).toFixed(2) + '%';
-      const setT = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-      setT('dmgCritVal', pctStr(dCrit));
-      setT('dmgSympathyVal', pctStr(dSymp));
-      setT('dmgGrazeVal', pctStr(dGraz));
-      setT('dmgNormalVal', pctStr(dNorm));
+      // donut 反映 (最適化計算中はsuppress、 ちらつき抑止)
+      if (!window.__WWM_OPT_RUNNING) {
+        if (typeof updateDonut === 'function') updateDonut(dCrit, dSymp, dGraz, dNorm, 'donutDmgSeg');
+        const pctStr = n => (n * 100).toFixed(2) + '%';
+        const setT = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+        setT('dmgCritVal', pctStr(dCrit));
+        setT('dmgSympathyVal', pctStr(dSymp));
+        setT('dmgGrazeVal', pctStr(dGraz));
+        setT('dmgNormalVal', pctStr(dNorm));
+      }
     }
   } catch(e) {}
 

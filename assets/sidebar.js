@@ -2001,7 +2001,9 @@ function _refreshAll() {
       if (window.WWMRanking) window.WWMRanking.render(ri, params);
       // 1tick 譲ってブラウザに paint 機会を与えてから重い最適化
       await new Promise(r => requestAnimationFrame(() => r()));
-      if (window.WWMOpt) window.WWMOpt.render(ri, params);
+      window.__WWM_OPT_RUNNING = true;
+      try { if (window.WWMOpt) window.WWMOpt.render(ri, params); }
+      finally { window.__WWM_OPT_RUNNING = false; }
       _autoFitText();
       _saveVirtuals();
     }).catch(e => console.error('[WWM] refresh failed:', e));
