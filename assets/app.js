@@ -137,6 +137,8 @@ function formatNum(n, decimals) {
 
 // ── ドーナツ（SVG） ──────────────────────────────────────────────
 function updateDonut(pCrit, pSympathy, pGraze, pNormal, prefix) {
+  // 最適化計算中は hero donut (donutDmgSeg) の更新を完全block (ちらつき根絶)
+  if (window.__WWM_OPT_RUNNING && (prefix === 'donutDmgSeg')) return;
   // 円周長 = 2πr, r=54 → 339.292
   const R = 54;
   const C = 2 * Math.PI * R;
