@@ -2234,10 +2234,15 @@ html.wwm-view-sidebar .wwm-sidebar-test {
 }
 /* sb-top: sticky 上部 (avatar+総合武力) のみユーザー alpha で背景 */
 html.wwm-view-sidebar .wwm-sb-top {
-  background-color: rgba(var(--overlay-bg-rgb), var(--overlay-bg-alpha)) !important;
-  background-image: none !important;
+  background: transparent !important;
   position: relative !important;
   top: auto !important;
+}
+/* OBS view: 背景は mini-hero-card 側に持たせて朱墨ink維持 */
+html.wwm-view-sidebar .wwm-sb-mini-hero-card {
+  background-color: rgba(var(--overlay-bg-rgb), var(--overlay-bg-alpha)) !important;
+  background-image:
+    radial-gradient(ellipse at top right, rgba(240,210,138,0.08), transparent 55%) !important;
 }
 /* overlay モード: IMPORT button / 透明度 slider 非表示 */
 html.wwm-view-sidebar .wwm-sb-import-btn,
