@@ -745,9 +745,12 @@ async function _renderOptimizationInner(roleInfo, params, opts, root) {
   // 計算中表示
   root.innerHTML = `<div class="wwm-analysis-card wwm-modal-square"><div class="wwm-modal-bg-icon" style="background-image:url('assets/icons/anvil-impact.svg');"></div>${headerHtml}<div class="wwm-opt-loading">計算中...</div></div>`;
   _bindControls();
-  // progress表示 簡素化: 初期1回のみ「計算中...」、 以降 noop (頻繁更新ちらつき抑止)
-  (() => { const el = root.querySelector('#wwmOptProgress'); if (el) el.textContent = '計算中...'; })();
-  const setProgress = () => {};
+  // progress表示は .wwm-opt-loading に一本化 (#wwmOptProgress は使わず二重回避)
+  const setProgress = (label) => {
+    const el = root.querySelector('.wwm-opt-loading');
+    if (el) el.textContent = label || '計算中...';
+  };
+  setProgress('計算中...');
   const state = (() => { try { return JSON.parse(localStorage.getItem('wwm_last_state_v1') || 'null'); } catch(_) { return null; } })();
   await _loadEquipMax();
   const charLv = roleInfo?.level || 95;
@@ -772,6 +775,7 @@ async function _renderOptimizationInner(roleInfo, params, opts, root) {
     if (_aborted()) return;
     await new Promise(r => setTimeout(r, 0)); // UI応答性確保
     if (_aborted()) return;
+    setProgress(`計算中... (${iter + 1}回目)`);
     const eqDet = working.wearEquipsDetailed || {};
     const slots = ['1','2','3','4','5','8','10','11'].filter(s => eqDet[s] && slotsAllowed.has(s));
     let best = null;
