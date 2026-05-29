@@ -1970,7 +1970,7 @@ html[data-theme="light"] .tier-C { color: var(--paper-mute);  background: rgba(5
   background:
     radial-gradient(ellipse at top right, rgba(240,210,138,0.06), transparent 55%),
     linear-gradient(180deg, var(--surf-1), var(--surf-2));
-  border: 1px solid transparent;
+  border: 1px solid var(--gold-deep);
   padding: 12px 14px;
   margin-bottom: 10px;
   overflow: hidden;
