@@ -1257,8 +1257,8 @@ async function renderSidebar(params) {
     ? (cfg.sections || []).map(s => _renderSection(s, params, collapsedSet, baseParams)).join('')
     : `<div class="wwm-sb-empty">
          <p class="wwm-muted" style="text-align:center;padding:24px 12px;">
-           まだインポートデータがありません。<br>
-           上部「IMPORT」ボタンから取り込みできます。
+           ${(window.T?.sbEmptyTitle) || 'まだインポートデータがありません。'}<br>
+           ${(window.T?.sbEmptyHint) || '上部「IMPORT」ボタンから取り込みできます。'}
          </p>
        </div>`;
   // 未対応データ notice
