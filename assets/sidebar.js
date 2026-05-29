@@ -2927,27 +2927,12 @@ function openGearEdit(slot) {
     _refreshAll();
   });
 
-  m.querySelector('#wwmEditReset').addEventListener('click', async () => {
+  m.querySelector('#wwmEditReset').addEventListener('click', () => {
     if (window.__WWM_VIRTUAL) delete window.__WWM_VIRTUAL[slot];
     if (window.__WWM_VIRTUAL_KONGFU) {
       if (slot === '1') delete window.__WWM_VIRTUAL_KONGFU.kongfuMain;
       else if (slot === '2') delete window.__WWM_VIRTUAL_KONGFU.kongfuSub;
     }
-    // 復元: baseline を現状state (最新心法tier/arsenal/敵パラ等) + origRoleInfo で再計算
-    try {
-      const baseRi = window.__WWM_ROLEINFO;
-      const curState = (() => { try { return JSON.parse(localStorage.getItem('wwm_last_state_v1') || 'null'); } catch(_) { return null; } })();
-      if (baseRi && window.WWMStats?.buildStatParams && typeof window.computeExpected === 'function') {
-        const origParams = await window.WWMStats.buildStatParams(baseRi, curState);
-        window.computeExpected(origParams);
-        const res = window.__WWM_LAST_RESULT;
-        if (res) {
-          const bonus = (typeof window.__WWM_SET4_BONUS_OF === 'function') ? window.__WWM_SET4_BONUS_OF(baseRi) : 0;
-          window.__WWM_BASELINE = { expected: res.expected, statusScore: res.statusScore + bonus, tier: res.tier, ts: Date.now() };
-          try { localStorage.setItem('wwm_baseline_score_v1', JSON.stringify(window.__WWM_BASELINE)); } catch(_) {}
-        }
-      }
-    } catch(_) {}
     m.remove();
     _refreshAll();
   });
@@ -2963,28 +2948,11 @@ function updateHero(params) {
   const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
   setText('heroExpected', Math.round(total).toLocaleString());
   setText('hbExp', Math.round(total).toLocaleString());
-  // hero-current = 現在装備 (仮想装備なし時は最新 statusScore で baseline を同期、 state変更追従)
-  const _hasVirtual = (window.__WWM_VIRTUAL && Object.keys(window.__WWM_VIRTUAL).length) ||
-                      (window.__WWM_VIRTUAL_KONGFU && Object.keys(window.__WWM_VIRTUAL_KONGFU).length) ||
-                      (window.__WWM_VIRTUAL_XINFA && (
-                        (window.__WWM_VIRTUAL_XINFA.passive && window.__WWM_VIRTUAL_XINFA.passive.length) ||
-                        (window.__WWM_VIRTUAL_XINFA.tiers && Object.keys(window.__WWM_VIRTUAL_XINFA.tiers).length)
-                      ));
+  // hero-current = baseline (import時固定) または statusScore (baseline未取得時)
   const _baseline = window.__WWM_BASELINE;
-  let currentScore;
-  if (!_hasVirtual) {
-    // 仮想装備なし: 最新 statusScore を baseline として再同期 (state変更で乖離防止)
-    currentScore = statusScore;
-    if (_baseline) {
-      _baseline.statusScore = statusScore;
-      _baseline.expected = total;
-      try { localStorage.setItem('wwm_baseline_score_v1', JSON.stringify(_baseline)); } catch(_) {}
-    }
-  } else {
-    currentScore = (_baseline && typeof _baseline.statusScore === 'number')
-      ? Math.round(_baseline.statusScore)
-      : statusScore;
-  }
+  const currentScore = (_baseline && typeof _baseline.statusScore === 'number')
+    ? Math.round(_baseline.statusScore)
+    : statusScore;
   if (typeof window.countUp === 'function') {
     window.countUp('heroScore', currentScore, 0);
     window.countUp('heroCompactScore', currentScore, 0);
