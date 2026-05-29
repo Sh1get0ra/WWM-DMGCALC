@@ -2611,7 +2611,13 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
   vertical-align: middle;
   box-shadow: 0 0 8px rgba(232,81,58,0.6);
 }
-.wwm-cmp-modal-a .wwm-modal-header { position: relative; }
+.wwm-cmp-modal-a {
+  background: #1a1410 !important;
+}
+.wwm-cmp-modal-a .wwm-modal-header {
+  position: relative;
+  background: #1a1410 !important;
+}
 .wwm-cmp-modal-a .wwm-modal-header::after {
   content: ''; position: absolute; bottom: 0; left: 16px; right: 16px; height: 1px;
   background: linear-gradient(90deg, transparent, var(--vermilion), transparent);
@@ -2644,7 +2650,7 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
 }
 /* ── 完全A化: col / title / kongfu / rows / pct ── */
 .wwm-cmp-modal-a .wwm-cmp-col {
-  background: rgba(0,0,0,0.25) !important;
+  background: #0d0a08 !important;
   border: 1px solid var(--ink-1) !important;
   border-radius: 0 !important;
   padding: 16px 14px 14px !important;
