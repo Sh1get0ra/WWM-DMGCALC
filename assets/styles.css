@@ -4022,7 +4022,6 @@ html[data-theme="light"] .hero-wuxia .hero-tier.tier-SS::before {
 }
 @keyframes tier-ss-shimmer-light {
   0%   { transform: translateX(-250%); }
-  60%  { transform: translateX(250%); }
   100% { transform: translateX(250%); }
 }
 html[data-theme="light"] .hero-wuxia .hero-tier.tier-S {
