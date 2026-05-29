@@ -1962,9 +1962,11 @@ html[data-theme="light"] .tier-C { color: var(--paper-mute);  background: rgba(5
 }
 .wwm-sidebar-test::-webkit-scrollbar { display: none; }  /* Chrome/Safari */
 .wwm-sidebar-test:empty { display: none; }
-/* ── mini-hero header card (案C武侠化) ────────────── */
+/* ── mini-hero header card (案C武侠化、 sticky固定) ────────────── */
 .wwm-sb-mini-hero-card {
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 10;
   background:
     radial-gradient(ellipse at top right, rgba(240,210,138,0.06), transparent 55%),
     linear-gradient(180deg, var(--surf-1), var(--surf-2));
