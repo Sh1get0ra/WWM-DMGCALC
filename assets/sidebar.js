@@ -1575,16 +1575,20 @@ async function _computeArsenalCardScore(roleInfo) {
 
 async function _computeXinfaCardScores(roleInfo) {
   if (!window.WWMStats?.buildStatParams || typeof window.computeExpected !== 'function') return;
-  // bug fix: virtual xinfa tiers (Edit modal適用結果) を反映するため _getEffectiveState() 使用
+  // virtual passive (心法ID差替) も反映するため、roleInfo は effectiveRoleInfo で上書き保証
+  const ri = (typeof _getEffectiveRoleInfo === 'function')
+    ? (_getEffectiveRoleInfo() || roleInfo)
+    : roleInfo;
+  // virtual xinfa tiers (Edit modal適用結果) を反映するため _getEffectiveState() 使用
   const state = (typeof _getEffectiveState === 'function')
     ? _getEffectiveState()
     : (() => { try { return JSON.parse(localStorage.getItem('wwm_last_state_v1') || 'null'); } catch(_) { return null; } })();
   // base score
   let baseScore = 0;
   try {
-    const baseParams = await window.WWMStats.buildStatParams(roleInfo, state);
+    const baseParams = await window.WWMStats.buildStatParams(ri, state);
     window.computeExpected(baseParams);
-    baseScore = _scoreWithBonus(roleInfo);
+    baseScore = _scoreWithBonus(ri);
   } catch (e) { return; }
   // 各 xinfa slot → tier 0 で再算出 = その心法寄与
   for (let i = 0; i < 4; i++) {
@@ -1593,9 +1597,9 @@ async function _computeXinfaCardScores(roleInfo) {
       if (!altState.xinfaTiers) altState.xinfaTiers = {};
       altState.xinfaTiers[i] = 0;
       altState.xinfaTiers[String(i)] = 0;
-      const p = await window.WWMStats.buildStatParams(roleInfo, altState);
+      const p = await window.WWMStats.buildStatParams(ri, altState);
       window.computeExpected(p);
-      const noXinfa = _scoreWithBonus(roleInfo);
+      const noXinfa = _scoreWithBonus(ri);
       const delta = Math.round(baseScore - noXinfa);
       const el = document.querySelector(`[data-xinfa-score="${i}"]`);
       if (el) el.innerHTML = `<b>${delta.toLocaleString()}</b>`;
@@ -1603,7 +1607,7 @@ async function _computeXinfaCardScores(roleInfo) {
   }
   // 復元
   try {
-    const finalParams = await window.WWMStats.buildStatParams(roleInfo, state);
+    const finalParams = await window.WWMStats.buildStatParams(ri, state);
     window.computeExpected(finalParams);
   } catch (e) {}
 }

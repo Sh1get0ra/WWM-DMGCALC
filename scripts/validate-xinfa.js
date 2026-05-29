@@ -38,6 +38,13 @@ const HIDDEN_OK_KEYS = new Set([
   'outerPen', 'critBoost', 'physDmgBoost', 'elemAtkBoost',
   'sympathyBoost', 'allMartialBoost', 'specMartialBoost', 'bossBoost',
 ]);
+// WWMキー (sidebar表示用) — hidden経路では calc.js が無視するため effects に書くべきでない
+const FORBIDDEN_WWM_KEYS = new Set([
+  'crit', 'affinity', 'precision', 'physDmgBonus', 'attrDmgBonus',
+  'critDmgBonus', 'affinityDmgBonus', 'directCrit', 'directAffinity',
+  'allWeaponDmg', 'bossDmg', 'playerUnitDmg', 'physPen', 'attrPen',
+  'minPhys', 'maxPhys',
+]);
 const HIDDEN_TIERS = ['tier0', 'tier1', 'tier3', 'tier4', 'tier6'];
 
 const errors = [];
@@ -81,6 +88,21 @@ for (const [id, e] of Object.entries(xinfa)) {
       // visible系キーがhiddenに紛れ込んでいる → 計算反映0
       if (VISIBLE_KEYS.has(k)) {
         err(id, ja, `${t} hidden経路で "${k}" 使用 → calc.js未合流、計算反映0`);
+      }
+      // WWMキー (sidebar表示用) 混入 → hidden経路では無視される
+      if (FORBIDDEN_WWM_KEYS.has(k)) {
+        err(id, ja, `${t} WWMキー "${k}" 使用 → calc.js内部キーに書き換え必要 (hidden経路で無視)`);
+      }
+    }
+  }
+
+  // T2/T5 visible 経路: WWMキー混入チェック (こちらは _accMapped で変換されるが念のため警告)
+  for (const t of ['tier2', 'tier5']) {
+    const b = e.attributeBuff[t];
+    if (!b || !b.effects) continue;
+    for (const k of Object.keys(b.effects)) {
+      if (FORBIDDEN_WWM_KEYS.has(k)) {
+        warn(id, ja, `${t} visible経路で WWMキー "${k}" 直接使用 → calc.js内部キー推奨`);
       }
     }
   }
