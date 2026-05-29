@@ -2806,22 +2806,24 @@ function openGearEdit(slot) {
   function _bindRowEvents() {
   m.querySelectorAll('.wwm-cmp-edit-row').forEach(row => {
     const idx = parseInt(row.dataset.affixIdx, 10);
-    // val input: 第2位以下を入力できないように 即丸め (input毎にチェック)
+    // val input: 矢印操作後 / blur / 値確定時 第1位丸め
     const valEl = row.querySelector('.wwm-cmp-val-input');
     if (valEl) {
-      valEl.addEventListener('input', () => {
-        const v = valEl.value;
-        if (v === '' || v.endsWith('.') || v === '-') return; // 中間状態
-        const f = parseFloat(v);
+      const normalize = () => {
+        const f = parseFloat(valEl.value);
         if (isNaN(f)) return;
-        const rounded = Math.round(f * 10) / 10;
-        // 整数部 + 第1位のみ。 第2位以下があれば切り捨て
-        if (Math.abs(f - rounded) > 1e-9 || /\.\d{2,}/.test(v)) {
-          const cursorEnd = valEl.selectionEnd;
-          valEl.value = rounded.toFixed(1);
-          try { valEl.setSelectionRange(cursorEnd, cursorEnd); } catch(_) {}
+        valEl.value = (Math.round(f * 10) / 10).toFixed(1);
+      };
+      // 矢印キー (ブラウザ default step 後 = next tick で正規化)
+      valEl.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+          setTimeout(() => { normalize(); valEl.dispatchEvent(new Event('input')); }, 0);
         }
       });
+      // change (Enter押下 / blur)
+      valEl.addEventListener('change', () => { normalize(); valEl.dispatchEvent(new Event('input')); });
+      // blur 確実化
+      valEl.addEventListener('blur', () => { normalize(); valEl.dispatchEvent(new Event('input')); });
     }
     row.querySelectorAll('[data-field]').forEach(el => {
       const evt = el.tagName === 'SELECT' ? 'change' : 'input';
