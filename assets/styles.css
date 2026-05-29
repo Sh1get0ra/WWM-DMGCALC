@@ -300,7 +300,7 @@ html[data-theme="light"] .wwm-brand-sub { color: var(--vermilion-bright); opacit
 }
 /* NOTE = X+☀ width相当 - 3px */
 .top-controls-2row .topbar-row .icon-btn.note-btn {
-  width: 69px;
+  width: 66px;
   min-width: 0;
   padding: 0 var(--space-2);
   justify-content: center;
