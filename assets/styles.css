@@ -3974,8 +3974,21 @@ html[data-theme="light"] .hero-wuxia .luopan-center-label {
   color: var(--vermilion-deep);
 }
 html[data-theme="light"] .hero-wuxia .judge-name {
-  color: var(--ink-1);
+  color: #2a1810;
+  font-weight: var(--fw-bold);
+  text-shadow: 0 0 1px rgba(255,255,255,0.4);
 }
+html[data-theme="light"] .hero-wuxia .judge-val {
+  filter: brightness(0.55) saturate(1.6);
+  font-weight: var(--fw-extra);
+  text-shadow: 0 0 1px rgba(255,255,255,0.5);
+}
+/* 物理/属性 行は固定色なので個別調整 */
+html[data-theme="light"] .hero-wuxia #dmgPhysVal { color: #8a2418 !important; filter: none; }
+html[data-theme="light"] .hero-wuxia #dmgElemVal { color: #2d5a3a !important; filter: none; }
+html[data-theme="light"] .hero-wuxia .judge-dot-phys { border-color: #8a2418; box-shadow: 0 0 4px rgba(138,36,24,0.45); }
+html[data-theme="light"] .hero-wuxia .judge-dot-elem { border-color: #2d5a3a; box-shadow: 0 0 4px rgba(45,90,58,0.45); }
+html[data-theme="light"] .hero-wuxia .judge-row-sep { border-top-color: rgba(40,25,18,0.2); }
 /* 朱墨筆 light: ダーク同等に見えるよう更に濃化 */
 html[data-theme="light"] .hero-wuxia .ink-stroke {
   opacity: 1;
