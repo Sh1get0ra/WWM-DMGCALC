@@ -2767,6 +2767,19 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
   margin-bottom: 8px !important;
   margin-top: 6px !important;
 }
+/* select内 option を統一 (paper bg + #1a1410 / hover青) */
+.wwm-cmp-modal-a select option {
+  font-size: 13px !important;
+  font-family: var(--f-display, 'Noto Serif JP') !important;
+  font-weight: 700 !important;
+  background: #1a1410 !important;
+  color: var(--paper) !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-stat-select option {
+  font-size: 12px !important;
+  font-family: var(--f-sans, 'Noto Sans JP') !important;
+  font-weight: 600 !important;
+}
 .wwm-cmp-modal-a .wwm-cmp-set-header,
 .wwm-cmp-modal-a .wwm-cmp-set-select {
   background: linear-gradient(90deg, rgba(240,210,138,0.12), transparent) !important;
