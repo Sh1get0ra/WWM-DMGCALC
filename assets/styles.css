@@ -2237,10 +2237,18 @@ body.wwm-layout-active .wwm-app-body .container {
   padding: 0 6px 16px 0;
   box-sizing: border-box;
   overflow-y: auto;
+  overflow-x: clip;  /* clip = visible互換、子のpush-outも切らず描画 */
   scrollbar-width: thin;
   scrollbar-color: var(--gold-deep) transparent;
   scrollbar-gutter: stable;
 }
+/* hero (negative margin) は overflow-x制約を超えて描画したい */
+body.wwm-layout-active .wwm-app-body .container .hero.hero-wuxia {
+  position: relative;
+  /* clipされても描画されるよう、container を一時 visible にする */
+}
+body.wwm-layout-active .wwm-app-body { overflow: visible !important; }
+body.wwm-layout-active .wwm-app-body .container { overflow-x: visible !important; }
 body.wwm-layout-active .wwm-app-body .container::-webkit-scrollbar { width: 6px; }
 body.wwm-layout-active .wwm-app-body .container::-webkit-scrollbar-thumb { background: var(--gold-deep); border-radius: 3px; }
 body.wwm-layout-active .wwm-footer {
