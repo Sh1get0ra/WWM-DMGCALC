@@ -4006,8 +4006,15 @@ html[data-theme="light"] .hero-wuxia .hero-tier.tier-SS {
   box-shadow: 0 0 12px rgba(184,134,11,0.45), inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(90,42,10,0.3);
 }
 html[data-theme="light"] .hero-wuxia .hero-tier.tier-SS::before {
-  background: linear-gradient(105deg, transparent 25%, rgba(255,250,220,0.7) 50%, transparent 75%) !important;
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(105deg, transparent 25%, rgba(255,250,220,0.85) 50%, transparent 75%) !important;
   background-size: 250% 100% !important;
+  background-repeat: no-repeat !important;
+  animation: tier-ss-shimmer 2.8s linear infinite !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
 }
 html[data-theme="light"] .hero-wuxia .hero-tier.tier-S {
   background: linear-gradient(135deg, #f4a89a 0%, #e87862 50%, #c83c2b 100%);
