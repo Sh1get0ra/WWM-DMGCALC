@@ -512,10 +512,11 @@ a.icon-btn { text-decoration: none; }
   overflow: hidden;
 }
 .hero::before {
-  /* corner kanji watermark */
-  content: '斬'; position: absolute; right: -20px; bottom: -60px;
-  font-family: var(--f-display); font-weight: var(--fw-black);
-  font-size: 320px; color: rgba(232,81,58,0.12);
+  /* corner kanji watermark — 毛筆 (Yuji Mai) */
+  content: '斬'; position: absolute; right: -10px; bottom: -40px;
+  font-family: 'Yuji Mai', 'Yuji Boku', 'Klee One', var(--f-display);
+  font-weight: 400;
+  font-size: 260px; color: rgba(232,81,58,0.12);
   pointer-events: none; line-height: 1;
 }
 /* 古紙テクスチャ overlay (SVG turbulence + blend) — テスト用に強度UP */
