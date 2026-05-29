@@ -4015,14 +4015,14 @@ html[data-theme="light"] .hero-wuxia .hero-tier.tier-SS::before {
   width: 60% !important;
   height: 100% !important;
   background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,0.30) 50%, transparent 75%) !important;
-  transform: translateX(-250%);
-  animation: tier-ss-shimmer-light 2.8s linear infinite !important;
+  transform: translateX(-200%);
+  animation: tier-ss-shimmer-light 1.6s linear infinite !important;
   pointer-events: none !important;
   z-index: 1 !important;
 }
 @keyframes tier-ss-shimmer-light {
-  0%   { transform: translateX(-250%); }
-  100% { transform: translateX(250%); }
+  0%   { transform: translateX(-200%); }
+  100% { transform: translateX(200%); }
 }
 html[data-theme="light"] .hero-wuxia .hero-tier.tier-S {
   background: linear-gradient(135deg, #f4a89a 0%, #e87862 50%, #c83c2b 100%);
