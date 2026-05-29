@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;600;700;900&family=Noto+Serif+JP:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<link rel="stylesheet" href="assets/styles.css?v=312">
+<link rel="stylesheet" href="assets/styles.css?v=313">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFYB6MKMMY"></script>
 <script>
@@ -103,21 +103,30 @@
         <div class="wwm-brand-seal" aria-hidden="true">燕</div>
       </div>
     </div>
-    <div class="top-controls">
-      <div class="lang-switcher" role="group" aria-label="言語切替">
-        <button class="lang-btn active" data-lang="ja" onclick="setLang('ja')" aria-pressed="true">日本語</button>
-        <button class="lang-btn"        data-lang="en" onclick="setLang('en')" aria-pressed="false">EN</button>
-        <button class="lang-btn"        data-lang="zh" onclick="setLang('zh')" aria-pressed="false">中文</button>
-        <button class="lang-btn"        data-lang="ko" onclick="setLang('ko')" aria-pressed="false">한국어</button>
+    <div class="top-controls top-controls-2row">
+      <!-- 1行目 -->
+      <div class="topbar-row topbar-row-1">
+        <div class="lang-switcher lang-switcher-row" role="group" aria-label="言語切替 (1)">
+          <button class="lang-btn active" data-lang="ja" onclick="setLang('ja')" aria-pressed="true">日本語</button>
+          <button class="lang-btn"        data-lang="en" onclick="setLang('en')" aria-pressed="false">EN</button>
+        </div>
+        <button class="icon-btn import-btn" id="importBtn" onclick="importData()" data-i18n="importBtn">IMPORT</button>
+        <button class="icon-btn export-btn" id="exportBtn" onclick="exportImage()" title="画像で書き出し" aria-label="画像で書き出し">EXPORT</button>
+        <a class="icon-btn icon-btn-x" href="https://x.com/TORA_XIV" target="_blank" rel="noopener noreferrer" title="お問い合わせ (X / Twitter)" aria-label="X (Twitter) で問い合わせ">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <button class="icon-btn" id="themeToggle" onclick="toggleTheme()" title="Theme" aria-label="ライト/ダーク切替">☀</button>
       </div>
-      <button class="icon-btn import-btn" id="importBtn" onclick="importData()" data-i18n="importBtn">IMPORT</button>
-      <button class="icon-btn export-btn" id="exportBtn" onclick="exportImage()" title="画像で書き出し" aria-label="画像で書き出し">EXPORT</button>
-      <button class="icon-btn share-btn" id="shareBtn" onclick="WWMShare.shareUrl()" title="Build を URL で共有" aria-label="URL で共有">SHARE</button>
-      <button class="icon-btn" id="changelogBtn" onclick="WWMChangelog.showAll()" title="変更履歴" aria-label="変更履歴を開く">📖</button>
-      <a class="icon-btn icon-btn-x" href="https://x.com/TORA_XIV" target="_blank" rel="noopener noreferrer" title="お問い合わせ (X / Twitter)" aria-label="X (Twitter) で問い合わせ">
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-      </a>
-      <button class="icon-btn" id="themeToggle" onclick="toggleTheme()" title="Theme" aria-label="ライト/ダーク切替">☀</button>
+      <!-- 2行目 -->
+      <div class="topbar-row topbar-row-2">
+        <div class="lang-switcher lang-switcher-row" role="group" aria-label="言語切替 (2)">
+          <button class="lang-btn" data-lang="zh" onclick="setLang('zh')" aria-pressed="false">中文</button>
+          <button class="lang-btn" data-lang="ko" onclick="setLang('ko')" aria-pressed="false">한국어</button>
+        </div>
+        <button type="button" class="icon-btn reset-btn" id="wwmVirtResetBtn" title="新装備/心法 全リセット (現装備値に戻す)" data-i18n-title="virtResetTip" onclick="WWMHelp.resetAllVirtuals()" aria-label="装備/心法リセット">RESET</button>
+        <button class="icon-btn share-btn" id="shareBtn" onclick="WWMShare.shareUrl()" title="Build を URL で共有" aria-label="URL で共有">SHARE</button>
+        <button class="icon-btn note-btn" id="noteBtn" onclick="WWMChangelog.showAll()" title="ツール仕様 / 更新履歴" aria-label="NOTE (仕様 + 履歴)">NOTE</button>
+      </div>
     </div>
   </header>
 
@@ -186,8 +195,6 @@
     <div class="hero-label">
       <span class="ja" data-i18n="martialIndex">武格指数</span>
       <span class="en">MARTIAL INDEX</span>
-      <button type="button" class="wwm-help-btn" title="武格指数 計算式の説明" onclick="WWMHelp.showScoreFormula()">?</button>
-      <button type="button" class="wwm-help-btn wwm-virt-reset-btn" id="wwmVirtResetBtn" title="新装備/心法 全リセット (現装備値に戻す)" data-i18n-title="virtResetTip" onclick="WWMHelp.resetAllVirtuals()">↺</button>
     </div>
     <div class="hero-score-row" aria-live="polite" aria-atomic="true">
       <div class="hero-current">
