@@ -2642,6 +2642,145 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
   font-weight: 900;
   letter-spacing: 0.16em;
 }
+/* ── 完全A化: col / title / kongfu / rows / pct ── */
+.wwm-cmp-modal-a .wwm-cmp-col {
+  background: rgba(0,0,0,0.25) !important;
+  border: 1px solid var(--ink-1) !important;
+  border-radius: 0 !important;
+  padding: 16px 14px 14px !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-current {
+  border-left: 3px solid var(--vermilion) !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-new {
+  border-left: 3px solid var(--jade) !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-title {
+  font-family: var(--f-display, 'Noto Serif JP') !important;
+  font-weight: 900 !important;
+  font-size: 11px !important;
+  letter-spacing: 0.32em !important;
+  position: absolute !important;
+  top: -8px !important; left: 12px !important;
+  background: var(--surf-1) !important;
+  padding: 0 8px !important;
+  margin: 0 !important;
+  z-index: 2;
+  display: flex; align-items: center; gap: 6px;
+  text-transform: uppercase;
+}
+.wwm-cmp-modal-a .wwm-cmp-current .wwm-cmp-title { color: var(--vermilion) !important; }
+.wwm-cmp-modal-a .wwm-cmp-new     .wwm-cmp-title { color: var(--jade-bright, #b8e0c4) !important; }
+.wwm-cmp-modal-a .wwm-cmp-title .wwm-cmp-lv {
+  font-family: var(--f-mono, 'Rajdhani') !important;
+  font-weight: 600 !important;
+  font-size: 10px !important;
+  color: var(--paper-mute) !important;
+  letter-spacing: 0.08em !important;
+  border: 1px solid var(--paper-mute) !important;
+  padding: 1px 5px !important;
+  border-radius: 2px !important;
+  background: transparent !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-kongfu-header {
+  font-family: var(--f-display, 'Noto Serif JP') !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  color: var(--paper) !important;
+  background: rgba(201,164,90,0.06) !important;
+  border-left: 2px solid var(--gold) !important;
+  border-radius: 0 !important;
+  padding: 6px 8px !important;
+  margin-bottom: 8px !important;
+  margin-top: 6px !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-kongfu-select {
+  background: rgba(201,164,90,0.06) !important;
+  border: 1px solid var(--gold-deep) !important;
+  border-left: 2px solid var(--gold) !important;
+  border-radius: 0 !important;
+  color: var(--paper) !important;
+  font-family: var(--f-display, 'Noto Serif JP') !important;
+  font-weight: 700 !important;
+  margin-bottom: 8px !important;
+  margin-top: 6px !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-set-header,
+.wwm-cmp-modal-a .wwm-cmp-set-select {
+  background: linear-gradient(90deg, rgba(240,210,138,0.12), transparent) !important;
+  border-left: 2px solid var(--gold-bright) !important;
+  border-radius: 0 !important;
+  color: var(--gold-bright) !important;
+  text-shadow: 0 0 6px rgba(240,210,138,0.4) !important;
+  padding: 6px 8px !important;
+  margin-bottom: 8px !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-set-select {
+  border: 1px solid var(--gold-deep) !important;
+  border-left: 2px solid var(--gold-bright) !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-rows {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-row {
+  display: grid !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 4px 6px !important;
+  border-bottom: 1px dashed rgba(201,164,90,0.12) !important;
+  font-size: 12px !important;
+  background: transparent !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-name,
+.wwm-cmp-modal-a .wwm-cmp-stat-select {
+  color: var(--paper) !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-stat-select {
+  background: rgba(0,0,0,0.4) !important;
+  border: 1px solid var(--ink-2) !important;
+  border-radius: 0 !important;
+  font-size: 11px !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-val,
+.wwm-cmp-modal-a .wwm-cmp-val-input {
+  font-family: var(--f-mono, 'Rajdhani') !important;
+  font-weight: 700 !important;
+  color: var(--gold-bright) !important;
+  font-size: 13px !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-val-input {
+  background: rgba(0,0,0,0.4) !important;
+  border: 1px solid var(--ink-2) !important;
+  border-radius: 0 !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-pct,
+.wwm-cmp-modal-a .wwm-cmp-row .wwm-cmp-pct {
+  font-family: var(--f-mono, 'Rajdhani') !important;
+  font-size: 10px !important;
+  padding: 1px 5px !important;
+  border-radius: 2px !important;
+  background: rgba(168,212,180,0.18) !important;
+  color: var(--jade-bright, #b8e0c4) !important;
+  border: 1px solid rgba(168,212,180,0.4) !important;
+  min-width: 36px !important;
+  text-align: center !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-pct.low,
+.wwm-cmp-modal-a .wwm-cmp-row .wwm-cmp-pct.low {
+  background: rgba(232,81,58,0.18) !important;
+  color: var(--vermilion) !important;
+  border-color: rgba(232,81,58,0.4) !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-grid {
+  gap: 20px !important;
+}
+.wwm-cmp-modal-a .wwm-modal-body {
+  padding: 24px 20px 16px !important;
+}
 
 .wwm-cmp-grid {
   display: grid; grid-template-columns: 1fr 1fr;
