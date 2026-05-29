@@ -2230,7 +2230,7 @@ function _fmtAffixVal(val, statKey) {
   if (val == null || isNaN(val)) return '-';
   if (_PCT_RATIO_STATKEYS.has(statKey)) return (val * 100).toFixed(1) + '%';
   if (_PCT_DIRECT_STATKEYS.has(statKey)) return val.toFixed(1) + '%';
-  if (typeof val === 'number') return val.toFixed(2).replace(/\.00$/, '');
+  if (typeof val === 'number') return val.toFixed(1);
   return val;
 }
 
@@ -2520,8 +2520,8 @@ function openGearEdit(slot) {
       const needsMul = _pctNeedsMul(sk);
       const displayVal = isPct
         ? (needsMul ? (val*100).toFixed(1) : val.toFixed(1))
-        : (typeof val === 'number' ? val.toFixed(2).replace(/\.00$/,'') : val);
-      const step = isPct ? '0.1' : '0.01';
+        : (typeof val === 'number' ? val.toFixed(1) : val);
+      const step = '0.1';
       // max 値算出: 装備個別Lv基準 → equip_max.json (Lv → tier) ベース。fallback: orig val/ratio (sameStat時)
       const _eqLv = (window.__WWM_VIRTUAL?.[slot]?.exVo?._inferredLv) ?? origEq?.exVo?._inferredLv ?? charLv;
       let maxInternal = _getAffixMax(sk, _eqLv);
@@ -2533,7 +2533,7 @@ function openGearEdit(slot) {
         }
       }
       const maxAttr = maxInternal != null
-        ? `max="${isPct ? (needsMul ? (maxInternal*100).toFixed(1) : maxInternal.toFixed(1)) : maxInternal.toFixed(2)}"`
+        ? `max="${isPct ? (needsMul ? (maxInternal*100).toFixed(1) : maxInternal.toFixed(1)) : maxInternal.toFixed(1)}"`
         : '';
       // 初期 ratio 計算 (val / maxInternal)
       const initRatio = (maxInternal != null && maxInternal > 0 && typeof val === 'number')
