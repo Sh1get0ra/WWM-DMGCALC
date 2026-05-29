@@ -2745,17 +2745,6 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
 }
 .wwm-cmp-modal-a .wwm-cmp-current .wwm-cmp-title { color: var(--vermilion) !important; }
 .wwm-cmp-modal-a .wwm-cmp-new     .wwm-cmp-title { color: var(--jade-bright, #b8e0c4) !important; }
-.wwm-cmp-modal-a .wwm-cmp-title .wwm-cmp-lv {
-  font-family: var(--f-mono, 'Rajdhani') !important;
-  font-weight: 600 !important;
-  font-size: 10px !important;
-  color: var(--paper-mute) !important;
-  letter-spacing: 0.08em !important;
-  border: 1px solid var(--paper-mute) !important;
-  padding: 1px 5px !important;
-  border-radius: 2px !important;
-  background: transparent !important;
-}
 .wwm-cmp-modal-a .wwm-cmp-kongfu-header {
   font-family: var(--f-display, 'Noto Serif JP') !important;
   font-weight: 700 !important;
