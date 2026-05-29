@@ -2666,17 +2666,17 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
   z-index: 0;
 }
 .wwm-cmp-bow .wwm-cmp-bg-icon { background-size: 50%; }
-/* 現在の装備: 青グロウ */
+/* 現在の装備: 朱赤グロウ */
 .wwm-cmp-current .wwm-cmp-bg-icon {
   filter:
-    drop-shadow(0 0 6px rgba(74,158,255,0.7))
-    drop-shadow(0 0 14px rgba(74,158,255,0.45));
+    drop-shadow(0 0 6px rgba(232,81,58,0.7))
+    drop-shadow(0 0 14px rgba(232,81,58,0.45));
 }
 /* 新しい装備: 緑グロウ */
 .wwm-cmp-new .wwm-cmp-bg-icon {
   filter:
-    drop-shadow(0 0 6px rgba(46,194,126,0.7))
-    drop-shadow(0 0 14px rgba(46,194,126,0.45));
+    drop-shadow(0 0 6px rgba(168,212,180,0.7))
+    drop-shadow(0 0 14px rgba(168,212,180,0.45));
 }
 .wwm-cmp-col > .wwm-cmp-title,
 .wwm-cmp-col > .wwm-cmp-rows,
@@ -2706,12 +2706,14 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
 .wwm-cmp-col > .wwm-cmp-set-select,
 .wwm-cmp-col > .wwm-cmp-set-effect { position: relative; z-index: 1; }
 .wwm-cmp-set-header {
-  font-size: var(--text-sm); color: #c389ff;
+  font-size: var(--text-sm); color: var(--gold-bright);
   font-weight: var(--fw-bold);
   margin-bottom: 6px;
   padding: 4px 6px;
-  background: rgba(195,137,255,0.08);
-  border-radius: 4px;
+  background: linear-gradient(90deg, rgba(240,210,138,0.12), transparent);
+  border-left: 2px solid var(--gold-bright);
+  border-radius: 0;
+  text-shadow: 0 0 6px rgba(240,210,138,0.4);
 }
 .wwm-cmp-set-select {
   width: 100%;
@@ -3326,13 +3328,13 @@ html[data-theme="light"] .wwm-opt-loading {
 .wwm-cmp-preview-value.pos { color: #2ec27e; }
 .wwm-cmp-preview-value.neg { color: #ff6b6b; }
 .wwm-cmp-preview-value.zero { color: rgba(255,255,255,0.5); }
-.wwm-cmp-current { border-left: 3px solid #4a9eff; }
-.wwm-cmp-new     { border-left: 3px solid #2ec27e; }
+.wwm-cmp-current { border-left: 3px solid var(--vermilion); }
+.wwm-cmp-new     { border-left: 3px solid var(--jade); }
 .wwm-cmp-title {
   margin: 0 0 8px; font-size: var(--text-md); font-weight: var(--fw-bold);
 }
-.wwm-cmp-current .wwm-cmp-title { color: #4a9eff; }
-.wwm-cmp-new .wwm-cmp-title { color: #2ec27e; }
+.wwm-cmp-current .wwm-cmp-title { color: var(--vermilion); }
+.wwm-cmp-new .wwm-cmp-title { color: var(--jade-bright, #b8e0c4); }
 .wwm-cmp-rows { display: flex; flex-direction: column; gap: var(--space-1); }
 .wwm-cmp-row {
   display: grid;
