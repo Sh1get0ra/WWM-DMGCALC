@@ -104,20 +104,20 @@
       </div>
     </div>
     <div class="top-controls">
-      <div class="lang-switcher">
-        <button class="lang-btn active" data-lang="ja" onclick="setLang('ja')">日本語</button>
-        <button class="lang-btn"        data-lang="en" onclick="setLang('en')">EN</button>
-        <button class="lang-btn"        data-lang="zh" onclick="setLang('zh')">中文</button>
-        <button class="lang-btn"        data-lang="ko" onclick="setLang('ko')">한국어</button>
+      <div class="lang-switcher" role="group" aria-label="言語切替">
+        <button class="lang-btn active" data-lang="ja" onclick="setLang('ja')" aria-pressed="true">日本語</button>
+        <button class="lang-btn"        data-lang="en" onclick="setLang('en')" aria-pressed="false">EN</button>
+        <button class="lang-btn"        data-lang="zh" onclick="setLang('zh')" aria-pressed="false">中文</button>
+        <button class="lang-btn"        data-lang="ko" onclick="setLang('ko')" aria-pressed="false">한국어</button>
       </div>
       <button class="icon-btn import-btn" id="importBtn" onclick="importData()" data-i18n="importBtn">IMPORT</button>
-      <button class="icon-btn export-btn" id="exportBtn" onclick="exportImage()" title="画像で書き出し">EXPORT</button>
-      <button class="icon-btn share-btn" id="shareBtn" onclick="WWMShare.shareUrl()" title="Build を URL で共有">SHARE</button>
-      <button class="icon-btn" id="changelogBtn" onclick="WWMChangelog.showAll()" title="変更履歴">📖</button>
+      <button class="icon-btn export-btn" id="exportBtn" onclick="exportImage()" title="画像で書き出し" aria-label="画像で書き出し">EXPORT</button>
+      <button class="icon-btn share-btn" id="shareBtn" onclick="WWMShare.shareUrl()" title="Build を URL で共有" aria-label="URL で共有">SHARE</button>
+      <button class="icon-btn" id="changelogBtn" onclick="WWMChangelog.showAll()" title="変更履歴" aria-label="変更履歴を開く">📖</button>
       <a class="icon-btn icon-btn-x" href="https://x.com/TORA_XIV" target="_blank" rel="noopener noreferrer" title="お問い合わせ (X / Twitter)" aria-label="X (Twitter) で問い合わせ">
         <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
       </a>
-      <button class="icon-btn" id="themeToggle" onclick="toggleTheme()" title="Theme">☀</button>
+      <button class="icon-btn" id="themeToggle" onclick="toggleTheme()" title="Theme" aria-label="ライト/ダーク切替">☀</button>
     </div>
   </header>
 
@@ -134,29 +134,29 @@
         <input class="preset-name-input" id="presetName0" type="text" maxlength="20">
         <button class="preset-btn preset-save" onclick="savePreset(0)" data-i18n="presetSave">保存</button>
         <button class="preset-btn preset-load" id="presetLoadBtn0" onclick="loadPreset(0)" data-i18n="presetLoad" disabled>読込</button>
-        <button class="preset-btn preset-del"  id="presetDelBtn0"  onclick="deletePreset(0)" disabled>✕</button>
+        <button class="preset-btn preset-del"  id="presetDelBtn0"  onclick="deletePreset(0)" disabled aria-label="プリセット01削除">✕</button>
       </div>
       <div class="preset-slot" id="presetSlot1">
         <span class="preset-slot-num">02</span>
         <input class="preset-name-input" id="presetName1" type="text" maxlength="20">
         <button class="preset-btn preset-save" onclick="savePreset(1)" data-i18n="presetSave">保存</button>
         <button class="preset-btn preset-load" id="presetLoadBtn1" onclick="loadPreset(1)" data-i18n="presetLoad" disabled>読込</button>
-        <button class="preset-btn preset-del"  id="presetDelBtn1"  onclick="deletePreset(1)" disabled>✕</button>
+        <button class="preset-btn preset-del"  id="presetDelBtn1"  onclick="deletePreset(1)" disabled aria-label="プリセット02削除">✕</button>
       </div>
       <div class="preset-slot" id="presetSlot2">
         <span class="preset-slot-num">03</span>
         <input class="preset-name-input" id="presetName2" type="text" maxlength="20">
         <button class="preset-btn preset-save" onclick="savePreset(2)" data-i18n="presetSave">保存</button>
         <button class="preset-btn preset-load" id="presetLoadBtn2" onclick="loadPreset(2)" data-i18n="presetLoad" disabled>読込</button>
-        <button class="preset-btn preset-del"  id="presetDelBtn2"  onclick="deletePreset(2)" disabled>✕</button>
+        <button class="preset-btn preset-del"  id="presetDelBtn2"  onclick="deletePreset(2)" disabled aria-label="プリセット03削除">✕</button>
       </div>
     </div>
   </div>
 </div>
 
 <div class="wwm-app-body">
-<aside id="wwmSidebar" class="wwm-sidebar-test"></aside>
-<div class="container">
+<aside id="wwmSidebar" class="wwm-sidebar-test" aria-label="サイドバー (キャラステ/装備一覧)"></aside>
+<main class="container" role="main">
 
 <!-- HERO: expected DMG + probability donut -->
 <section class="hero">
@@ -554,7 +554,7 @@
   </div>
 </section>
 
-</div>
+</main>
 </div>
 
 <footer class="wwm-footer">Created by <strong>SHIGETORA</strong></footer>
