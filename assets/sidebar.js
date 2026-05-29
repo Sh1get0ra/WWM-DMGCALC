@@ -640,6 +640,15 @@ async function renderOptimization(roleInfo, params, opts) {
   const root = document.getElementById('wwmOptimization');
   if (!root || !roleInfo || !window.WWMStats?.buildStatParams) return;
   opts = opts || {};
+  // 最適化中 donut/score の中間更新を suppress
+  window.__WWM_OPT_RUNNING = true;
+  try {
+  return await _renderOptimizationInner(roleInfo, params, opts, root);
+  } finally {
+    window.__WWM_OPT_RUNNING = false;
+  }
+}
+async function _renderOptimizationInner(roleInfo, params, opts, root) {
   // abort token: 新しい render 開始時、前回 loop を打切
   const myToken = (window._OPT_TOKEN = (window._OPT_TOKEN || 0) + 1);
   const _aborted = () => window._OPT_TOKEN !== myToken;
