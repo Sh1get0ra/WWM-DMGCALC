@@ -2837,7 +2837,7 @@ function updateHero(params) {
                 : statusScore >= thr2*0.8 ? 'A'
                 : statusScore >= thr2*0.6 ? 'B' : 'C';
   const tbCur = document.getElementById('heroTierBadge');
-  if (tbCur) { tbCur.textContent = curTier; tbCur.className = 'tier-badge tier-' + curTier; }
+  if (tbCur) { tbCur.textContent = curTier; tbCur.className = 'hero-tier tier-badge tier-' + curTier; }
   // sidebar 武格指数行 tier badge + score — 現在の装備 (baseline) 基準
   const sbTb = document.getElementById('wwmSbTierBadge');
   const sbMs = document.getElementById('wwmSbMartialScore');
