@@ -379,14 +379,7 @@ function calculate() {
   var dSymp  = contribTotal > 0 ? contribSymp  / contribTotal : 0;
   var dGraze = contribTotal > 0 ? contribGraze / contribTotal : 0;
   var dNorm  = contribTotal > 0 ? contribNorm  / contribTotal : 0;
-  // effective params あれば donut は computeExpected 側に委譲 (DOM 値と効果不一致回避)
-  if (!window.__WWM_PARAMS) {
-    updateDonut(dCrit, dSymp, dGraze, dNorm, 'donutDmgSeg');
-    document.getElementById('dmgCritVal').textContent     = pctStr(dCrit);
-    document.getElementById('dmgSympathyVal').textContent = pctStr(dSymp);
-    document.getElementById('dmgGrazeVal').textContent    = pctStr(dGraze);
-    document.getElementById('dmgNormalVal').textContent   = pctStr(dNorm);
-  }
+  // (旧UI) DOM経路 donut/dmgVal更新 削除済 — import経路の computeExpected が更新する
 
   // ── 詳細テーブル ──────────────────────────────────────────────
   function fmt(n) { return Math.round(n).toLocaleString(T.locale); }
