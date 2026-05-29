@@ -35,6 +35,10 @@ function setLang(lang) {
   renderSkillPresetSelect();
   calculate();
   if (typeof window._refreshAll === 'function') window._refreshAll();
+  // import前でも sidebar empty state を再render (翻訳反映)
+  if (window.WWMSidebar?.render && !window.__WWM_ROLEINFO) {
+    try { window.WWMSidebar.render(null); } catch(_) {}
+  }
 }
 function _loadSavedLang() {
   try {
