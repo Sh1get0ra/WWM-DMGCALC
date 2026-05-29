@@ -1250,12 +1250,16 @@ async function renderSidebar(params) {
   const importBtnLabel = (window.T && window.T.importBtn) || 'IMPORT';
   const powerLabel = _label(cfg.header?.title, '総合武力');
   const header = `
-    <div class="wwm-sb-top">
-      ${avatar}
-      <div class="wwm-sb-info">
-        ${charName ? `<div class="wwm-sb-charname">${charName}</div>` : ''}
-        <div class="wwm-sb-power"><span class="wwm-muted">${powerLabel}</span> <b>${totalPower}</b></div>
-        <div class="wwm-sb-martial"><span class="wwm-muted">${(window.T&&T.martialIndex)||'武格指数'}</span> <b id="wwmSbMartialScore">-</b> <span class="wwm-sb-tier-badge" id="wwmSbTierBadge"></span></div>
+    <div class="wwm-sb-mini-hero-card">
+      <span class="wwm-sb-l-bl"></span><span class="wwm-sb-l-br"></span>
+      <div class="wwm-sb-mini-hero-ink"></div>
+      <div class="wwm-sb-top">
+        ${avatar}
+        <div class="wwm-sb-info">
+          ${charName ? `<div class="wwm-sb-charname">${charName}</div>` : ''}
+          <div class="wwm-sb-power"><span class="wwm-muted">${powerLabel}</span> <b>${totalPower}</b></div>
+          <div class="wwm-sb-martial"><span class="wwm-muted">${(window.T&&T.martialIndex)||'武格指数'}</span> <b id="wwmSbMartialScore">-</b> <span class="wwm-sb-tier-badge" id="wwmSbTierBadge"></span></div>
+        </div>
       </div>
     </div>
   `;
@@ -1291,7 +1295,7 @@ async function renderSidebar(params) {
       `;
     }
   }
-  root.innerHTML = header + sections + noticeHtml;
+  root.innerHTML = header + `<div class="wwm-sb-rest">${sections}${noticeHtml}</div>`;
   // section title click で折りたたみ toggle
   root.querySelectorAll('[data-toggle-section]').forEach(el => {
     el.addEventListener('click', () => {

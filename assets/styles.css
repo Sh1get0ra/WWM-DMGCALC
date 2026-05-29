@@ -1962,6 +1962,68 @@ html[data-theme="light"] .tier-C { color: var(--paper-mute);  background: rgba(5
 }
 .wwm-sidebar-test::-webkit-scrollbar { display: none; }  /* Chrome/Safari */
 .wwm-sidebar-test:empty { display: none; }
+/* ── mini-hero header card (案C武侠化) ────────────── */
+.wwm-sb-mini-hero-card {
+  position: relative;
+  background:
+    radial-gradient(ellipse at top right, rgba(240,210,138,0.06), transparent 55%),
+    linear-gradient(180deg, var(--surf-1), var(--surf-2));
+  border: 1px solid var(--gold-deep);
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.wwm-sb-mini-hero-card::before,
+.wwm-sb-mini-hero-card::after,
+.wwm-sb-mini-hero-card .wwm-sb-l-bl,
+.wwm-sb-mini-hero-card .wwm-sb-l-br {
+  content: ''; position: absolute;
+  width: 10px; height: 10px;
+  border: 1.5px solid var(--gold-deep);
+  pointer-events: none;
+  z-index: 2;
+}
+.wwm-sb-mini-hero-card::before { top: 4px; left: 4px; border-right: none; border-bottom: none; }
+.wwm-sb-mini-hero-card::after  { top: 4px; right: 4px; border-left: none; border-bottom: none; }
+.wwm-sb-mini-hero-card .wwm-sb-l-bl { bottom: 4px; left: 4px; border-right: none; border-top: none; }
+.wwm-sb-mini-hero-card .wwm-sb-l-br { bottom: 4px; right: 4px; border-left: none; border-top: none; }
+.wwm-sb-mini-hero-ink {
+  position: absolute; bottom: -15px; left: -20px;
+  width: 200px; height: 60px;
+  background: linear-gradient(90deg, rgba(232,81,58,0), rgba(232,81,58,0.18), rgba(232,81,58,0));
+  filter: blur(8px);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+html[data-theme="light"] .wwm-sb-mini-hero-card {
+  background: linear-gradient(180deg, #f4e8cc, #ede0c0);
+}
+html[data-theme="light"] .wwm-sb-mini-hero-ink {
+  background: linear-gradient(90deg, rgba(160,28,18,0), rgba(160,28,18,0.22), rgba(160,28,18,0));
+}
+/* mini-hero card 内の sb-top: sticky/border 解除 */
+.wwm-sb-mini-hero-card .wwm-sb-top {
+  position: relative !important;
+  top: auto !important;
+  background: none !important;
+  border-bottom: none !important;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+  z-index: 1;
+}
+/* sections wrapper (質素) */
+.wwm-sb-rest {
+  background: linear-gradient(180deg, var(--surf-1), var(--surf-2));
+  border: 1px solid var(--ink-1);
+  padding: 10px 12px 12px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+html[data-theme="light"] .wwm-sb-rest {
+  background: linear-gradient(180deg, #f5ead0, #ede0c0);
+  border-color: rgba(40,25,18,0.15);
+}
+
 .wwm-sb-top {
   display: flex; align-items: center; gap: var(--space-2-5);
   padding: 10px 0 10px;
