@@ -2487,7 +2487,8 @@ function openGearEdit(slot) {
       const usefulAuto = _isUsefulAffix(id, origRi);
       const pct = (ratio != null) ? (ratio * 100).toFixed(0) : null;
       const pctColor = _ratioColor(ratio);
-      const pctHtml = pct != null ? `<span class="wwm-cmp-ratio" style="color:${pctColor};font-size:11px;font-family:var(--f-mono);margin-left:6px;">${pct}%</span>` : '';
+      const pctLowCls = (ratio != null && ratio < 0.9) ? ' low' : '';
+      const pctHtml = pct != null ? `<span class="wwm-cmp-ratio${pctLowCls}" style="color:${pctColor};">${pct}%</span>` : '';
       return `
         <div class="wwm-cmp-row">
           <span class="wwm-cmp-name wwm-rank-${rkCls}" title="ID:${id}">${name}${usefulAuto?' <span class="wwm-good-icon"><svg viewBox="0 0 24 24"><path d="M2 21h4V9H2v12zm20-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L13.17 1 7.59 6.59C7.22 6.95 7 7.45 7 8v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1z"/></svg></span>':''}</span>
@@ -2546,7 +2547,7 @@ function openGearEdit(slot) {
           <div class="wwm-cmp-val-wrap">
             <input type="number" class="wwm-num-input wwm-cmp-val-input" step="${step}" min="0" ${maxAttr} value="${displayVal}" data-field="val" data-pct="${isPct?1:0}" data-pctmul="${needsMul?1:0}">
             <span class="wwm-cmp-unit" data-unit-el>${isPct?'%':''}</span>
-            <span class="wwm-cmp-ratio" data-ratio-el style="color:${initColor};font-size:11px;font-family:var(--f-mono);margin-left:4px;min-width:32px;text-align:right;">${initPct?initPct+'%':''}</span>
+            <span class="wwm-cmp-ratio${initRatio != null && initRatio < 0.9 ? ' low' : ''}" data-ratio-el style="color:${initColor};">${initPct?initPct+'%':''}</span>
           </div>
         </div>
       `;
@@ -2799,6 +2800,7 @@ function openGearEdit(slot) {
     const pct = (ratio * 100).toFixed(0);
     el.textContent = pct + '%';
     el.style.color = _ratioColor(ratio);
+    el.classList.toggle('low', ratio < 0.9);
   }
 
   function _bindRowEvents() {

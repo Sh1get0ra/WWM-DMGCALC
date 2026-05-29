@@ -2771,7 +2771,8 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
   border-radius: 0 !important;
 }
 .wwm-cmp-modal-a .wwm-cmp-pct,
-.wwm-cmp-modal-a .wwm-cmp-row .wwm-cmp-pct {
+.wwm-cmp-modal-a .wwm-cmp-row .wwm-cmp-pct,
+.wwm-cmp-modal-a .wwm-cmp-ratio {
   font-family: var(--f-mono, 'Rajdhani') !important;
   font-size: 10px !important;
   padding: 1px 5px !important;
@@ -2781,9 +2782,12 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
   border: 1px solid rgba(168,212,180,0.4) !important;
   min-width: 36px !important;
   text-align: center !important;
+  display: inline-block !important;
+  margin-left: 0 !important;
 }
 .wwm-cmp-modal-a .wwm-cmp-pct.low,
-.wwm-cmp-modal-a .wwm-cmp-row .wwm-cmp-pct.low {
+.wwm-cmp-modal-a .wwm-cmp-row .wwm-cmp-pct.low,
+.wwm-cmp-modal-a .wwm-cmp-ratio.low {
   background: rgba(232,81,58,0.18) !important;
   color: var(--vermilion) !important;
   border-color: rgba(232,81,58,0.4) !important;
