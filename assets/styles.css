@@ -3630,7 +3630,7 @@ html[data-theme="light"] {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   Hero 武侠デザイン (design-sample由来)
+   Hero 武侠デザイン (design-sample由来) — sidebar越え左端まで伸ばす
    ═══════════════════════════════════════════════════════════════ */
 .hero.hero-wuxia {
   display: grid;
@@ -3642,6 +3642,13 @@ html[data-theme="light"] {
   overflow: hidden;
   position: relative;
   height: 195px;
+  /* sidebar越え左端まで延伸 (negative margin trick) */
+  margin-left: calc(-300px - var(--space-4));
+  width: calc(100% + 300px + var(--space-4));
+}
+/* sidebar を hero高さ分下げる */
+body.wwm-layout-active #wwmSidebar {
+  padding-top: calc(195px + var(--space-4));
 }
 .hero-wuxia .l-bracket {
   position: absolute;
