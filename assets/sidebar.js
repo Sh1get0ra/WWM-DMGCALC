@@ -1176,11 +1176,15 @@ function _fmtItemValue(item, params) {
   return _fmt(params[item.calcKey], item.format);
 }
 // baseline と current で値違えば "baseline ▶ current" 表示
+// (OBS Share view = wwm-view-sidebar 時は baseline (現在装備) のみ表示)
 function _fmtItem(item, params, baseParams) {
   const cur = _fmtItemValue(item, params);
   if (!baseParams || baseParams === params) return cur;
   const base = _fmtItemValue(item, baseParams);
   if (base === cur) return cur;
+  if (document.documentElement.classList.contains('wwm-view-sidebar')) {
+    return base; // OBS view: 現在装備の値だけ
+  }
   return `<span class="wwm-sb-baseline">${base}</span> <span class="wwm-sb-arrow">▶</span> ${cur}`;
 }
 
@@ -1568,10 +1572,15 @@ async function _computeGearCardScores(roleInfo) {
       (slot === '2' && window.__WWM_VIRTUAL_KONGFU?.kongfuSub)
     );
     if (isModified && origContrib[slot] != null && origContrib[slot] !== curScore) {
-      const delta = curScore - origContrib[slot];
-      const sign = delta > 0 ? '+' : '';
-      const cls = delta > 0 ? 'wwm-equip-delta-pos' : 'wwm-equip-delta-neg';
-      el.innerHTML = `<b>${origContrib[slot].toLocaleString()}</b> <span class="wwm-equip-delta ${cls}">${sign}${delta.toLocaleString()}</span>`;
+      const isObs = document.documentElement.classList.contains('wwm-view-sidebar');
+      if (isObs) {
+        el.innerHTML = `<b>${origContrib[slot].toLocaleString()}</b>`;
+      } else {
+        const delta = curScore - origContrib[slot];
+        const sign = delta > 0 ? '+' : '';
+        const cls = delta > 0 ? 'wwm-equip-delta-pos' : 'wwm-equip-delta-neg';
+        el.innerHTML = `<b>${origContrib[slot].toLocaleString()}</b> <span class="wwm-equip-delta ${cls}">${sign}${delta.toLocaleString()}</span>`;
+      }
     } else {
       el.innerHTML = `<b>${curScore.toLocaleString()}</b>`;
     }
