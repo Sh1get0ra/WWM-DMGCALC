@@ -154,8 +154,11 @@ function computeExpected(pIn) {
     const cTotal = cCrit + cSymp + cGraz + cNorm;
     if (cTotal > 0) {
       const dCrit = cCrit / cTotal, dSymp = cSymp / cTotal, dGraz = cGraz / cTotal, dNorm = cNorm / cTotal;
-      // donut 反映 (最適化計算中はsuppress、 ちらつき抑止)
-      if (!window.__WWM_OPT_RUNNING) {
+      // donut 反映: 表示更新(updateHero)時のみ許可。
+      // computeExpected は装備カードスコア試算/最適化/プレビュー等から多数呼ばれ、
+      // 以前は それら全てが donut DOM を上書きしてちらつき発生。__WWM_ALLOW_DONUT で
+      // 唯一の表示経路(updateHero)に書込みをゲートする。
+      if (window.__WWM_ALLOW_DONUT) {
         if (typeof updateDonut === 'function') updateDonut(dCrit, dSymp, dGraz, dNorm, 'donutDmgSeg');
         // 外周リング arc (物理/属性 比率)
         if (typeof updateLuopanArc === 'function') updateLuopanArc(physRatio, elemRatio);

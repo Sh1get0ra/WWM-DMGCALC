@@ -642,21 +642,21 @@ async function renderOptimization(roleInfo, params, opts) {
   opts = opts || {};
   // 最適化中 donut/score の中間更新を suppress
   window.__WWM_OPT_RUNNING = true;
+  const tokenBefore = window._OPT_TOKEN || 0;
   try {
     return await _renderOptimizationInner(roleInfo, params, opts, root);
   } finally {
     window.__WWM_OPT_RUNNING = false;
-    // 最終 donut/score を確実に反映 (suppress中アニメ途中で凍結対策)
-    try {
-      // donut transition 一旦無効化 → reflow → 再有効化 で transition cancel + target即時反映
-      const dsegs = ['Crit','Sympathy','Graze','Normal']
-        .map(k => document.getElementById('donutDmgSeg'+k)).filter(Boolean);
-      dsegs.forEach(el => { el.style.transition = 'none'; });
-      if (window.WWMHero) window.WWMHero.update(params);
-      // reflow
-      dsegs.forEach(el => { void el.getBoundingClientRect().width; });
-      dsegs.forEach(el => { el.style.transition = ''; });
-    } catch(_) {}
+    // abort後 (新optimization が起動し token が進んだ) → donut/hero 操作スキップ (フリッカー防止)
+    const wasAborted = (window._OPT_TOKEN || 0) !== (tokenBefore + 1);
+    if (!wasAborted) {
+      try {
+        // transition 強制無効化 (即時スナップ) は廃止 → 進行中の donut アニメを途中で
+        // ブツ切りにし、ちらつきの原因になっていた。updateHero を普通に呼ぶだけにして
+        // CSS transition を尊重 (同値再セット時は transition 発火せず、滑らかに完走)。
+        if (window.WWMHero) window.WWMHero.update(window.__WWM_PARAMS || params);
+      } catch(_) {}
+    }
   }
 }
 async function _renderOptimizationInner(roleInfo, params, opts, root) {
@@ -2941,7 +2941,15 @@ function openGearEdit(slot) {
 // ── Hero block 更新 ────────────────────────────────────────────
 function updateHero(params) {
   if (!params || typeof window.computeExpected !== 'function') return;
-  const result = window.computeExpected(params) || window.__WWM_LAST_RESULT || {};
+  // donut/arc DOM 書込みは このcomputeExpected (表示更新) のみ許可。
+  // 他経路 (スコア試算/最適化/プレビュー) の computeExpected は ALLOW=false で donut を触らない。
+  window.__WWM_ALLOW_DONUT = true;
+  let result;
+  try {
+    result = window.computeExpected(params) || window.__WWM_LAST_RESULT || {};
+  } finally {
+    window.__WWM_ALLOW_DONUT = false;
+  }
   const total = result.expected || 0;
   const effRi = _getEffectiveRoleInfo();
   const statusScore = Math.round((result.statusScore || 0) + _set4Bonus(effRi));
@@ -3010,15 +3018,15 @@ function updateHero(params) {
   // compact tier badge: 廃止 (heroCompactTierBadge hidden)
   setText('heroCompactDmg', Math.round(total).toLocaleString());
   setText('heroCompactExp', Math.round(total).toLocaleString());
-  // NEXT 側 = 仮想装備込みの statusScore (新装備プレビュー、countUp で変動アニメ)
+  // NEXT 側 = 仮想装備込みの statusScore (即時反映 + countUp再同期)
   const baseline = window.__WWM_BASELINE;
   const baseEl = document.getElementById('heroScoreBaseline');
   if (baseline && typeof baseline.statusScore === 'number') {
     const baseScore = statusScore; // NEXT = 仮想装備込み
+    // textContent で即時反映 (rAF 遅延中も表示崩れ防止) + countUp でアニメ
+    if (baseEl) baseEl.textContent = Math.round(baseScore).toLocaleString();
     if (typeof window.countUp === 'function') {
       window.countUp('heroScoreBaseline', baseScore, 0);
-    } else if (baseEl) {
-      baseEl.textContent = baseScore.toLocaleString();
     }
     // baseline tier badge (tier 未保存 baseline 用 fallback)
     const blTb = document.getElementById('heroBaselineTierBadge');
