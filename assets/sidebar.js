@@ -2933,13 +2933,12 @@ function openGearEdit(slot) {
       if (slot === '1') delete window.__WWM_VIRTUAL_KONGFU.kongfuMain;
       else if (slot === '2') delete window.__WWM_VIRTUAL_KONGFU.kongfuSub;
     }
-    // 復元: baseline をオリジナル装備で再計算 → 仮想変動由来の baseline drift 防止
+    // 復元: baseline を現状state (最新心法tier/arsenal/敵パラ等) + origRoleInfo で再計算
     try {
-      const stored = (() => { try { return JSON.parse(localStorage.getItem('wwm_last_import_v1') || 'null'); } catch(_) { return null; } })();
-      const baseRi = window.__WWM_ROLEINFO || stored?.data;
-      const baseState = stored?.state || null;
+      const baseRi = window.__WWM_ROLEINFO;
+      const curState = (() => { try { return JSON.parse(localStorage.getItem('wwm_last_state_v1') || 'null'); } catch(_) { return null; } })();
       if (baseRi && window.WWMStats?.buildStatParams && typeof window.computeExpected === 'function') {
-        const origParams = await window.WWMStats.buildStatParams(baseRi, baseState);
+        const origParams = await window.WWMStats.buildStatParams(baseRi, curState);
         window.computeExpected(origParams);
         const res = window.__WWM_LAST_RESULT;
         if (res) {
