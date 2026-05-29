@@ -1195,31 +1195,27 @@
     "attributeBuff": {
       "tier0": {
         "permanent": true,
-        "synergyKongfu": [
-          10102,
-          20401,
-          20402
-        ],
-        "synergyMultiplier": 1,
-        "synergyMissingMultiplier": 0.5,
         "effects": {
           "globalDmgBoost": 0.01
         },
-        "raw": "溜め技 対全Boss 与ダメ+10%"
+        "raw": "溜め技 対全Boss 与ダメ+10%",
+        "kongfuRequired": [
+          10102,
+          20401,
+          20402
+        ]
       },
       "tier1": {
         "permanent": true,
-        "synergyKongfu": [
-          10102,
-          20401,
-          20402
-        ],
-        "synergyMultiplier": 1,
-        "synergyMissingMultiplier": 0.5,
         "effects": {
           "globalDmgBoost": 0.01
         },
-        "raw": "溜め技 全敵 (気力<60%プレイヤー含) 与ダメ+10%"
+        "raw": "溜め技 全敵 (気力<60%プレイヤー含) 与ダメ+10%",
+        "kongfuRequired": [
+          10102,
+          20401,
+          20402
+        ]
       },
       "tier2": {
         "permanent": true,
@@ -1234,31 +1230,27 @@
       },
       "tier3": {
         "permanent": true,
-        "synergyKongfu": [
-          10102,
-          20401,
-          20402
-        ],
-        "synergyMultiplier": 1,
-        "synergyMissingMultiplier": 0.5,
         "effects": {
           "globalDmgBoost": 0.01
         },
-        "raw": "溜め技 会心/会意時 vs プレイヤー気力-10 / vs 首領 自気力+10 (12sCD)"
+        "raw": "溜め技 会心/会意時 vs プレイヤー気力-10 / vs 首領 自気力+10 (12sCD)",
+        "kongfuRequired": [
+          10102,
+          20401,
+          20402
+        ]
       },
       "tier4": {
         "permanent": true,
-        "synergyKongfu": [
-          10102,
-          20401,
-          20402
-        ],
-        "synergyMultiplier": 1,
-        "synergyMissingMultiplier": 0.5,
         "effects": {
           "globalDmgBoost": 0.01
         },
-        "raw": "溜め技 与ダメ 10%→15% + 気力消費+10%"
+        "raw": "溜め技 与ダメ 10%→15% + 気力消費+10%",
+        "kongfuRequired": [
+          10102,
+          20401,
+          20402
+        ]
       },
       "tier5": {
         "permanent": true,
@@ -1269,17 +1261,15 @@
       },
       "tier6": {
         "permanent": true,
-        "synergyKongfu": [
-          10102,
-          20401,
-          20402
-        ],
-        "synergyMultiplier": 1,
-        "synergyMissingMultiplier": 0.5,
         "effects": {
           "globalDmgBoost": 0.01
         },
-        "raw": "溜め技 追加ダメ — vs プレイヤー 気力差10毎+2% max10% / vs Boss 自消費気力10%毎+2% max10%"
+        "raw": "溜め技 追加ダメ — vs プレイヤー 気力差10毎+2% max10% / vs Boss 自消費気力10%毎+2% max10%",
+        "kongfuRequired": [
+          10102,
+          20401,
+          20402
+        ]
       }
     },
     "rank": "purple"
