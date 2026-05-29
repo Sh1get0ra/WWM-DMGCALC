@@ -2739,7 +2739,7 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
 #wwmOptimization .wwm-analysis-card,
 #wwmHistory .wwm-analysis-card,
 #wwmQuality .wwm-analysis-card {
-  height: 550px;
+  height: 570px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
