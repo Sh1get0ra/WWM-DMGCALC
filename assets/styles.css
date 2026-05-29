@@ -2613,8 +2613,8 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
 }
 .wwm-cmp-modal-a {
   background: #1a1410 !important;
-  border-left: 1px solid var(--gold-deep) !important;
-  border-top: 1px solid var(--gold-deep) !important;
+  border: 1px solid var(--gold-deep) !important;
+  border-radius: 0 !important;
 }
 /* base .wwm-modal の右上 装飾 (::before glow + ::after 小L字) を非表示 (案A 4隅L字とダブる) */
 .wwm-cmp-modal-a::before,
@@ -2834,6 +2834,59 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
   font-size: 11px; color: var(--paper-mute);
 }
 .wwm-cmp-modal-a .wwm-cmp-bg-icon { opacity: 0 !important; }
+/* セット効果テキスト (最小外功攻撃+64等) はサンプルに無いので非表示 */
+.wwm-cmp-modal-a .wwm-cmp-set-effect { display: none !important; }
+/* ヘッダ padding スリム */
+.wwm-cmp-modal-a .wwm-modal-header {
+  padding: 12px 20px !important;
+  border-bottom: 1px solid rgba(201,164,90,0.25) !important;
+}
+.wwm-cmp-modal-a .wwm-modal-header h2 {
+  font-family: var(--f-display, 'Noto Serif JP') !important;
+  font-weight: 900 !important;
+  font-size: 18px !important;
+  letter-spacing: 0.18em !important;
+  color: var(--paper) !important;
+  display: flex; align-items: center;
+}
+/* affix行: name 1fr / select 1fr / val 50px / % 38px の固定で詰める */
+.wwm-cmp-modal-a .wwm-cmp-row {
+  grid-template-columns: minmax(0, 1fr) 50px 40px !important;
+  gap: 8px !important;
+  padding: 5px 6px !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-row.wwm-cmp-row-new {
+  grid-template-columns: minmax(70px, 1.2fr) 56px 40px !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-stat-select {
+  width: 100% !important;
+  padding: 2px 4px !important;
+  font-size: 11px !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-val-input {
+  width: 100% !important;
+  padding: 2px 4px !important;
+  font-size: 12px !important;
+  text-align: right !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-val {
+  text-align: right !important;
+  font-size: 13px !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-pct {
+  font-size: 10px !important;
+  padding: 1px 4px !important;
+  text-align: center !important;
+}
+/* kongfu / set padding スリム */
+.wwm-cmp-modal-a .wwm-cmp-kongfu-header,
+.wwm-cmp-modal-a .wwm-cmp-kongfu-select,
+.wwm-cmp-modal-a .wwm-cmp-set-header,
+.wwm-cmp-modal-a .wwm-cmp-set-select {
+  padding: 5px 8px !important;
+  margin-bottom: 6px !important;
+  font-size: 12px !important;
+}
 
 .wwm-cmp-grid {
   display: grid; grid-template-columns: 1fr 1fr;
