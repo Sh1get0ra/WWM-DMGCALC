@@ -2707,19 +2707,28 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
   font-weight: 700 !important;
   letter-spacing: 0.08em !important;
   border: 1px solid var(--gold-deep) !important;
-  padding: 4px 10px !important;
+  padding: 0 10px !important;
   border-radius: 2px !important;
   background: #1a1410 !important;
-  line-height: 1 !important;
+  line-height: 26px !important;
   height: 26px !important;
   display: inline-flex !important;
   align-items: center !important;
   box-shadow: none !important;
   box-sizing: border-box !important;
+  vertical-align: middle !important;
 }
 .wwm-cmp-modal-a .wwm-cmp-title .wwm-cmp-lv-select {
-  appearance: auto;
-  padding-right: 22px !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  padding-right: 24px !important;
+  background-image: linear-gradient(45deg, transparent 50%, var(--paper) 50%), linear-gradient(135deg, var(--paper) 50%, transparent 50%) !important;
+  background-position: calc(100% - 12px) 50%, calc(100% - 8px) 50% !important;
+  background-size: 4px 4px, 4px 4px !important;
+  background-repeat: no-repeat !important;
+  background-color: #1a1410 !important;
+  cursor: pointer !important;
 }
 .wwm-cmp-modal-a .wwm-cmp-title .wwm-cmp-lv-select option {
   font-size: 14px !important;
