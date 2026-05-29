@@ -1075,7 +1075,14 @@ function _shareBuildUrl() {
         <textarea class="wwm-share-url" id="wwmShareUrlObs" readonly>${obsUrl}</textarea>
         <div class="wwm-btn-row" style="margin-top:6px;">
           <button class="wwm-btn-primary" id="wwmShareCopyObs">OBS URL コピー</button>
+          <button class="wwm-btn-secondary" id="wwmShareTogglePreview">プレビュー表示</button>
           <button class="wwm-btn-secondary" id="wwmShareClose">閉じる</button>
+        </div>
+        <div id="wwmSharePreviewWrap" style="display:none;margin-top:12px;">
+          <div style="font-size:11px;color:var(--gold-bright);font-weight:700;letter-spacing:0.1em;margin-bottom:4px;">プレビュー (実OBS表示と同等)</div>
+          <div style="background:repeating-conic-gradient(#1a1a1a 0% 25%, #2a2a2a 0% 50%) 50% / 16px 16px;border:1px solid var(--ink-2);border-radius:3px;padding:8px;display:flex;justify-content:center;">
+            <iframe id="wwmSharePreviewFrame" src="" style="width:320px;height:500px;border:none;background:transparent;" sandbox="allow-scripts allow-same-origin"></iframe>
+          </div>
         </div>
         <div id="wwmShareMsg" style="margin-top:8px;font-size:12px;color:var(--jade-bright);"></div>
       </div>
@@ -1103,13 +1110,31 @@ function _shareBuildUrl() {
   const acPicker = m.querySelector('#wwmObsAc');
   const lbgPicker = m.querySelector('#wwmObsLbg');
   const obsTa = m.querySelector('#wwmShareUrlObs');
+  const previewWrap = m.querySelector('#wwmSharePreviewWrap');
+  const previewFrame = m.querySelector('#wwmSharePreviewFrame');
+  const togglePreviewBtn = m.querySelector('#wwmShareTogglePreview');
+  let previewOn = false;
+  let previewDebounce = null;
+  const refreshPreviewSrc = () => {
+    if (!previewOn) return;
+    if (previewDebounce) clearTimeout(previewDebounce);
+    previewDebounce = setTimeout(() => { previewFrame.src = obsUrl; }, 250);
+  };
   const refreshObs = () => {
     const pct = parseInt(opSlider.value, 10);
     opVal.textContent = pct + '%';
     obsUrl = buildObsUrl(pct, bgPicker.value, t1Picker.value, t2Picker.value, acPicker.value, lbgPicker.value);
     obsTa.value = obsUrl;
     try { localStorage.setItem(OVL_KEY, JSON.stringify({ op: pct, bg: bgPicker.value, t1: t1Picker.value, t2: t2Picker.value, ac: acPicker.value, lbg: lbgPicker.value })); } catch(_) {}
+    refreshPreviewSrc();
   };
+  togglePreviewBtn.addEventListener('click', () => {
+    previewOn = !previewOn;
+    previewWrap.style.display = previewOn ? 'block' : 'none';
+    togglePreviewBtn.textContent = previewOn ? 'プレビュー閉じる' : 'プレビュー表示';
+    if (previewOn) previewFrame.src = obsUrl;
+    else previewFrame.src = 'about:blank';
+  });
   opSlider.addEventListener('input', refreshObs);
   bgPicker.addEventListener('input', refreshObs);
   t1Picker.addEventListener('input', refreshObs);
