@@ -37,17 +37,17 @@
   --vermilion-deep:   #8a1f17;
   --vermilion-bright: #e8513a;
   --vermilion-glow:   rgba(232, 81, 58, 0.5);
-  /* vermilion 派生 (rgba 集約用) */
-  --vermilion-trace:       var(--vermilion-trace);
-  --vermilion-faint:       var(--vermilion-faint);
+  /* vermilion 派生 (rgba 集約用) — 不透明度連続スケール */
+  --vermilion-trace:       rgba(200,60,43,0.05);
+  --vermilion-faint:       rgba(200,60,43,0.08);
   --vermilion-tint:        rgba(200,60,43,0.10);
   --vermilion-soft:        rgba(200,60,43,0.15);
-  --vermilion-soft-2:      var(--vermilion-soft-2);
+  --vermilion-soft-2:      rgba(200,60,43,0.20);
   --vermilion-mid:         rgba(200,60,43,0.30);
   --vermilion-mid-2:       rgba(200,60,43,0.35);
-  --vermilion-strong:      var(--vermilion-strong);
+  --vermilion-strong:      rgba(200,60,43,0.55);
   --vermilion-bright-trace:rgba(232,81,58,0.15);
-  --vermilion-bright-soft: var(--vermilion-bright-soft);
+  --vermilion-bright-soft: rgba(232,81,58,0.25);
   --vermilion-bright-mid:  rgba(232,81,58,0.45);
   --vermilion-bright-strong: rgba(232,81,58,0.70);
 
