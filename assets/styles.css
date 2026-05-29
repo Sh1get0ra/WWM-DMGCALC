@@ -2703,17 +2703,23 @@ html[data-theme="light"] .wwm-sb-notice { color: var(--vermilion-deep); backgrou
 .wwm-cmp-modal-a .wwm-cmp-title .wwm-cmp-lv-select {
   color: var(--paper) !important;
   font-family: var(--f-mono, 'Rajdhani') !important;
-  font-size: 13px !important;
+  font-size: 14px !important;
   font-weight: 700 !important;
   letter-spacing: 0.08em !important;
   border: 1px solid var(--gold-deep) !important;
-  padding: 3px 8px !important;
+  padding: 4px 10px !important;
   border-radius: 2px !important;
   background: #1a1410 !important;
   line-height: 1 !important;
+  height: 26px !important;
   display: inline-flex !important;
   align-items: center !important;
   box-shadow: none !important;
+  box-sizing: border-box !important;
+}
+.wwm-cmp-modal-a .wwm-cmp-title .wwm-cmp-lv-select {
+  appearance: auto;
+  padding-right: 22px !important;
 }
 .wwm-cmp-modal-a .wwm-cmp-title .wwm-cmp-lv-select {
   cursor: pointer !important;
