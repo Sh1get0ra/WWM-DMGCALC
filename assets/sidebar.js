@@ -1079,9 +1079,17 @@ function _shareBuildUrl() {
           <button class="wwm-btn-secondary" id="wwmShareClose">閉じる</button>
         </div>
         <div id="wwmSharePreviewWrap" style="display:none;margin-top:12px;">
-          <div style="font-size:11px;color:var(--gold-bright);font-weight:700;letter-spacing:0.1em;margin-bottom:4px;">プレビュー (実OBS表示と同等)</div>
-          <div style="background:repeating-conic-gradient(#1a1a1a 0% 25%, #2a2a2a 0% 50%) 50% / 16px 16px;border:1px solid var(--ink-2);border-radius:3px;padding:8px;display:flex;justify-content:center;">
-            <iframe id="wwmSharePreviewFrame" src="" style="width:320px;height:500px;border:none;background:transparent;" sandbox="allow-scripts allow-same-origin"></iframe>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+            <div style="font-size:11px;color:var(--gold-bright);font-weight:700;letter-spacing:0.1em;">プレビュー (内部 640×900 を縮小表示)</div>
+            <label style="font-size:11px;color:var(--paper-mute);display:flex;align-items:center;gap:6px;">縮尺
+              <input type="range" id="wwmSharePreviewScale" min="30" max="100" step="5" value="50" style="width:120px;accent-color:var(--gold);">
+              <span id="wwmSharePreviewScaleVal" style="font-family:var(--f-mono);color:var(--gold-bright);min-width:36px;">50%</span>
+            </label>
+          </div>
+          <div style="background:repeating-conic-gradient(#1a1a1a 0% 25%, #2a2a2a 0% 50%) 50% / 16px 16px;border:1px solid var(--ink-2);border-radius:3px;padding:8px;display:flex;justify-content:center;overflow:auto;">
+            <div id="wwmSharePreviewClip" style="width:320px;height:450px;overflow:hidden;position:relative;">
+              <iframe id="wwmSharePreviewFrame" src="" style="width:640px;height:900px;border:none;background:transparent;transform:scale(0.5);transform-origin:0 0;" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
           </div>
         </div>
         <div id="wwmShareMsg" style="margin-top:8px;font-size:12px;color:var(--jade-bright);"></div>
@@ -1134,6 +1142,18 @@ function _shareBuildUrl() {
     togglePreviewBtn.textContent = previewOn ? 'プレビュー閉じる' : 'プレビュー表示';
     if (previewOn) previewFrame.src = obsUrl;
     else previewFrame.src = 'about:blank';
+  });
+  const scaleSlider = m.querySelector('#wwmSharePreviewScale');
+  const scaleVal = m.querySelector('#wwmSharePreviewScaleVal');
+  const scaleClip = m.querySelector('#wwmSharePreviewClip');
+  const INNER_W = 640, INNER_H = 900;
+  scaleSlider.addEventListener('input', () => {
+    const pct = parseInt(scaleSlider.value, 10);
+    const s = pct / 100;
+    scaleVal.textContent = pct + '%';
+    previewFrame.style.transform = `scale(${s})`;
+    scaleClip.style.width = (INNER_W * s) + 'px';
+    scaleClip.style.height = (INNER_H * s) + 'px';
   });
   opSlider.addEventListener('input', refreshObs);
   bgPicker.addEventListener('input', refreshObs);
