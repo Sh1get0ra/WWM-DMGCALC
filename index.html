@@ -158,32 +158,52 @@
 <aside id="wwmSidebar" class="wwm-sidebar-test" aria-label="サイドバー (キャラステ/装備一覧)"></aside>
 <main class="container" role="main">
 
-<!-- HERO: expected DMG + probability donut -->
-<section class="hero">
+<!-- HERO: expected DMG + probability donut (武侠デザイン適用) -->
+<section class="hero hero-wuxia">
+  <!-- 4隅L字bracket -->
+  <span class="l-bracket lb-tl"></span>
+  <span class="l-bracket lb-tr"></span>
+  <span class="l-bracket lb-bl"></span>
+  <span class="l-bracket lb-br"></span>
+  <!-- 朱墨筆ストローク -->
+  <svg class="ink-stroke" viewBox="0 0 600 240" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <filter id="inkB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.16" numOctaves="2" seed="4" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="34"/>
+      </filter>
+      <linearGradient id="inkGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="rgba(200,60,43,0)"/>
+        <stop offset="0.25" stop-color="rgba(200,60,43,0.35)"/>
+        <stop offset="0.7" stop-color="rgba(138,31,23,0.25)"/>
+        <stop offset="1" stop-color="rgba(200,60,43,0)"/>
+      </linearGradient>
+    </defs>
+    <path d="M20,140 C140,70 360,60 560,118" stroke="url(#inkGrad)" stroke-width="80" fill="none" stroke-linecap="round" filter="url(#inkB)"/>
+  </svg>
+
   <div class="hero-left">
-    <div class="hero-score-wrap">
-      <div class="hero-eyebrow hero-eyebrow-status">
-        <span class="hero-title-text" data-i18n="martialIndex">武格指数</span>
-        <button type="button" class="wwm-help-btn" title="武格指数 計算式の説明" onclick="WWMHelp.showScoreFormula()">?</button>
-        <button type="button" class="wwm-help-btn wwm-virt-reset-btn" id="wwmVirtResetBtn" title="新装備/心法 全リセット (現装備値に戻す)" data-i18n-title="virtResetTip" onclick="WWMHelp.resetAllVirtuals()">↺</button>
+    <div class="hero-label">
+      <span class="ja" data-i18n="martialIndex">武格指数</span>
+      <span class="en">MARTIAL INDEX</span>
+      <button type="button" class="wwm-help-btn" title="武格指数 計算式の説明" onclick="WWMHelp.showScoreFormula()">?</button>
+      <button type="button" class="wwm-help-btn wwm-virt-reset-btn" id="wwmVirtResetBtn" title="新装備/心法 全リセット (現装備値に戻す)" data-i18n-title="virtResetTip" onclick="WWMHelp.resetAllVirtuals()">↺</button>
+    </div>
+    <div class="hero-score-row" aria-live="polite" aria-atomic="true">
+      <div class="hero-current">
+        <span class="num hero-number" id="heroScore">0</span>
       </div>
-      <div class="hero-nums" aria-live="polite" aria-atomic="true">
-        <div class="hero-score-block">
-          <div class="hero-score-progression">
-            <span class="hero-score-pair">
-              <span class="hero-score-baseline" id="heroScoreBaseline">0</span>
-              <span id="heroBaselineTierBadge" class="tier-badge tier-badge-baseline"></span>
-            </span>
-            <span class="hero-score-arrow" aria-hidden="true">▶</span>
-            <span class="hero-score-pair">
-              <span class="hero-score-num"><span id="heroScore">0</span></span>
-              <span id="heroTierBadge" class="tier-badge"></span>
-            </span>
-          </div>
-        </div>
+      <span class="hero-tier tier-badge" id="heroTierBadge">--</span>
+      <div class="hero-next-inline">
+        <span class="hero-next-label">NEXT</span>
+        <span class="hero-next-row">
+          <span class="hero-next-arrow">▶</span>
+          <span class="num hero-next-val" id="heroScoreBaseline">0</span>
+          <span id="heroBaselineTierBadge" class="tier-badge tier-badge-baseline" hidden></span>
+        </span>
       </div>
     </div>
-    <!-- hidden 維持: calc.js が参照する要素 (互換性) -->
+    <!-- hidden 維持 (calc.js/sidebar.js互換) -->
     <span id="heroExpected" hidden>0</span>
     <span id="hbExp" hidden>0</span>
     <span id="hbPhys" hidden>0</span>
@@ -196,49 +216,114 @@
     <span id="heroCompactPhysPct" hidden>—</span>
     <span id="heroCompactElemPct" hidden>—</span>
   </div>
+
   <div class="hero-right">
-    <div class="donut-wrap">
-      <div class="donut-block">
-        <div class="donut">
-          <svg viewBox="0 0 136 136">
-            <circle class="donut-bg" cx="68" cy="68" r="54" fill="none" stroke-width="14"/>
-            <circle id="donutDmgSegCrit"     class="donut-seg" cx="68" cy="68" r="54" fill="none" stroke="var(--chart-crit)"     stroke-width="14" stroke-dasharray="0 339.292" stroke-dashoffset="0" style="filter:drop-shadow(0 0 6px var(--gold-glow));"/>
-            <circle id="donutDmgSegSympathy" class="donut-seg" cx="68" cy="68" r="54" fill="none" stroke="var(--chart-sympathy)" stroke-width="14" stroke-dasharray="0 339.292" stroke-dashoffset="0"/>
-            <circle id="donutDmgSegGraze"    class="donut-seg" cx="68" cy="68" r="54" fill="none" stroke="var(--chart-graze)"    stroke-width="14" stroke-dasharray="0 339.292" stroke-dashoffset="0"/>
-            <circle id="donutDmgSegNormal"   class="donut-seg" cx="68" cy="68" r="54" fill="none" stroke="var(--chart-normal)"   stroke-width="14" stroke-dasharray="0 339.292" stroke-dashoffset="0"/>
-          </svg>
-          <div class="donut-center">
-            <div>
-              <div class="donut-center-label" data-i18n="donutDmgCenter">SCORE RATIO</div>
-            </div>
-          </div>
+    <div class="luopan">
+      <!-- 外側 tick ring 60本 -->
+      <svg class="luopan-ticks" viewBox="0 0 160 160" aria-hidden="true">
+        <g id="luopanTicks"></g>
+      </svg>
+      <!-- 物理/属性 arc -->
+      <svg class="luopan-arc" viewBox="0 0 160 160" aria-hidden="true">
+        <defs>
+          <linearGradient id="physGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#c83c2b"/>
+            <stop offset="1" stop-color="#e8513a"/>
+          </linearGradient>
+          <linearGradient id="elemGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#7fa88a"/>
+            <stop offset="1" stop-color="#a8d4b4"/>
+          </linearGradient>
+        </defs>
+        <circle cx="80" cy="80" r="68" fill="none" stroke="rgba(232,215,180,0.06)" stroke-width="2"/>
+        <circle id="arcPhys" cx="80" cy="80" r="68" fill="none"
+          stroke="url(#physGrad)" stroke-width="6"
+          stroke-dasharray="0 427.26"
+          transform="rotate(-90 80 80)"
+          style="filter:drop-shadow(0 0 5px rgba(232,81,58,0.6));"/>
+        <circle id="arcElem" cx="80" cy="80" r="68" fill="none"
+          stroke="url(#elemGrad)" stroke-width="6"
+          stroke-dasharray="0 427.26"
+          transform="rotate(-90 80 80)"
+          style="filter:drop-shadow(0 0 5px rgba(232,81,58,0.6));"/>
+      </svg>
+      <!-- 内側 donut -->
+      <div class="luopan-inner">
+        <svg viewBox="0 0 136 136">
+          <circle class="donut-bg" cx="68" cy="68" r="50" fill="none" stroke="rgba(232,215,180,.06)" stroke-width="16"/>
+          <circle id="donutDmgSegCrit"     class="donut-seg" cx="68" cy="68" r="50" fill="none" stroke="var(--chart-crit)"     stroke-width="16" stroke-dasharray="0 314.16" stroke-dashoffset="0" style="filter:drop-shadow(0 0 5px rgba(232,81,58,0.6));"/>
+          <circle id="donutDmgSegSympathy" class="donut-seg" cx="68" cy="68" r="50" fill="none" stroke="var(--chart-sympathy)" stroke-width="16" stroke-dasharray="0 314.16" stroke-dashoffset="0" style="filter:drop-shadow(0 0 5px rgba(232,81,58,0.6));"/>
+          <circle id="donutDmgSegGraze"    class="donut-seg" cx="68" cy="68" r="50" fill="none" stroke="var(--chart-graze)"    stroke-width="16" stroke-dasharray="0 314.16" stroke-dashoffset="0" style="filter:drop-shadow(0 0 5px rgba(232,81,58,0.6));"/>
+          <circle id="donutDmgSegNormal"   class="donut-seg" cx="68" cy="68" r="50" fill="none" stroke="var(--chart-normal)"   stroke-width="16" stroke-dasharray="0 314.16" stroke-dashoffset="0" style="filter:drop-shadow(0 0 5px rgba(232,81,58,0.6));"/>
+        </svg>
+        <div class="luopan-center">
+          <div class="luopan-center-label" data-i18n="donutDmgCenter">勁率</div>
         </div>
-        <div class="prob-legend">
-          <div class="prob-row">
-            <div class="prob-dot prob-crit" style="background:var(--chart-crit);color:var(--chart-crit);"></div>
-            <div class="pname" data-i18n="probCrit">会心</div>
-            <div class="pval prob-crit" id="dmgCritVal">—</div>
-          </div>
-          <div class="prob-row">
-            <div class="prob-dot prob-sympathy" style="background:var(--chart-sympathy);color:var(--chart-sympathy);"></div>
-            <div class="pname" data-i18n="probSympathy">会意</div>
-            <div class="pval prob-sympathy" id="dmgSympathyVal">—</div>
-          </div>
-          <div class="prob-row">
-            <div class="prob-dot prob-normal" style="background:var(--chart-normal);color:var(--chart-normal);"></div>
-            <div class="pname" data-i18n="probNormal">通常</div>
-            <div class="pval prob-normal" id="dmgNormalVal">—</div>
-          </div>
-          <div class="prob-row">
-            <div class="prob-dot prob-graze" style="background:var(--chart-graze);color:var(--chart-graze);"></div>
-            <div class="pname" data-i18n="probGraze">かすり</div>
-            <div class="pval prob-graze" id="dmgGrazeVal">—</div>
-          </div>
-        </div>
+      </div>
+    </div>
+    <div class="judge-list">
+      <div class="judge-row">
+        <span class="judge-dot" style="background:var(--chart-crit);box-shadow:0 0 7px var(--chart-crit);"></span>
+        <span class="judge-name" data-i18n="probCrit">会心</span>
+        <span class="num judge-val" id="dmgCritVal" style="color:var(--chart-crit);">—</span>
+      </div>
+      <div class="judge-row">
+        <span class="judge-dot" style="background:var(--chart-sympathy);box-shadow:0 0 7px var(--chart-sympathy);"></span>
+        <span class="judge-name" data-i18n="probSympathy">会意</span>
+        <span class="num judge-val" id="dmgSympathyVal" style="color:var(--chart-sympathy);">—</span>
+      </div>
+      <div class="judge-row">
+        <span class="judge-dot" style="background:var(--chart-normal);box-shadow:0 0 7px var(--chart-normal);"></span>
+        <span class="judge-name" data-i18n="probNormal">通常</span>
+        <span class="num judge-val" id="dmgNormalVal" style="color:var(--chart-normal);">—</span>
+      </div>
+      <div class="judge-row">
+        <span class="judge-dot" style="background:var(--chart-graze);"></span>
+        <span class="judge-name" data-i18n="probGraze">かすり</span>
+        <span class="num judge-val" id="dmgGrazeVal" style="color:var(--chart-graze);">—</span>
       </div>
     </div>
   </div>
 </section>
+<!-- 羅盤 tick ring 60本 + arc 動的更新 -->
+<script>
+(function(){
+  const ticksGroup = document.getElementById('luopanTicks');
+  if (ticksGroup) {
+    const cx = 80, cy = 80, r1 = 78;
+    for (let i = 0; i < 60; i++) {
+      const a = i * 6 * Math.PI / 180;
+      const r2 = (i % 5 === 0) ? 68 : 73;
+      const x1 = cx + r1 * Math.cos(a), y1 = cy + r1 * Math.sin(a);
+      const x2 = cx + r2 * Math.cos(a), y2 = cy + r2 * Math.sin(a);
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', x1.toFixed(1));
+      line.setAttribute('y1', y1.toFixed(1));
+      line.setAttribute('x2', x2.toFixed(1));
+      line.setAttribute('y2', y2.toFixed(1));
+      line.setAttribute('stroke', (i % 5 === 0) ? '#c9a45a' : 'rgba(201,164,90,.3)');
+      line.setAttribute('stroke-width', (i % 5 === 0) ? 1.5 : 1);
+      ticksGroup.appendChild(line);
+    }
+  }
+  // 物理/属性 arc 動的更新: __WWM_LAST_RESULT or _CURRENT_PARAMS から phys/elem比率取得
+  window._updateLuopanArc = function(physPct){
+    const C = 427.26; // 周長 2π·68
+    const phys = Math.max(0, Math.min(1, physPct || 0));
+    const elem = 1 - phys;
+    const arcP = document.getElementById('arcPhys');
+    const arcE = document.getElementById('arcElem');
+    if (arcP) {
+      arcP.setAttribute('stroke-dasharray', (C * phys).toFixed(2) + ' ' + (C * elem).toFixed(2));
+      arcP.setAttribute('stroke-dashoffset', '0');
+    }
+    if (arcE) {
+      arcE.setAttribute('stroke-dasharray', (C * elem).toFixed(2) + ' ' + (C * phys).toFixed(2));
+      arcE.setAttribute('stroke-dashoffset', (-C * phys).toFixed(2));
+    }
+  };
+})();
+</script>
 
 <!-- WWM Gear Grid (新レイアウト) -->
 <div class="wwm-gear-grid" id="wwmGearGrid"></div>

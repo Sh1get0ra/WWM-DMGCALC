@@ -3570,6 +3570,226 @@ html[data-theme="light"] {
   --chart-normal: #c8bda6;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   Hero 武侠デザイン (design-sample由来)
+   ═══════════════════════════════════════════════════════════════ */
+.hero.hero-wuxia {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  padding: 16px 24px;
+  background: linear-gradient(180deg, rgba(30,23,17,.92), rgba(16,12,11,.96));
+  border: 1px solid var(--gold-deep);
+  border-left: 3px solid var(--vermilion);
+  box-shadow: inset 0 0 60px rgba(0,0,0,.5);
+  overflow: hidden;
+  position: relative;
+  height: 195px;
+}
+.hero-wuxia .l-bracket {
+  position: absolute;
+  width: 32px; height: 32px;
+  box-shadow: 0 0 10px rgba(201,164,90,.35);
+  pointer-events: none;
+  z-index: 2;
+}
+.hero-wuxia .lb-tl { top: -1px; left: -1px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+.hero-wuxia .lb-tr { top: -1px; right: -1px; border-top: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+.hero-wuxia .lb-bl { bottom: -1px; left: -1px; border-bottom: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+.hero-wuxia .lb-br { bottom: -1px; right: -1px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+.hero-wuxia .ink-stroke {
+  position: absolute;
+  left: 0; top: 52px;
+  width: 520px; height: 120px;
+  opacity: .85;
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-wuxia .hero-left {
+  position: relative;
+  z-index: 1;
+  padding-right: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+.hero-wuxia .hero-label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 14px;
+  align-self: flex-start;
+}
+.hero-wuxia .hero-label .ja {
+  font-family: var(--f-display);
+  font-weight: var(--fw-bold);
+  font-size: 30px;
+  letter-spacing: .18em;
+  color: var(--gold-bright);
+}
+.hero-wuxia .hero-label .en {
+  font-family: var(--f-mono);
+  font-size: var(--text-14);
+  letter-spacing: .28em;
+  color: var(--paper-mute);
+}
+.hero-wuxia .hero-score-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  position: relative;
+}
+.hero-wuxia .hero-current { display: flex; align-items: baseline; gap: var(--space-3); }
+.hero-wuxia .hero-number {
+  font-family: var(--f-latin);
+  font-weight: var(--fw-black);
+  font-size: 96px;
+  line-height: .88;
+  letter-spacing: -.02em;
+  background: linear-gradient(180deg, #fff7d8 0%, #f9ecc4 18%, #f0d28a 42%, #c9a45a 70%, #8a6f30 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter:
+    drop-shadow(0 1px 0 rgba(255,247,216,.4))
+    drop-shadow(0 2px 1px rgba(0,0,0,.55))
+    drop-shadow(0 6px 8px rgba(0,0,0,.5))
+    drop-shadow(0 0 24px rgba(240,210,138,.25));
+}
+.hero-wuxia .hero-tier.tier-badge {
+  position: relative;
+  font-family: var(--f-latin);
+  font-size: 22px;
+  font-weight: var(--fw-black);
+  letter-spacing: .12em;
+  padding: 5px 16px;
+  color: #f0d28a;
+  background: linear-gradient(135deg, rgba(180,40,28,.48) 0%, rgba(100,20,14,.38) 50%, rgba(180,40,28,.48) 100%);
+  border: 1px solid rgba(240,210,138,.65);
+  text-shadow: 0 0 18px rgba(240,210,138,.95), 0 0 36px rgba(232,81,58,.6);
+  box-shadow: 0 0 20px rgba(200,60,43,.6), 0 0 45px rgba(232,81,58,.35), inset 0 1px 0 rgba(240,210,138,.28), inset 0 -1px 0 rgba(0,0,0,.45);
+  align-self: flex-end;
+  margin-bottom: 14px;
+  overflow: hidden;
+  border-radius: 0;
+  animation: hero-tier-glow 2.2s ease-in-out infinite;
+}
+.hero-wuxia .hero-tier.tier-badge::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -150%;
+  width: 80%; height: 100%;
+  background: linear-gradient(110deg, transparent 0%, rgba(240,210,138,.4) 50%, transparent 100%);
+  animation: hero-tier-shimmer 3.6s ease-in-out infinite;
+}
+@keyframes hero-tier-glow {
+  0%,100% { box-shadow: 0 0 20px rgba(200,60,43,.6), 0 0 45px rgba(232,81,58,.35), inset 0 1px 0 rgba(240,210,138,.28), inset 0 -1px 0 rgba(0,0,0,.45); }
+  50%    { box-shadow: 0 0 32px rgba(200,60,43,.85), 0 0 70px rgba(232,81,58,.5), inset 0 1px 0 rgba(240,210,138,.42), inset 0 -1px 0 rgba(0,0,0,.55); }
+}
+@keyframes hero-tier-shimmer {
+  0%   { left: -150%; }
+  60%  { left: 150%; }
+  100% { left: 150%; }
+}
+.hero-wuxia .hero-next-inline {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  margin-top: -6px;
+}
+.hero-wuxia .hero-next-label {
+  font-family: var(--f-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-bold);
+  letter-spacing: .32em;
+  color: var(--paper-mute);
+  text-transform: uppercase;
+  padding-left: 2px;
+}
+.hero-wuxia .hero-next-row { display: flex; align-items: baseline; gap: var(--space-1-5); }
+.hero-wuxia .hero-next-arrow { color: var(--gold-deep); font-size: var(--text-18); align-self: center; }
+.hero-wuxia .hero-next-val {
+  font-family: var(--f-latin);
+  font-weight: var(--fw-extra);
+  font-size: 48px;
+  color: var(--bone-dim);
+  line-height: .88;
+  letter-spacing: -.01em;
+}
+.hero-wuxia .hero-right {
+  position: relative;
+  z-index: 1;
+  border-left: 1px solid var(--gold-deep);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3-5);
+  padding: 6px 8px 6px 18px;
+  background: transparent;
+}
+.hero-wuxia .luopan {
+  position: relative;
+  width: 160px; height: 160px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.hero-wuxia .luopan-ticks,
+.hero-wuxia .luopan-arc {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+.hero-wuxia .luopan-inner {
+  position: relative;
+  width: 138px; height: 138px;
+}
+.hero-wuxia .luopan-inner svg {
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+}
+.hero-wuxia .luopan-center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+.hero-wuxia .luopan-center-label {
+  font-family: var(--f-display);
+  font-size: 30px;
+  font-weight: var(--fw-extra);
+  letter-spacing: .18em;
+  background: linear-gradient(180deg, #f0d28a 0%, #c9a45a 55%, #8a6f30 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.55));
+}
+.hero-wuxia .judge-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.hero-wuxia .judge-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10.5px;
+  white-space: nowrap;
+}
+.hero-wuxia .judge-dot { width: 7px; height: 7px; flex-shrink: 0; }
+.hero-wuxia .judge-name { font-weight: var(--fw-semibold); color: var(--paper-2); }
+.hero-wuxia .judge-val {
+  font-family: var(--f-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-bold);
+  margin-left: auto;
+}
+
 /* ── Polish primitives (将来再利用用、CSS-only) ─────────── */
 
 /* tooltip — native title= の代替、JS付与 data-tooltip="..." で発火 */

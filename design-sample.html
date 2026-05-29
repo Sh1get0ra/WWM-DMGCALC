@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<title>武侠Hero案 — 朱墨筆 + 羅盤donut</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800;900&family=Noto+Serif+JP:wght@500;700;900&family=Noto+Sans+JP:wght@500;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-0:#07060a; --bg-1:#0f0c0e; --bg-2:#16110f;
+  --ink-1:rgba(232,215,180,0.06); --ink-2:rgba(232,215,180,0.12); --ink-3:rgba(232,215,180,0.22);
+  --vermilion:#c83c2b; --vermilion-deep:#8a1f17; --vermilion-bright:#e8513a; --vermilion-glow:rgba(232,81,58,0.5);
+  --gold:#c9a45a; --gold-bright:#f0d28a; --gold-deep:#8a6f30; --gold-glow:rgba(240,210,138,0.4);
+  --jade:#7fa88a; --jade-bright:#a8d4b4;
+  --bone:#c9b88a; --bone-dim:#9c8a6a;
+  --paper:#ede4d0; --paper-2:#c8bda6; --paper-dim:#8b8170; --paper-mute:#7a7060;
+  --f-display:'Noto Serif JP',serif; --f-body:'Noto Sans JP',sans-serif;
+  --f-latin:'Cinzel',serif; --f-mono:'Rajdhani',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{
+  background:#1a1614;
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:40px 20px;
+  font-family:var(--f-body);
+}
+.num{font-variant-numeric:tabular-nums;}
+
+/* paper grain overlay */
+.paper-grain::before{
+  content:''; position:absolute; inset:0; pointer-events:none; opacity:0.5; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' seed='7'/><feColorMatrix values='0 0 0 0 0.6  0 0 0 0 0.45  0 0 0 0 0.25  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23p)'/></svg>");
+  z-index:0;
+}
+
+/* ===== Hero ===== */
+.hero-wrap{
+  width:1280px;
+  max-width:100%;
+  padding:22px;
+  background:
+    radial-gradient(ellipse 80% 60% at 18% 0%, rgba(200,60,43,0.06), transparent 60%),
+    radial-gradient(ellipse 60% 70% at 100% 100%, rgba(201,164,90,0.035), transparent 55%),
+    var(--bg-0);
+  color:var(--paper);
+  position:relative;
+}
+
+.hero{
+  position:relative;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 260px;
+  padding:16px 24px;
+  background:linear-gradient(180deg,rgba(30,23,17,.92),rgba(16,12,11,.96));
+  border:1px solid var(--gold-deep);
+  box-shadow:inset 0 0 60px rgba(0,0,0,.5);
+  overflow:hidden;
+  z-index:1;
+  height:195px;
+}
+
+/* 案B 朱墨筆ストローク (数値背景にじみ) */
+.ink-stroke{
+  position:absolute;
+  left:0; top:52px;
+  width:520px; height:120px;
+  opacity:.85;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* 4隅L字bracket (案C) */
+.l-bracket{
+  position:absolute;
+  width:32px; height:32px;
+  box-shadow:0 0 10px rgba(201,164,90,.35);
+  pointer-events:none;
+  z-index:2;
+}
+.lb-tl{top:-1px; left:-1px; border-top:2px solid var(--gold); border-left:2px solid var(--gold);}
+.lb-tr{top:-1px; right:-1px; border-top:2px solid var(--gold); border-right:2px solid var(--gold);}
+.lb-bl{bottom:-1px; left:-1px; border-bottom:2px solid var(--gold); border-left:2px solid var(--gold);}
+.lb-br{bottom:-1px; right:-1px; border-bottom:2px solid var(--gold); border-right:2px solid var(--gold);}
+
+/* 透かし「斬」 */
+.kanji-mark{
+  position:absolute;
+  right:360px; bottom:-70px;
+  font-family:var(--f-display);
+  font-weight:900;
+  font-size:320px;
+  line-height:1;
+  color:rgba(200,60,43,0.06);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* Hero left */
+.hero-left{
+  position:relative;
+  z-index:1;
+  padding-right:18px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:12px;
+}
+.hero-label{
+  display:inline-flex;
+  align-items:baseline;
+  gap:14px;
+  align-self:flex-start;
+}
+.hero-label .ja{
+  font-family:var(--f-display);
+  font-weight:700;
+  font-size:30px;
+  letter-spacing:.18em;
+  color:var(--gold-bright);
+}
+.hero-label .en{
+  font-family:var(--f-mono);
+  font-size:14px;
+  letter-spacing:.28em;
+  color:var(--paper-mute);
+}
+
+.hero-score-row{
+  display:flex;
+  align-items:flex-start;
+  gap:18px;
+  position:relative;
+}
+/* 現在(主)スコア 大型 */
+.hero-current{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+}
+.hero-number{
+  font-family:var(--f-latin);
+  font-weight:900;
+  font-size:96px;
+  line-height:.88;
+  letter-spacing:-.02em;
+  /* 金属箔押し: 上highlight→mid→bottom shadow 4段グラデ */
+  background:linear-gradient(180deg,
+    #fff7d8 0%,
+    #f9ecc4 18%,
+    #f0d28a 42%,
+    #c9a45a 70%,
+    #8a6f30 100%
+  );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  /* 多層 drop-shadow で立体感 */
+  filter:
+    drop-shadow(0 1px 0 rgba(255,247,216,.4))    /* top highlight */
+    drop-shadow(0 2px 1px rgba(0,0,0,.55))         /* near shadow */
+    drop-shadow(0 6px 8px rgba(0,0,0,.5))          /* mid shadow */
+    drop-shadow(0 0 24px rgba(240,210,138,.25));  /* glow */
+  position:relative;
+}
+/* embossed inner stroke + bottom shadow text layer */
+.hero-number::before{
+  content:attr(data-num, '9,247');  /* fallback chrome safe */
+  display:none;
+}
+/* SS tier badge: gold shimmer + red pulse glow (本番 .tier-SS 移植) */
+.hero-tier{
+  position:relative;
+  font-family:var(--f-latin); /* Cinzel — ゴージャスセリフ */
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:.12em;
+  padding:5px 16px;
+  color:#f0d28a;
+  background:linear-gradient(135deg,rgba(180,40,28,.48) 0%,rgba(100,20,14,.38) 50%,rgba(180,40,28,.48) 100%);
+  border:1px solid rgba(240,210,138,.65);
+  text-shadow:0 0 18px rgba(240,210,138,.95), 0 0 36px rgba(232,81,58,.6);
+  box-shadow:
+    0 0 20px rgba(200,60,43,.6),
+    0 0 45px rgba(232,81,58,.35),
+    inset 0 1px 0 rgba(240,210,138,.28),
+    inset 0 -1px 0 rgba(0,0,0,.45);
+  align-self:flex-end;
+  margin-bottom:14px;
+  overflow:hidden;
+  animation:tier-ss-glow 2.2s ease-in-out infinite;
+}
+/* gold shimmer sweep */
+.hero-tier::before{
+  content:'';
+  position:absolute;
+  top:0; left:-150%;
+  width:80%; height:100%;
+  background:linear-gradient(110deg,transparent 0%,rgba(240,210,138,.4) 50%,transparent 100%);
+  animation:tier-ss-shimmer 3.6s ease-in-out infinite;
+}
+@keyframes tier-ss-glow{
+  0%,100%{
+    box-shadow:
+      0 0 20px rgba(200,60,43,.6),
+      0 0 45px rgba(232,81,58,.35),
+      inset 0 1px 0 rgba(240,210,138,.28),
+      inset 0 -1px 0 rgba(0,0,0,.45);
+  }
+  50%{
+    box-shadow:
+      0 0 32px rgba(200,60,43,.85),
+      0 0 70px rgba(232,81,58,.5),
+      inset 0 1px 0 rgba(240,210,138,.42),
+      inset 0 -1px 0 rgba(0,0,0,.55);
+  }
+}
+@keyframes tier-ss-shimmer{
+  0%   {left:-150%;}
+  60%  {left:150%;}
+  100% {left:150%;}
+}
+/* 次(副)スコア NEXTラベルは▶の真上 */
+.hero-next-inline{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:2px;
+  margin-top:-6px;  /* 現在スコア天頂に合わせて上に上げる */
+}
+.hero-next-label{
+  font-family:var(--f-mono);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.32em;
+  color:var(--paper-mute);
+  text-transform:uppercase;
+  padding-left:2px;  /* ▶幅 (18px) の左半分に揃え */
+}
+.hero-next-row{
+  display:flex;
+  align-items:baseline;
+  gap:6px;
+}
+.hero-next-arrow{
+  color:var(--gold-deep);
+  font-size:18px;
+  align-self:center;
+}
+.hero-next-val{
+  font-family:var(--f-latin);
+  font-weight:800;
+  font-size:48px;
+  color:var(--bone-dim);
+  line-height:.88;
+  letter-spacing:-.01em;
+}
+
+/* Hero right — 羅盤 luopan donut */
+.hero-right{
+  position:relative;
+  z-index:1;
+  border-left:1px solid var(--gold-deep);
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  padding:6px 8px 6px 18px;
+  background:transparent;
+}
+.luopan{
+  position:relative;
+  width:160px; height:160px;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+}
+.luopan-ticks{
+  position:absolute;
+  inset:0;
+  width:100%; height:100%;
+  pointer-events:none;
+}
+.luopan-arc{
+  position:absolute;
+  inset:0;
+  width:100%; height:100%;
+  pointer-events:none;
+}
+.luopan-arc-label{
+  position:absolute;
+  font-family:var(--f-mono);
+  font-size:10.5px;
+  font-weight:700;
+  letter-spacing:.18em;
+}
+/* arc-label削除 */
+.luopan-arc-label{display:none;}
+.luopan-inner{
+  position:relative;
+  width:138px; height:138px;
+}
+.luopan-inner svg{
+  width:100%; height:100%;
+  transform:rotate(-90deg);
+}
+.luopan-center{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  text-align:center;
+}
+.luopan-center-label{
+  font-family:var(--f-display);
+  font-size:30px;
+  font-weight:800;
+  letter-spacing:.18em;
+  /* 軽い金属感: 3段gradient + 軽shadow */
+  background:linear-gradient(180deg,#f0d28a 0%,#c9a45a 55%,#8a6f30 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.55));
+}
+
+.judge-list{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  min-width:0;
+}
+.judge-row{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:10.5px;
+  white-space:nowrap;
+}
+.judge-dot{
+  width:7px; height:7px;
+  flex-shrink:0;
+}
+.judge-name{
+  font-weight:600;
+  color:var(--paper-2);
+}
+.judge-val{
+  font-family:var(--f-mono);
+  font-size:11px;
+  font-weight:700;
+  margin-left:auto;
+}
+
+</style>
+</head>
+<body>
+
+<div class="hero-wrap paper-grain">
+  <div class="hero">
+    <!-- 4隅L字bracket -->
+    <span class="l-bracket lb-tl"></span>
+    <span class="l-bracket lb-tr"></span>
+    <span class="l-bracket lb-bl"></span>
+    <span class="l-bracket lb-br"></span>
+
+    <!-- 透かし「斬」 -->
+    <div class="kanji-mark">斬</div>
+
+    <!-- 案B 朱墨筆ストローク (SVG turbulence + displacement) -->
+    <svg class="ink-stroke" viewBox="0 0 600 240" preserveAspectRatio="none">
+      <defs>
+        <filter id="inkB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.012 0.16" numOctaves="2" seed="4" result="n"/>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="34"/>
+        </filter>
+        <linearGradient id="inkGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="rgba(200,60,43,0)"/>
+          <stop offset="0.25" stop-color="rgba(200,60,43,0.35)"/>
+          <stop offset="0.7" stop-color="rgba(138,31,23,0.25)"/>
+          <stop offset="1" stop-color="rgba(200,60,43,0)"/>
+        </linearGradient>
+      </defs>
+      <path d="M20,140 C140,70 360,60 560,118" stroke="url(#inkGrad)" stroke-width="80" fill="none" stroke-linecap="round" filter="url(#inkB)"/>
+    </svg>
+
+    <!-- LEFT -->
+    <div class="hero-left">
+      <div class="hero-label">
+        <span class="ja">武格指数</span>
+        <span class="en">MARTIAL INDEX</span>
+      </div>
+
+      <div class="hero-score-row">
+        <div class="hero-current">
+          <span class="num hero-number">9,247</span>
+        </div>
+        <span class="hero-tier">SS</span>
+        <div class="hero-next-inline">
+          <span class="hero-next-label">NEXT</span>
+          <span class="hero-next-row">
+            <span class="hero-next-arrow">▶</span>
+            <span class="num hero-next-val">8,420</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT — 羅盤 luopan donut -->
+    <div class="hero-right">
+      <div class="luopan">
+
+        <!-- 外側 tick ring (60本 6度刻み、5本目強調) -->
+        <svg class="luopan-ticks" viewBox="0 0 160 160">
+          <g id="ticks"></g>
+        </svg>
+
+        <!-- 物理/属性 比率 arc (外側ring) -->
+        <svg class="luopan-arc" viewBox="0 0 160 160">
+          <!-- r=68 周長 = 2π·68 ≈ 427.26 -->
+          <circle cx="80" cy="80" r="68" fill="none" stroke="rgba(232,215,180,0.06)" stroke-width="2"/>
+          <circle cx="80" cy="80" r="68" fill="none"
+            stroke="url(#physGrad)" stroke-width="6"
+            stroke-dasharray="334.55 92.71"
+            stroke-dashoffset="0"
+            transform="rotate(-90 80 80)"
+            stroke-linecap="butt"
+            style="filter:drop-shadow(0 0 5px rgba(232,81,58,0.6));"/>
+          <circle cx="80" cy="80" r="68" fill="none"
+            stroke="url(#elemGrad)" stroke-width="6"
+            stroke-dasharray="92.71 334.55"
+            stroke-dashoffset="-334.55"
+            transform="rotate(-90 80 80)"
+            stroke-linecap="butt"
+            style="filter:drop-shadow(0 0 5px rgba(232,81,58,0.6));"/>
+          <defs>
+            <linearGradient id="physGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#c83c2b"/>
+              <stop offset="1" stop-color="#e8513a"/>
+            </linearGradient>
+            <linearGradient id="elemGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#7fa88a"/>
+              <stop offset="1" stop-color="#a8d4b4"/>
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <span class="luopan-arc-label phys">物理 16,471</span>
+        <span class="luopan-arc-label elem">属性 4,558</span>
+
+        <!-- 内側donut (判定比) -->
+        <div class="luopan-inner">
+          <svg viewBox="0 0 136 136">
+            <circle cx="68" cy="68" r="50" fill="none" stroke="rgba(232,215,180,.06)" stroke-width="16"/>
+            <!-- 会心 78.3% — 周長=314.16 -->
+            <circle cx="68" cy="68" r="50" fill="none" stroke="#f0d28a" stroke-width="16" stroke-dasharray="246.0 68.2" style="filter:drop-shadow(0 0 5px rgba(232,81,58,0.6));"/>
+            <!-- 会意 16.5% -->
+            <circle cx="68" cy="68" r="50" fill="none" stroke="#e8513a" stroke-width="16" stroke-dasharray="51.8 262.4" stroke-dashoffset="-246.0" style="filter:drop-shadow(0 0 5px rgba(232,81,58,0.6));"/>
+            <!-- 通常 4.3% -->
+            <circle cx="68" cy="68" r="50" fill="none" stroke="#ede4d0" stroke-width="16" stroke-dasharray="13.5 300.7" stroke-dashoffset="-297.8" style="filter:drop-shadow(0 0 5px rgba(232,81,58,0.6));"/>
+            <!-- かすり 0.9% -->
+            <circle cx="68" cy="68" r="50" fill="none" stroke="#6a6053" stroke-width="16" stroke-dasharray="2.8 311.4" stroke-dashoffset="-311.3" style="filter:drop-shadow(0 0 5px rgba(232,81,58,0.6));"/>
+          </svg>
+          <div class="luopan-center">
+            <div class="luopan-center-label">勁率</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="judge-list">
+        <div class="judge-row"><span class="judge-dot" style="background:#f0d28a;box-shadow:0 0 7px #f0d28a;"></span><span class="judge-name">会心</span><span class="num judge-val" style="color:#f0d28a;">78.3%</span></div>
+        <div class="judge-row"><span class="judge-dot" style="background:#e8513a;box-shadow:0 0 7px #e8513a;"></span><span class="judge-name">会意</span><span class="num judge-val" style="color:#e8513a;">16.5%</span></div>
+        <div class="judge-row"><span class="judge-dot" style="background:#ede4d0;box-shadow:0 0 7px #ede4d0;"></span><span class="judge-name">通常</span><span class="num judge-val" style="color:#ede4d0;">4.3%</span></div>
+        <div class="judge-row"><span class="judge-dot" style="background:#6a6053;"></span><span class="judge-name">かすり</span><span class="num judge-val" style="color:#6a6053;">0.9%</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 60本 tick ring 動的生成 (radial 6度刻み、5本目強調)
+(() => {
+  const svg = document.querySelector('.luopan-ticks #ticks');
+  if (!svg) return;
+  const cx = 80, cy = 80;
+  const r1 = 78;
+  for (let i = 0; i < 60; i++) {
+    const a = i * 6 * Math.PI / 180;
+    const r2 = (i % 5 === 0) ? 68 : 73;
+    const x1 = cx + r1 * Math.cos(a);
+    const y1 = cy + r1 * Math.sin(a);
+    const x2 = cx + r2 * Math.cos(a);
+    const y2 = cy + r2 * Math.sin(a);
+    const stroke = (i % 5 === 0) ? '#c9a45a' : 'rgba(201,164,90,.3)';
+    const sw = (i % 5 === 0) ? 1.5 : 1;
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', x1.toFixed(1));
+    line.setAttribute('y1', y1.toFixed(1));
+    line.setAttribute('x2', x2.toFixed(1));
+    line.setAttribute('y2', y2.toFixed(1));
+    line.setAttribute('stroke', stroke);
+    line.setAttribute('stroke-width', sw);
+    svg.appendChild(line);
+  }
+})();
+</script>
+
+</body>
+</html>
