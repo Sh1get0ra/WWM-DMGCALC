@@ -1575,7 +1575,10 @@ async function _computeArsenalCardScore(roleInfo) {
 
 async function _computeXinfaCardScores(roleInfo) {
   if (!window.WWMStats?.buildStatParams || typeof window.computeExpected !== 'function') return;
-  const state = (() => { try { return JSON.parse(localStorage.getItem('wwm_last_state_v1') || 'null'); } catch(_) { return null; } })();
+  // bug fix: virtual xinfa tiers (Edit modal適用結果) を反映するため _getEffectiveState() 使用
+  const state = (typeof _getEffectiveState === 'function')
+    ? _getEffectiveState()
+    : (() => { try { return JSON.parse(localStorage.getItem('wwm_last_state_v1') || 'null'); } catch(_) { return null; } })();
   // base score
   let baseScore = 0;
   try {
