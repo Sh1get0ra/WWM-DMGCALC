@@ -11,14 +11,14 @@
       "tier0": {
         "permanent": true,
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.0065
         },
         "raw": "飛燕再翔 突進 気力-10%、 非対人 着地後3s 移動+30%、 撃破で気血回復 (1%+1000)"
       },
       "tier1": {
         "permanent": true,
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.0065
         },
         "raw": "飛燕再翔 突進 気力減 10%→20%"
       },
@@ -29,28 +29,28 @@
         "statType": "Max HP",
         "raw": "Max HP (Solo Mode Level scaled, rank=blue)",
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.0065
         },
         "category": "defensive"
       },
       "tier3": {
         "permanent": true,
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.0065
         },
         "raw": "飛燕再翔 突進速度+30%"
       },
       "tier4": {
         "permanent": true,
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.0065
         },
         "raw": "撃破時 追加回復 固定気血 max 1000→2400"
       },
       "tier5": {
         "permanent": true,
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.0065
         },
         "raw": "Physical DMG Reduction +2.2%",
         "category": "defensive"
@@ -58,7 +58,7 @@
       "tier6": {
         "permanent": true,
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.0065
         },
         "raw": "飛燕再翔 突進終了後 3s 全気力消費-10% (非対人 -30%)"
       }
@@ -74,13 +74,13 @@
     },
     "description": "戦闘開始後12s 気血60%未満で 4s雪見効果、 毎秒気血 2%+600回復 (300s CD)。 汎用 回復系。",
     "attributeBuff": {
-      "tier0": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "戦闘開始12s以内 気血60%未満で 4s雪見、 毎秒気血2%+600回復 (300s CD)" },
-      "tier1": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "回復値 毎秒3%+600 に上昇" },
-      "tier2": { "permanent": true, "worldLv": 14, "needsManualInput": false, "statType": "Max HP", "raw": "Max HP (Solo Mode Level scaled, rank=blue)", "effects": { "fixedScoreBonus": 50 }, "category": "defensive" },
-      "tier3": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "雪見中 与ダメ10% を気血回復" },
-      "tier4": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "発動間隔 50%短縮 (300s→150s)" },
-      "tier5": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "外功耐性 +4.5", "category": "defensive" },
-      "tier6": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "雪見中 次2回の技 必ず会心効果獲得" }
+      "tier0": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "戦闘開始12s以内 気血60%未満で 4s雪見、 毎秒気血2%+600回復 (300s CD)" },
+      "tier1": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "回復値 毎秒3%+600 に上昇" },
+      "tier2": { "permanent": true, "worldLv": 14, "needsManualInput": false, "statType": "Max HP", "raw": "Max HP (Solo Mode Level scaled, rank=blue)", "effects": { "globalDmgBoost": 0.0065 }, "category": "defensive" },
+      "tier3": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "雪見中 与ダメ10% を気血回復" },
+      "tier4": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "発動間隔 50%短縮 (300s→150s)" },
+      "tier5": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "外功耐性 +4.5", "category": "defensive" },
+      "tier6": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "雪見中 次2回の技 必ず会心効果獲得" }
     },
     "rank": "blue"
   },
@@ -93,13 +93,13 @@
     },
     "description": "攻撃を受ける時 硬直が出にくくなる (首領/プレイヤー攻撃では非発動)。 汎用 行動妨害軽減系。",
     "attributeBuff": {
-      "tier0": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "攻撃被ダメ時 硬直発生減少 (首領/プレイヤー攻撃 非発動)" },
-      "tier1": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "硬直耐性 周囲敵数に応じ上昇" },
-      "tier2": { "permanent": true, "worldLv": 14, "needsManualInput": false, "statType": "Physical Defense", "raw": "Physical Defense (Solo Mode Level scaled, rank=blue)", "effects": { "fixedScoreBonus": 50 }, "category": "defensive" },
-      "tier3": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "攻撃被ダメ毎 10%確率 5s 外功防御+2% max5stack" },
-      "tier4": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "硬直耐性 ボス戦も有効化" },
-      "tier5": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "外功耐性 +4.5", "category": "defensive" },
-      "tier6": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "烈心効果 反撃ダメ (敵気血max 0.2%相当)、 30s毎1回 5s持続" }
+      "tier0": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "攻撃被ダメ時 硬直発生減少 (首領/プレイヤー攻撃 非発動)" },
+      "tier1": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "硬直耐性 周囲敵数に応じ上昇" },
+      "tier2": { "permanent": true, "worldLv": 14, "needsManualInput": false, "statType": "Physical Defense", "raw": "Physical Defense (Solo Mode Level scaled, rank=blue)", "effects": { "globalDmgBoost": 0.0065 }, "category": "defensive" },
+      "tier3": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "攻撃被ダメ毎 10%確率 5s 外功防御+2% max5stack" },
+      "tier4": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "硬直耐性 ボス戦も有効化" },
+      "tier5": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "外功耐性 +4.5", "category": "defensive" },
+      "tier6": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "烈心効果 反撃ダメ (敵気血max 0.2%相当)、 30s毎1回 5s持続" }
     },
     "rank": "blue"
   },
@@ -112,13 +112,13 @@
     },
     "description": "命門一閃 奇襲距離+1.5m + 与ダメ+10%、 奇襲成功で気血5%回復。 汎用。",
     "attributeBuff": {
-      "tier0": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "命門一閃 奇襲距離+1.5m / 与ダメ+10% / 奇襲成功で気血5%回復" },
-      "tier1": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "奇襲時 回復量 5%→10% に上昇" },
+      "tier0": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "命門一閃 奇襲距離+1.5m / 与ダメ+10% / 奇襲成功で気血5%回復" },
+      "tier1": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "奇襲時 回復量 5%→10% に上昇" },
       "tier2": { "permanent": true, "worldLv": 14, "needsManualInput": false, "statType": "Min Physical Attack", "raw": "Min Physical Attack (Solo Mode Level scaled, rank=blue)", "effects": { "minPhysATKAdd": 51.12 }, "derivedFromGold": true },
-      "tier3": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "奇襲成功 対象から ランダム戦利品+1 確率向上" },
-      "tier4": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "奇襲可能 最大距離 +2.5m" },
+      "tier3": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "奇襲成功 対象から ランダム戦利品+1 確率向上" },
+      "tier4": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "奇襲可能 最大距離 +2.5m" },
       "tier5": { "permanent": true, "effects": { "physDmgBoost": 0.022 }, "raw": "Physical DMG Bonus +2.2%" },
-      "tier6": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "奇襲成功 すぐ潜伏状態、 20s毎1回発動" }
+      "tier6": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "奇襲成功 すぐ潜伏状態、 20s毎1回発動" }
     },
     "rank": "blue"
   },
@@ -131,13 +131,13 @@
     },
     "description": "10%確率で泣血付与、 5stack蓄積→刺傷ダメ。 汎用攻撃系 (少し強め)。",
     "attributeBuff": {
-      "tier0": { "permanent": true, "effects": { "globalDmgBoost": 0.01 }, "raw": "10%確率1stack泣血、 5s持続、 1秒毎ダメ、 max5stack、 5stack時解除→刺傷ダメ1回" },
-      "tier1": { "permanent": true, "effects": { "globalDmgBoost": 0.01 }, "raw": "与刺傷ダメ +100%" },
+      "tier0": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "10%確率1stack泣血、 5s持続、 1秒毎ダメ、 max5stack、 5stack時解除→刺傷ダメ1回" },
+      "tier1": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "与刺傷ダメ +100%" },
       "tier2": { "permanent": true, "worldLv": 14, "needsManualInput": false, "statType": "Max Physical Attack", "raw": "Max Physical Attack (Solo Mode Level scaled, rank=blue)", "effects": { "maxPhysATKAdd": 51.12 }, "derivedFromGold": true },
-      "tier3": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "泣血持続終了 5stack未満でも 20%確率 すぐ刺傷ダメ1回" },
-      "tier4": { "permanent": true, "effects": { "globalDmgBoost": 0.005 }, "raw": "泣血付与確率 10%→15%" },
+      "tier3": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "泣血持続終了 5stack未満でも 20%確率 すぐ刺傷ダメ1回" },
+      "tier4": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "泣血付与確率 10%→15%" },
       "tier5": { "permanent": true, "effects": { "critBoost": 0.035 }, "raw": "Crit DMG Bonus +3.5%" },
-      "tier6": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "刺傷で全泣血解除時 必ず1-2stack残存" }
+      "tier6": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "刺傷で全泣血解除時 必ず1-2stack残存" }
     },
     "rank": "blue"
   },
@@ -150,13 +150,13 @@
     },
     "description": "鱗舞追月 ニシキゴイ変身中 突進/跳躍消費-50%、 形態終了で気血シールド1生成。 汎用。",
     "attributeBuff": {
-      "tier0": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "鱗舞追月 ニシキゴイ変身中 突進/跳躍 消費-50%、 形態終了で気血シールド1生成" },
-      "tier1": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "ニシキゴイ形態解除時 気血max 30% 吸収シールド (最大10s、 30s毎1回)" },
-      "tier2": { "permanent": true, "worldLv": 14, "needsManualInput": false, "statType": "Physical Defense", "raw": "Physical Defense (Solo Mode Level scaled, rank=blue)", "effects": { "fixedScoreBonus": 50 }, "category": "defensive" },
-      "tier3": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "ニシキゴイ形態+戦闘離脱状態で 気血/精力 持続回復、 彩砂環境同時で 回復+100%" },
-      "tier4": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "ニシキゴイ形態で 突進/跳躍 持久力消費なし" },
-      "tier5": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "外功ダメージ軽減 +2.2%", "category": "defensive" },
-      "tier6": { "permanent": true, "effects": { "fixedScoreBonus": 50 }, "raw": "ニシキゴイ形態 採集時 30%確率 報酬2倍 (美食採集クリと重複可)" }
+      "tier0": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "鱗舞追月 ニシキゴイ変身中 突進/跳躍 消費-50%、 形態終了で気血シールド1生成" },
+      "tier1": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "ニシキゴイ形態解除時 気血max 30% 吸収シールド (最大10s、 30s毎1回)" },
+      "tier2": { "permanent": true, "worldLv": 14, "needsManualInput": false, "statType": "Physical Defense", "raw": "Physical Defense (Solo Mode Level scaled, rank=blue)", "effects": { "globalDmgBoost": 0.0065 }, "category": "defensive" },
+      "tier3": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "ニシキゴイ形態+戦闘離脱状態で 気血/精力 持続回復、 彩砂環境同時で 回復+100%" },
+      "tier4": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "ニシキゴイ形態で 突進/跳躍 持久力消費なし" },
+      "tier5": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "外功ダメージ軽減 +2.2%", "category": "defensive" },
+      "tier6": { "permanent": true, "effects": { "globalDmgBoost": 0.0065 }, "raw": "ニシキゴイ形態 採集時 30%確率 報酬2倍 (美食採集クリと重複可)" }
     },
     "rank": "blue"
   },
@@ -172,14 +172,14 @@
       "tier0": {
         "permanent": true,
         "effects": {
-          "globalDmgBoost": 0.05
+          "globalDmgBoost": 0.01
         },
         "raw": "全ダメージ/治癒+5%、 被撃後5s 無敵化、 cage debuff +5%被ダメ/stack"
       },
       "tier1": {
         "permanent": true,
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.01
         },
         "raw": "cage debuff 5%→3%軽減 (被害減少、 攻撃計算外)"
       },
@@ -195,14 +195,14 @@
       "tier3": {
         "permanent": true,
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.01
         },
         "raw": "攻撃命中後5s 無敵化 (防御系)"
       },
       "tier4": {
         "permanent": true,
         "effects": {
-          "globalDmgBoost": 0.03
+          "globalDmgBoost": 0.01
         },
         "raw": "ベース 5%→8% (T0からの差分+3%、 累計0.08)"
       },
@@ -216,7 +216,7 @@
       "tier6": {
         "permanent": true,
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.01
         },
         "raw": "marked target hit時 無敵化リセット保護"
       }
@@ -454,7 +454,7 @@
       "tier0": {
         "permanent": true,
         "effects": {
-          "globalDmgBoost": 0.05
+          "globalDmgBoost": 0.013
         },
         "raw": "与ダメ/治癒+1%/stack × max5stack = +5% (常時発動仮定)"
       },
@@ -478,14 +478,14 @@
       "tier3": {
         "permanent": true,
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "衰弱中 与ダメ倍 (条件発動、常時想定不可)"
       },
       "tier4": {
         "permanent": true,
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "確率100%+12s持続 (max stack維持安定化)"
       },
@@ -499,7 +499,7 @@
       "tier6": {
         "permanent": true,
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "max stack時 ボーナスダメ発動 (衰弱時2回、CD 10s)"
       }
@@ -518,14 +518,14 @@
       "tier0": {
         "permanent": true,
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "武変技後 春/夏/秋/冬 1効果ランダム獲得 (10s持続、 30s CD)"
       },
       "tier1": {
         "permanent": true,
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "ステ上昇効果 持続時間 10s→12s"
       },
@@ -544,14 +544,14 @@
       "tier3": {
         "permanent": true,
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "30%確率 効果2個ランダム獲得"
       },
       "tier4": {
         "permanent": true,
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "武変技ダメ/回復成功時もランダム発動、 春/冬確率大幅減"
       },
@@ -565,7 +565,7 @@
       "tier6": {
         "permanent": true,
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "15%確率 3個獲得、 5%確率 4個全部獲得 (5m未満 冬非獲得)"
       }
@@ -688,7 +688,7 @@
         "permanent": true,
         "kongfuRequired": [10102],
         "effects": {
-          "globalDmgBoost": 0.1
+          "globalDmgBoost": 0.013
         },
         "raw": "家無き者 2段溜め完了で複数剣気、 気力消費でダメ+1.5%/pt max30%"
       },
@@ -696,7 +696,7 @@
         "permanent": true,
         "kongfuRequired": [10102],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "非戦闘 退路の道剣気5s 真気シールドなしで複数剣気発射可"
       },
@@ -715,7 +715,7 @@
         "permanent": true,
         "kongfuRequired": [10102],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "力尽き対象命中時 軽傷化なし + 非プレイヤー力尽き 第三剣気必ず会意"
       },
@@ -723,7 +723,7 @@
         "permanent": true,
         "kongfuRequired": [10102],
         "effects": {
-          "globalDmgBoost": 0.05
+          "globalDmgBoost": 0.013
         },
         "raw": "溜め技 複数剣気5s 連発可"
       },
@@ -738,7 +738,7 @@
         "permanent": true,
         "kongfuRequired": [10102],
         "effects": {
-          "globalDmgBoost": 0.1
+          "globalDmgBoost": 0.013
         },
         "raw": "複数剣気後 気湧獲得 (気力+20、 5s即発射1回、 CD 20s -1s/首領命中 max-8s)"
       }
@@ -861,7 +861,7 @@
         "permanent": true,
         "kongfuRequired": [10101],
         "effects": {
-          "globalDmgBoost": 0.1
+          "globalDmgBoost": 0.013
         },
         "raw": "武術/特殊/溜め技後 納刀中完璧タイミング再押→縦横の剣追撃、 5stack流血で大流血ダメ"
       },
@@ -869,7 +869,7 @@
         "permanent": true,
         "kongfuRequired": [10101],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "縦横剣発動成功で気力+8"
       },
@@ -888,7 +888,7 @@
         "permanent": true,
         "kongfuRequired": [10101],
         "effects": {
-          "globalDmgBoost": 0.05
+          "globalDmgBoost": 0.013
         },
         "raw": "大量流血で縦横剣意蓄積、 最大時 次大量流血必ず会意"
       },
@@ -896,7 +896,7 @@
         "permanent": true,
         "kongfuRequired": [10101],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "縦横剣意状態中 大量出血ダメ +15%"
       },
@@ -911,7 +911,7 @@
         "permanent": true,
         "kongfuRequired": [10101],
         "effects": {
-          "globalDmgBoost": 0.1
+          "globalDmgBoost": 0.013
         },
         "raw": "縦横剣意中 大量流血で流血+2stack保持、 蓄積最大→会意後 20pt剣意保持で蓄積継続"
       }
@@ -1040,7 +1040,7 @@
         "permanent": true,
         "kongfuRequired": [20601],
         "effects": {
-          "globalDmgBoost": 0.1
+          "globalDmgBoost": 0.013
         },
         "raw": "春恨み 2stack 連続命中効果付与、 弾道技ダメ+10% 10s持続"
       },
@@ -1048,7 +1048,7 @@
         "permanent": true,
         "kongfuRequired": [20601],
         "effects": {
-          "globalDmgBoost": 0.05
+          "globalDmgBoost": 0.013
         },
         "raw": "連続命中効果 弾道技ダメ 10%→20% (差分+10%)"
       },
@@ -1067,7 +1067,7 @@
         "permanent": true,
         "kongfuRequired": [20601],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "春恨み発動速度+30%、 連続命中効果持続+15s延長"
       },
@@ -1075,7 +1075,7 @@
         "permanent": true,
         "kongfuRequired": [20601],
         "effects": {
-          "globalDmgBoost": 0.1
+          "globalDmgBoost": 0.013
         },
         "raw": "対人戦以外 春風飛舞 連続命中対象命中で 与ダメ+10%、 拡散対象 3→5"
       },
@@ -1090,7 +1090,7 @@
         "permanent": true,
         "kongfuRequired": [20601],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "春恨み max 3stack、 連続命中対象命中→ CD即-5s、 繁花+25 (スキル1回毎1回発動)"
       }
@@ -1110,7 +1110,7 @@
         "permanent": true,
         "kongfuRequired": [10301],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "雲起の座 水人治療+10%、 範囲内自身いれば毎回露水+1"
       },
@@ -1118,7 +1118,7 @@
         "permanent": true,
         "kongfuRequired": [10301],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "召喚水人治療受け時 追加露水+2"
       },
@@ -1137,7 +1137,7 @@
         "permanent": true,
         "kongfuRequired": [10301],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "白雲無尽発動後 自身+治療対象に 6s持続治療"
       },
@@ -1145,7 +1145,7 @@
         "permanent": true,
         "kongfuRequired": [10301],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "白雲無尽 発動条件 露水50消費に変更"
       },
@@ -1160,7 +1160,7 @@
         "permanent": true,
         "kongfuRequired": [10301],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "薬川装備時 非プレイヤー被ダメ-20%、 重傷時 7s復活水人召喚 (CD 120s、 軽減効果120s無効)"
       }
@@ -1276,7 +1276,7 @@
         "permanent": true,
         "kongfuRequired": [20401],
         "effects": {
-          "globalDmgBoost": 0.1
+          "globalDmgBoost": 0.013
         },
         "raw": "断魂刀防御成功→特殊カウンター + 溜め不要3段重撃溜め技 (10s CD)、 マルチ首領防御で15s絶韻stack"
       },
@@ -1284,7 +1284,7 @@
         "permanent": true,
         "kongfuRequired": [20401],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "防御成功 20%確率 戦意+1追加、 対人戦 気力自然回復速度上昇"
       },
@@ -1303,7 +1303,7 @@
         "permanent": true,
         "kongfuRequired": [20401],
         "effects": {
-          "globalDmgBoost": 0.05
+          "globalDmgBoost": 0.013
         },
         "raw": "免蓄重撃溜め技 威力 1→3段階"
       },
@@ -1311,7 +1311,7 @@
         "permanent": true,
         "kongfuRequired": [20401],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "防御成功で 特殊カウンター技 発動間隔 -50% (10→5s)"
       },
@@ -1326,7 +1326,7 @@
         "permanent": true,
         "kongfuRequired": [20401],
         "effects": {
-          "globalDmgBoost": 0.1
+          "globalDmgBoost": 0.013
         },
         "raw": "三段階軽重撃/派生 戦意1消費でダメ+25% (軽重撃 2マスで+50%)"
       }
@@ -1443,16 +1443,18 @@
       "tier0": {
         "permanent": true,
         "kongfuRequired": [20501],
-        "effects": {},
+        "effects": {
+          "globalDmgBoost": 0.013
+        },
         "raw": "外功防御10%/瞬嵐耐性10無視"
       },
       "tier1": {
         "permanent": true,
         "kongfuRequired": [20501],
         "effects": {
-          "globalDmgBoost": 0.05
+          "globalDmgBoost": 0.013
         },
-        "raw": "悪身&苦果対象攻撃で 10s輪廻獲得、 輪廻時 与ダメ+5% (輪廻常時発動仮定)"
+        "raw": "悪身&苦果対象攻撃で 10s輪廻獲得、 輪廻時 与ダメ+5%"
       },
       "tier2": {
         "permanent": true,
@@ -1467,7 +1469,7 @@
         "permanent": true,
         "kongfuRequired": [20501],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "完全回避→輪廻獲得、 輪廻時ダメ→業火+1"
       },
@@ -1475,7 +1477,7 @@
         "permanent": true,
         "kongfuRequired": [20501],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "輪廻時ダメ→業火+1"
       },
@@ -1490,9 +1492,9 @@
         "permanent": true,
         "kongfuRequired": [20501],
         "effects": {
-          "globalDmgBoost": 0.05
+          "globalDmgBoost": 0.013
         },
-        "raw": "怒炎軽撃 悪身+苦果同時付与、 輪廻時 与ダメ+10% (T1から差分+5%、累計0.10)"
+        "raw": "怒炎軽撃 悪身+苦果同時付与、 輪廻時 与ダメ+10%"
       }
     },
     "rank": "gold"
@@ -1510,7 +1512,7 @@
         "permanent": true,
         "kongfuRequired": [20701],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.01
         },
         "raw": "敵討令/鼠の威力/力溜め召喚ねずみ 持続時間 10s→15s、 恩文字の札+20回復"
       },
@@ -1518,7 +1520,7 @@
         "permanent": true,
         "kongfuRequired": [20701],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.01
         },
         "raw": "回復速度+30%、 敵デバフ持続+延長 (20s)"
       },
@@ -1537,20 +1539,17 @@
         "permanent": true,
         "kongfuRequired": [20701],
         "effects": {
-          "globalDmgBoost": 0.06
+          "globalDmgBoost": 0.01
         },
         "synergyKongfu": [20501],
-        "synergyMultiplier": 2.0,
-        "labelOverride": {
-          "globalDmgBoost": { "ja": "鼠ダメージ強化", "en": "Rat DMG Boost", "zh": "鼠伤害强化", "ko": "쥐 피해 증가" }
-        },
-        "raw": "鼠ダメージの30%追加ダメージ (20s時限、 base 鼠10%、 獄炎同装備時 鼠20% ×2)"
+        "synergyMissingMultiplier": 0.5,
+        "raw": "鼠ダメージの30%追加ダメージ (20s時限、 獄炎同装備時 鼠ダメ倍 → 獄炎なしで効果半減)"
       },
       "tier4": {
         "permanent": true,
         "kongfuRequired": [20701],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.01
         },
         "raw": "恩文字の札 回復速度 30→50%、 札2枚消費で持続20s延長"
       },
@@ -1565,14 +1564,11 @@
         "permanent": true,
         "kongfuRequired": [20701],
         "effects": {
-          "globalDmgBoost": 0.06
+          "globalDmgBoost": 0.01
         },
         "synergyKongfu": [20501],
-        "synergyMultiplier": 2.0,
-        "labelOverride": {
-          "globalDmgBoost": { "ja": "鼠ダメージ強化", "en": "Rat DMG Boost", "zh": "鼠伤害强化", "ko": "쥐 피해 증가" }
-        },
-        "raw": "鼠ダメージ+30% (base 鼠10%、 獄炎同装備時 鼠20% ×2)"
+        "synergyMissingMultiplier": 0.5,
+        "raw": "鼠ダメージ+30% (獄炎同装備時 鼠ダメ倍 → 獄炎なしで効果半減)"
       }
     },
     "rank": "purple"
@@ -1660,7 +1656,7 @@
         "permanent": true,
         "kongfuRequired": [20603],
         "effects": {
-          "globalDmgBoost": 0.1
+          "globalDmgBoost": 0.013
         },
         "raw": "紅綃香断 最初投げ→幻影傘召喚、 3回毎1本召喚、 完璧キャッチ/召喚時 共鳴範囲ダメ"
       },
@@ -1668,7 +1664,7 @@
         "permanent": true,
         "kongfuRequired": [20603],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "完全防御 傘受け成功で 残紅+10回復"
       },
@@ -1687,15 +1683,15 @@
         "permanent": true,
         "kongfuRequired": [20603],
         "effects": {
-          "outerPen": 10
+          "outerPen": 5
         },
-        "raw": "共鳴ダメ受敵 幻鳴 (5s) 外功耐性-2 max5stack (=自分outerPen+10 ×0.5実効+5)"
+        "raw": "共鳴ダメ受敵 幻鳴 (5s) 外功耐性-2 max5stack (実効 外功貫通+5、 条件発動で維持不可→半減)"
       },
       "tier4": {
         "permanent": true,
         "kongfuRequired": [20603],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "共鳴ダメ+20%、 周囲敵引き寄せ (首領無効、 20s CD)"
       },
@@ -1710,7 +1706,7 @@
         "permanent": true,
         "kongfuRequired": [20603],
         "effects": {
-          "globalDmgBoost": 0.1
+          "globalDmgBoost": 0.013
         },
         "raw": "紅綃香断 投げ毎回 幻影傘召喚、 召喚瞬間 共鳴1回発生"
       }
@@ -1832,7 +1828,7 @@
         "permanent": true,
         "kongfuRequired": [20801],
         "effects": {
-          "globalDmgBoost": 0.1
+          "globalDmgBoost": 0.013
         },
         "raw": "斬雪刀 受け流し→雪払い発動、 刀勢-1で素早斬撃 (強靭)、 非プレイヤー命中で+36%気血ダメ (2s毎)"
       },
@@ -1840,7 +1836,7 @@
         "permanent": true,
         "kongfuRequired": [20801],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "鉄衣戌魂中 撥雪尋春命中→横刀安西軍追撃"
       },
@@ -1857,7 +1853,7 @@
         "permanent": true,
         "kongfuRequired": [20801],
         "effects": {
-          "fixedScoreBonus": 50
+          "globalDmgBoost": 0.013
         },
         "raw": "塚上の霜/横刀武変 完全使用後 雪払い発動可、 命中で刀勢0.5還元"
       },
@@ -1865,7 +1861,7 @@
         "permanent": true,
         "kongfuRequired": [20801],
         "effects": {
-          "globalDmgBoost": 0.1
+          "globalDmgBoost": 0.013
         },
         "raw": "飛鴻踏雪 熱血冷め難し 4stack、 雪払い1消費で非プレイヤー気血ダメ+40%"
       },
@@ -1880,7 +1876,7 @@
         "permanent": true,
         "kongfuRequired": [20801],
         "effects": {
-          "globalDmgBoost": 0.05
+          "globalDmgBoost": 0.013
         },
         "raw": "雪払いダメ+10%、 忘機 (3s塚上霜1回 雪払いCD解除)、 力尽き首領命中で 熱血冷め難し追加UP + 忘機CD解除"
       }

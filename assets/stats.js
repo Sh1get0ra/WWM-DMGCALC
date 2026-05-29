@@ -164,17 +164,9 @@ async function buildStatParams(roleInfo, state) {
     const x = window.WWM_XINFA?.[xinfaId];
     if (!x?.attributeBuff) continue;
     const tier = tiers[i] ?? tiers[String(i)] ?? 6;
-    // 武器専用心法判定: 任意Tierに kongfuRequired あれば 武器専用 → 全effects × 0.5
-    let _weaponLocked = false;
-    for (const tk of _TIER_KEYS) {
-      const dd = x.attributeBuff[tk];
-      if (dd && Array.isArray(dd.kongfuRequired) && dd.kongfuRequired.length) {
-        _weaponLocked = true; break;
-      }
-    }
-    const _factor = _weaponLocked ? 0.5 : 1.0;
     // 集計: visible(T2/T5,ステ反映) / hidden(他Tier,_hiddenAdditive)
-    // 全部加算 (上書きしたい場合は xinfa.json 側で下位Tier effects 空にする)
+    // 武器専用×0.5 ルール廃止 → 全 effects ×1.0
+    // 武器条件 不一致時 effects 全 skip (fixedScoreBonus含む) ← 既存ロジック維持
     const visibleSums = {};
     const hiddenSums = {};
     let fixedScoreBonus = 0;
@@ -189,10 +181,12 @@ async function buildStatParams(roleInfo, state) {
         if (!ok) continue;
       }
       const eff = def.effects || {};
-      // synergyKongfu: 指定武術 と同時装備で synergyMultiplier 倍
+      // synergyKongfu: 指定武術 同時装備で 一致→synergyMultiplier倍 / 不一致→synergyMissingMultiplier倍
       const synKfs = Array.isArray(def.synergyKongfu) ? def.synergyKongfu : [];
       const synActive = synKfs.length > 0 && synKfs.some(k => _myKfs.includes(String(k)) || _myKfs.includes(Number(k)));
-      const synMul = synActive ? (def.synergyMultiplier || 1) : 1;
+      const synMul = synKfs.length === 0 ? 1
+                   : synActive ? (def.synergyMultiplier ?? 1)
+                   : (def.synergyMissingMultiplier ?? 1);
       for (const [k, v] of Object.entries(eff)) {
         if (typeof v !== 'number') continue;
         const vAdj = v * synMul;
@@ -205,11 +199,11 @@ async function buildStatParams(roleInfo, state) {
         }
       }
     }
-    // 集計適用: T2/T5 (visible) + fixedScoreBonus は固定 ×1.0、 hidden のみ ×factor (武器専用心法 ×0.5)
+    // 集計適用: 全 effects ×1.0 (武器専用ルール廃止)
     for (const [k, v] of Object.entries(visibleSums)) _accMapped(r, k, v);
     for (const [k, v] of Object.entries(hiddenSums)) {
       if (!r._hiddenAdditive) r._hiddenAdditive = {};
-      r._hiddenAdditive[k] = (r._hiddenAdditive[k] || 0) + v * _factor;
+      r._hiddenAdditive[k] = (r._hiddenAdditive[k] || 0) + v;
     }
     r._fixedScoreBonus = (r._fixedScoreBonus || 0) + fixedScoreBonus;
   }
