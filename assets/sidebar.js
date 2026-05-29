@@ -759,20 +759,13 @@ async function _renderOptimizationInner(roleInfo, params, opts, root) {
   // iter>=1 は affix swap (弓セットも再評価)
   for (let iter = 0; iter < MAX_ITER; iter++) {
     if (_aborted()) return;
-    setProgress(iter + 1, MAX_ITER);
-    await new Promise(r => setTimeout(r, 0)); // UI更新yield
-    if (_aborted()) return;
+    // yield削除 — ちらつき抑止 (内部ループsync化)
     const eqDet = working.wearEquipsDetailed || {};
     const slots = ['1','2','3','4','5','8','10','11'].filter(s => eqDet[s] && slotsAllowed.has(s));
     let best = null;
-    let slotIdx = 0;
     // iter=0 は弓セットだけ評価 (affix skip)
     const skipAffix = (iter === 0);
     for (const slot of skipAffix ? [] : slots) {
-      if (_aborted()) return;
-      slotIdx++;
-      setProgress(`${iter+1}/${MAX_ITER} (slot ${slotIdx}/${slots.length})`, '');
-      await new Promise(r => setTimeout(r, 0));
       if (_aborted()) return;
       const eq = eqDet[slot];
       const affixes = eq?.exVo?.baseAffixes || [];
@@ -877,8 +870,6 @@ async function _renderOptimizationInner(roleInfo, params, opts, root) {
     if (prevTier !== curTier) best.tierUp = `${prevTier} ▶ ${curTier}`;
     steps.push(best);
     curScore = best.newScore;
-    // UI yield
-    await new Promise(r => setTimeout(r, 0));
   }
   // 復元
   try {
