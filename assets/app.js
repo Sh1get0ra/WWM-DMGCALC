@@ -139,9 +139,6 @@ function formatNum(n, decimals) {
 function updateDonut(pCrit, pSympathy, pGraze, pNormal, prefix) {
   // 最適化計算中は hero donut (donutDmgSeg) の更新を完全block (ちらつき根絶)
   if (window.__WWM_OPT_RUNNING && (prefix === 'donutDmgSeg')) return;
-  // 円周長 = 2πr, r=54 → 339.292
-  const R = 54;
-  const C = 2 * Math.PI * R;
   const p = prefix || 'donutSeg';
   const segs = [
     { id: p + 'Crit',     val: pCrit },
@@ -149,6 +146,13 @@ function updateDonut(pCrit, pSympathy, pGraze, pNormal, prefix) {
     { id: p + 'Graze',    val: pGraze },
     { id: p + 'Normal',   val: pNormal },
   ];
+  // 円周長は circle の実 r から算出 (hero羅盤 r=50 / calcタブ r=54 不一致バグ回避)
+  let R = 54;
+  for (const s of segs) {
+    const e0 = document.getElementById(s.id);
+    if (e0) { R = parseFloat(e0.getAttribute('r')) || 54; break; }
+  }
+  const C = 2 * Math.PI * R;
   let offset = 0;
   segs.forEach(s => {
     const el = document.getElementById(s.id);
