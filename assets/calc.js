@@ -29,7 +29,8 @@ function computeExpected(pIn) {
   const elemPenDiff  = p.elemPen - p.elemRes;
   const elemPenZone  = elemPenDiff >= 0 ? elemPenDiff / 200 : elemPenDiff / 100;
   // 増伤レイヤー分離: 内側(外功/属性別の伤害加成) と 外側(全体増伤、加算合計)
-  const innerPhys    = 1 + p.weaponBonus;
+  // physDmgBoost (心法経由) を innerPhys に合流
+  const innerPhys    = 1 + p.weaponBonus + (p.physDmgBoost || 0);
   const innerElem    = 1 + p.elemAtkBoost;
   // 奇術ダメは重み 0.2 で寄与 (発動頻度想定30%未満)
   const mysticContrib = ((p.stMysticDmg || 0) + (p.areaMysticDmg || 0)) * 0.1;
@@ -335,7 +336,8 @@ function calculate() {
   const elemPenDiff   = elemPen - elemRes;
   const elemPenZone   = elemPenDiff >= 0 ? elemPenDiff / 200 : elemPenDiff / 100;
   // 増伤レイヤー分離: 内側(外功/属性別の伤害加成) と 外側(全体増伤、加算合計)
-  const innerPhys     = 1 + weaponBonus;
+  // physDmgBoost (心法経由) を innerPhys に合流
+  const innerPhys     = 1 + weaponBonus + (vp('physDmgBoost') || 0);
   const innerElem     = 1 + elemAtkBoost;
   const outerBoost    = 1 + allMartialBoost + specMartialBoost + bossBoost + enemyDebuff + globalDmgBoost;
   const reductionZone = (1 - dmgReduce1) * (1 - dmgReduce2);
