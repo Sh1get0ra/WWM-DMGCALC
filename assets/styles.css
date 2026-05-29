@@ -1970,7 +1970,9 @@ html[data-theme="light"] .tier-C { color: var(--paper-mute);  background: rgba(5
   background:
     radial-gradient(ellipse at top right, rgba(240,210,138,0.06), transparent 55%),
     linear-gradient(180deg, var(--surf-1), var(--surf-2));
-  border: 1px solid var(--gold-deep);
+  border: 1px solid var(--ink-2);
+  border-top: 1px solid var(--gold-deep);
+  border-left: 3px solid var(--gold);
   padding: 12px 14px;
   margin-bottom: 10px;
   overflow: hidden;
@@ -2014,16 +2016,20 @@ html[data-theme="light"] .wwm-sb-mini-hero-ink {
   padding: 0 !important;
   z-index: 1;
 }
-/* sections wrapper (枠あり、 mini-hero card が枠透明なのでこちらだけ枠表示) */
+/* sections wrapper (タブパネル風 ink-2 周囲 + gold top + gold left) */
 .wwm-sb-rest {
   background: linear-gradient(180deg, var(--surf-1), var(--surf-2));
-  border: 1px solid var(--ink-1);
+  border: 1px solid var(--ink-2);
+  border-top: 1px solid var(--gold-deep);
+  border-left: 3px solid var(--gold);
   padding: 10px 12px 12px;
   display: flex; flex-direction: column; gap: 4px;
 }
 html[data-theme="light"] .wwm-sb-rest {
   background: linear-gradient(180deg, #f5ead0, #ede0c0);
   border-color: rgba(40,25,18,0.15);
+  border-top-color: var(--gold-deep);
+  border-left-color: var(--gold);
 }
 
 .wwm-sb-top {
