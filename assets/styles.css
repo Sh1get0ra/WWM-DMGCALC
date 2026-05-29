@@ -270,6 +270,8 @@ header.topbar::after {
   border-radius: 5%;
 }
 html[data-theme="light"] .wwm-brand-seal { opacity: 0.8; }
+/* light: hero::before「斬」watermark 視認性up (vermilion-trace 0.05 → 濃化) */
+html[data-theme="light"] .hero::before { color: rgba(160,28,18,0.18) !important; }
 html[data-theme="light"] .wwm-brand-vert { color: var(--vermilion); border-color: var(--gold); }
 html[data-theme="light"] .wwm-brand-en { color: var(--gold); opacity: 0.75; }
 html[data-theme="light"] .wwm-brand-sub { color: var(--vermilion-bright); opacity: 0.85; }
