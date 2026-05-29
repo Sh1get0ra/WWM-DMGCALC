@@ -2691,7 +2691,7 @@
         "worldLv": 14,
         "needsManualInput": false,
         "statType": "Max HP",
-        "raw": "Max HP (Solo Mode Level scaled, rank=purple) [画像未取得、推定]",
+        "raw": "Max HP (Solo Mode Level scaled, rank=purple)",
         "effects": {},
         "category": "defensive"
       },
@@ -2718,7 +2718,7 @@
       "tier5": {
         "permanent": true,
         "effects": {},
-        "raw": "Physical DMG Reduction +2.5% [画像未取得、推定]",
+        "raw": "Physical DMG Reduction +2.5%",
         "category": "defensive"
       },
       "tier6": {
