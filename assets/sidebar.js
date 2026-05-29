@@ -2814,10 +2814,19 @@ function openGearEdit(slot) {
         if (isNaN(f)) return;
         valEl.value = (Math.round(f * 10) / 10).toFixed(1);
       };
-      // 矢印キー (ブラウザ default step 後 = next tick で正規化)
+      // 矢印キー: ブラウザ default step を完全bypass、 自前 +0.1/-0.1 で浮動誤差ゼロ
       valEl.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-          setTimeout(() => { normalize(); valEl.dispatchEvent(new Event('input')); }, 0);
+          e.preventDefault();
+          const cur = parseFloat(valEl.value) || 0;
+          const dir = e.key === 'ArrowUp' ? 1 : -1;
+          // 整数演算で浮動誤差排除: cur*10 round + dir → /10
+          const next = (Math.round(cur * 10) + dir) / 10;
+          const maxV = parseFloat(valEl.getAttribute('max'));
+          const minV = parseFloat(valEl.getAttribute('min')) || 0;
+          const clamped = Math.max(minV, isNaN(maxV) ? next : Math.min(maxV, next));
+          valEl.value = clamped.toFixed(1);
+          valEl.dispatchEvent(new Event('input'));
         }
       });
       // change (Enter押下 / blur)
@@ -2860,7 +2869,7 @@ function openGearEdit(slot) {
           const inp = row.querySelector('.wwm-cmp-val-input');
           if (inp) inp.value = newPct
             ? (newMul ? (d[1]*100).toFixed(1) : d[1].toFixed(1))
-            : (typeof d[1]==='number' ? d[1].toFixed(2).replace(/\.00$/,'') : d[1]);
+            : (typeof d[1]==='number' ? d[1].toFixed(1) : d[1]);
         } else if (f === 'val') {
           const isPct = el.dataset.pct === '1';
           const needsMul = el.dataset.pctmul === '1';
