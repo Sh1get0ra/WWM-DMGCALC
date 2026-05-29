@@ -252,6 +252,31 @@ body {
 .cmp-modal-a .cmp-btn-cancel { color: #5a3a20; border-color: #8a7350; }
 .cmp-modal-a .cmp-footer { border-top-color: rgba(40,25,18,0.18); }
 
+/* 案A-dark: paper風レイアウトをダーク背景に */
+.cmp-modal-adark {
+  background:
+    radial-gradient(ellipse at top right, rgba(232,81,58,0.04), transparent 55%),
+    linear-gradient(180deg, var(--surf-1), var(--surf-2));
+}
+.cmp-modal-adark .cmp-header { border-bottom-color: rgba(201,164,90,0.25); }
+.cmp-modal-adark .cmp-title-ja { color: var(--paper); }
+.cmp-modal-adark .cmp-title-en { color: var(--gold); }
+.cmp-modal-adark .cmp-close { color: var(--paper); }
+.cmp-modal-adark .cmp-card { background: rgba(0,0,0,0.25); border-color: var(--ink-1); }
+.cmp-modal-adark .cmp-card-label { background: var(--surf-1); }
+.cmp-modal-adark .cmp-card-current .cmp-card-label { color: var(--vermilion); }
+.cmp-modal-adark .cmp-card-new     .cmp-card-label { color: var(--jade-bright); }
+.cmp-modal-adark .cmp-kongfu { color: var(--paper); background: rgba(201,164,90,0.06); }
+.cmp-modal-adark .cmp-set { color: var(--gold-bright); background: linear-gradient(90deg, rgba(240,210,138,0.12), transparent); text-shadow: 0 0 6px rgba(240,210,138,0.4); }
+.cmp-modal-adark .cmp-affix-name { color: var(--paper); }
+.cmp-modal-adark .cmp-affix-val { color: var(--gold-bright); }
+.cmp-modal-adark .cmp-affix-pct { background: rgba(168,212,180,0.18); color: var(--jade-bright); border-color: rgba(168,212,180,0.4); }
+.cmp-modal-adark .cmp-affix-pct.low { background: rgba(232,81,58,0.18); color: var(--vermilion); border-color: rgba(232,81,58,0.4); }
+.cmp-modal-adark .cmp-delta-label { color: var(--paper-mute); }
+.cmp-modal-adark .cmp-delta-val { color: var(--jade-bright); text-shadow: 0 0 18px rgba(168,212,180,0.6); }
+.cmp-modal-adark .cmp-btn-revert { color: var(--paper); border-color: var(--paper-mute); }
+.cmp-modal-adark .cmp-btn-cancel { color: var(--paper-mute); border-color: var(--ink-1); }
+
 /* 案C: 戦旗バナー */
 .cmp-modal-c .cmp-card { padding-top: 24px; }
 .cmp-modal-c .cmp-banner {
@@ -454,6 +479,57 @@ body {
         <div class="cmp-affix-row"><span class="cmp-affix-name">速</span><span class="cmp-affix-val">37.98</span><span class="cmp-affix-pct">94%</span></div>
         <div class="cmp-affix-row"><span class="cmp-affix-name">最大外功攻撃</span><span class="cmp-affix-val">59.97</span><span class="cmp-affix-pct">94%</span></div>
         <div class="cmp-affix-row"><span class="cmp-affix-name">会心率</span><span class="cmp-affix-val">7.0%</span><span class="cmp-affix-pct">94%</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="cmp-footer">
+    <div class="cmp-delta-block">
+      <span class="cmp-delta-label">武格変動</span>
+      <span class="cmp-delta-val">+12</span>
+      <span class="cmp-delta-base">10,945 → 10,957</span>
+    </div>
+    <div class="cmp-btn-row">
+      <button class="cmp-btn cmp-btn-primary">採用</button>
+      <button class="cmp-btn cmp-btn-revert">復元</button>
+      <button class="cmp-btn cmp-btn-cancel">離脱</button>
+    </div>
+  </div>
+</div>
+
+<div class="label-col">A-Dark · 武具対照表 (Aレイアウトのダーク版)</div>
+<div class="cmp-modal cmp-modal-adark">
+  <span class="cmp-bracket-tl"></span><span class="cmp-bracket-tr"></span>
+  <span class="cmp-bracket-bl"></span><span class="cmp-bracket-br"></span>
+  <div class="cmp-header">
+    <div>
+      <span class="cmp-title-ja">武具対照</span>
+      <span class="cmp-title-en">COMPARISON</span>
+      <span class="cmp-seal">比</span>
+    </div>
+    <button class="cmp-close">✕</button>
+  </div>
+  <div class="cmp-body">
+    <div class="cmp-card cmp-card-current">
+      <div class="cmp-card-label">現有 <span class="lv">Lv91</span></div>
+      <div class="cmp-kongfu">獄炎の双剣</div>
+      <div class="cmp-set">帰燕一式</div>
+      <div class="cmp-affix-list">
+        <div class="cmp-affix-row"><span class="cmp-affix-name">速</span><span class="cmp-affix-val">38.0</span><span class="cmp-affix-pct">94%</span></div>
+        <div class="cmp-affix-row"><span class="cmp-affix-name">最大外功攻撃</span><span class="cmp-affix-val">60.0</span><span class="cmp-affix-pct">94%</span></div>
+        <div class="cmp-affix-row"><span class="cmp-affix-name">会心率</span><span class="cmp-affix-val">7.0%</span><span class="cmp-affix-pct">94%</span></div>
+        <div class="cmp-affix-row"><span class="cmp-affix-name">無相貫通</span><span class="cmp-affix-val">9.4</span><span class="cmp-affix-pct low">87%</span></div>
+      </div>
+    </div>
+    <div class="cmp-divider"></div>
+    <div class="cmp-card cmp-card-new">
+      <div class="cmp-card-label">新置 <span class="lv">Lv91</span></div>
+      <div class="cmp-kongfu">獄炎の双剣</div>
+      <div class="cmp-set">帰燕一式</div>
+      <div class="cmp-affix-list">
+        <div class="cmp-affix-row"><span class="cmp-affix-name">速</span><span class="cmp-affix-val">37.98</span><span class="cmp-affix-pct">94%</span></div>
+        <div class="cmp-affix-row"><span class="cmp-affix-name">最大外功攻撃</span><span class="cmp-affix-val">59.97</span><span class="cmp-affix-pct">94%</span></div>
+        <div class="cmp-affix-row"><span class="cmp-affix-name">会心率</span><span class="cmp-affix-val">7.0%</span><span class="cmp-affix-pct">94%</span></div>
+        <div class="cmp-affix-row"><span class="cmp-affix-name">無相貫通</span><span class="cmp-affix-val">9.40</span><span class="cmp-affix-pct low">87%</span></div>
       </div>
     </div>
   </div>
