@@ -3744,10 +3744,10 @@ html[data-theme="light"] {
 .hero-wuxia .hero-tier.tier-badge {
   position: relative;
   font-family: var(--f-latin);
-  font-size: 22px;
+  font-size: 22px !important;
   font-weight: var(--fw-black);
   letter-spacing: .12em;
-  padding: 5px 16px;
+  padding: 5px 16px !important;
   align-self: flex-end;
   margin-bottom: 14px;
   overflow: hidden;
@@ -3756,6 +3756,15 @@ html[data-theme="light"] {
   background: linear-gradient(135deg, rgba(60,40,30,.45) 0%, rgba(30,20,15,.35) 50%, rgba(60,40,30,.45) 100%);
   color: var(--paper-mute);
   border-color: var(--paper-mute);
+}
+/* tier-SS 個別 padding clamp override も無効化 */
+.hero-wuxia .hero-tier.tier-badge.tier-SS,
+.hero-wuxia .hero-tier.tier-badge.tier-S,
+.hero-wuxia .hero-tier.tier-badge.tier-A,
+.hero-wuxia .hero-tier.tier-badge.tier-B,
+.hero-wuxia .hero-tier.tier-badge.tier-C {
+  font-size: 22px !important;
+  padding: 5px 16px !important;
 }
 
 /* SS — gold (静的、伸縮アニメ削除) */
