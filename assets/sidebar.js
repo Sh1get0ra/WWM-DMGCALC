@@ -2647,7 +2647,8 @@ function openGearEdit(slot) {
           <div class="wwm-cmp-col wwm-cmp-new${isBowSetSlot?' wwm-cmp-bow':''}" id="wwmCmpNewCol">
             <h3 class="wwm-cmp-title" data-seal="${(window.T&&T.cmpNew)||'新置'}"><span class="wwm-cmp-title-text">${(window.T&&T.cmpNew)||'新置'}</span>${(() => {
               const _curLv = window.__WWM_VIRTUAL?.[slot]?.exVo?._inferredLv ?? origEq?.exVo?._inferredLv;
-              const _lvList = window.WWM_EQUIP_BASE_BY_LV?._lvList || [91, 86, 81, 71];
+              // 装備レベルは charLv (import時のキャラレベル) 以下のみ選択可。未所持の高Lv装備での皮算用を防ぐ。
+              const _lvList = (window.WWM_EQUIP_BASE_BY_LV?._lvList || [91, 86, 81, 71]).filter(lv => lv <= charLv);
               const _hasTbl = !!window.WWM_EQUIP_BASE_BY_LV?.slots?.[String(slot)];
               if (!_curLv || !_hasTbl) return _curLv ? ` <span class="wwm-cmp-lv">Lv${_curLv}</span>` : '';
               const _opts = _lvList.map(lv => `<option value="${lv}" ${lv===_curLv?'selected':''}>Lv${lv}</option>`).join('');
@@ -3016,10 +3017,14 @@ function updateHero(params) {
   setText('hbExp', Math.round(total).toLocaleString());
   // hero-current = baseline (import時固定) または statusScore (baseline未取得時)
   const _baseline = window.__WWM_BASELINE;
-  const currentScore = (_baseline && typeof _baseline.statusScore === 'number')
-    ? Math.round(_baseline.statusScore)
-    : statusScore;
-  if (typeof window.countUp === 'function') {
+  // baseline (import時固定) があればそれ。無効/未取得時は null → 武格指数 "-" (再import促し)。
+  // ※現在 statusScore へフォールバックしない (古い基準と新計算の混在を避ける)。
+  const _hasBaseline = _baseline && typeof _baseline.statusScore === 'number';
+  const currentScore = _hasBaseline ? Math.round(_baseline.statusScore) : null;
+  if (currentScore === null) {
+    setText('heroScore', '-');
+    setText('heroCompactScore', '-');
+  } else if (typeof window.countUp === 'function') {
     window.countUp('heroScore', currentScore, 0);
     window.countUp('heroCompactScore', currentScore, 0);
   } else {
@@ -3029,7 +3034,8 @@ function updateHero(params) {
   // current tier badge — 現在装備 (baseline) 基準
   const wl2 = effRi?.worldLv || 14;
   const thr2 = 6700 * Math.pow(0.8, 14 - wl2);
-  const curTier = currentScore >= thr2 ? 'SS'
+  const curTier = currentScore === null ? ''
+                : currentScore >= thr2 ? 'SS'
                 : currentScore >= thr2*0.9 ? 'S'
                 : currentScore >= thr2*0.8 ? 'A'
                 : currentScore >= thr2*0.6 ? 'B' : 'C';
@@ -3045,7 +3051,7 @@ function updateHero(params) {
   }
   if (sbMs) {
     const baselineScore = window.__WWM_BASELINE?.statusScore;
-    sbMs.textContent = (typeof baselineScore === 'number') ? Math.round(baselineScore).toLocaleString() : Math.round(statusScore).toLocaleString();
+    sbMs.textContent = (typeof baselineScore === 'number') ? Math.round(baselineScore).toLocaleString() : '-';
   }
   // tier に応じたスコア色 (theme別)
   const _isLight = document.documentElement.getAttribute('data-theme') === 'light';

@@ -1,3 +1,8 @@
+// ── 計算バージョン ──────────────────────────────────────────────
+// スコア計算に影響する変更 (xinfa/kongfu 付与量, calc/stats の式, equip_base 等) を入れた時だけ +1。
+// UI/色/i18n/レイアウト変更では上げない。baseline の鮮度判定に使う (古い→再import 促しバナー)。
+window.WWM_SCORE_VERSION = 3;
+
 // ── エネミーデータ（プリセット） ────────────────────────────────
 const ENEMY_PRESET = {
   Lv16:  { physDef: 10,  judgeRes: 1.0,  physRes: 0, elemRes: 0 },

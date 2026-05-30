@@ -356,11 +356,21 @@ function loadPreset(i) {
       window.__WWM_VIRTUAL_XINFA  = p.virtual.xinfa  || null;
     }
     if (p.baseline) {
-      window.__WWM_BASELINE = p.baseline;
-      // OBS view (表示専用) では baseline を書き込まない (読込のみ)。
-      if (!document.documentElement.classList.contains('wwm-view-sidebar')) {
-        if (window.WWMBaseline) window.WWMBaseline.save(p.baseline);
-        else { try { localStorage.setItem('wwm_baseline_score_v1', JSON.stringify(p.baseline)); } catch(_) {} }
+      const curVer = window.WWM_SCORE_VERSION || 1;
+      if (p.baseline.scoreVer === curVer) {
+        // 現行バージョンのプリセット baseline → 採用
+        window.__WWM_BASELINE = p.baseline;
+        // OBS view (表示専用) では baseline を書き込まない (読込のみ)。
+        if (!document.documentElement.classList.contains('wwm-view-sidebar')) {
+          if (window.WWMBaseline) window.WWMBaseline.save(p.baseline);
+          else { try { localStorage.setItem('wwm_baseline_score_v1', JSON.stringify(p.baseline)); } catch(_) {} }
+        }
+      } else {
+        // 古いバージョン (scoreVer無し含む) のプリセット baseline → 無効化 + 再import促しバナー。
+        // プリセットは過去スナップで現行 json 計算の保証なし → 安全側で破棄 (再計算せず drift回避)。
+        window.__WWM_BASELINE = null;
+        try { localStorage.removeItem('wwm_baseline_score_v1'); } catch(_) {}
+        if (typeof window._showScoreBanner === 'function') window._showScoreBanner();
       }
     }
   } catch(_) {}

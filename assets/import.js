@@ -867,7 +867,9 @@ function applyImport(data, importedAt, state) {
       if (res) {
         const bonus = (typeof window.__WWM_SET4_BONUS_OF === 'function')
           ? window.__WWM_SET4_BONUS_OF(data) : 0;
-        window.__WWM_BASELINE = { expected: res.expected, statusScore: res.statusScore + bonus, tier: res.tier, ts: Date.now() };
+        window.__WWM_BASELINE = { expected: res.expected, statusScore: res.statusScore + bonus, tier: res.tier, ts: Date.now(), scoreVer: window.WWM_SCORE_VERSION || 1 };
+        // 再import 成功 → 計算更新バナーがあれば消す
+        if (typeof window._hideScoreBanner === 'function') window._hideScoreBanner();
         // OBS view (表示専用) では baseline を書き込まない (読込のみ)。スコアは変動しないので保存不要、汚染源を断つ。
         if (!document.documentElement.classList.contains('wwm-view-sidebar')) {
           if (window.WWMBaseline) window.WWMBaseline.save(window.__WWM_BASELINE);
@@ -953,18 +955,39 @@ window.WWMImport = {
 // sidebar.js (Edit modal) から statKey → 日本語ラベル参照用
 window._AFFIX_DISPLAY_LABELS = _STAT_LABELS_PROXY;
 
+// ── スコア計算更新バナー (baseline 鮮度切れ時に再import促し) ──
+function _showScoreBanner() {
+  if (document.documentElement.classList.contains('wwm-view-sidebar')) return; // OBS view は非表示
+  const el = document.getElementById('wwmScoreUpdateBanner');
+  if (el) el.style.display = 'flex';
+}
+function _hideScoreBanner() {
+  const el = document.getElementById('wwmScoreUpdateBanner');
+  if (el) el.style.display = 'none';
+}
+window._showScoreBanner = _showScoreBanner;
+window._hideScoreBanner = _hideScoreBanner;
+
 // page load 時: hash がなければ最後の import を localStorage から auto-load。
 // データ無い場合も sidebar は placeholder で描画。
 function _autoLoadLastImport() {
   if ((location.hash || '').startsWith(IMPORT_HASH_PREFIX)) return;  // hash flow が処理
-  // baseline 復元
+  // baseline 復元 + 鮮度チェック (scoreVer)
   try {
-    if (window.WWMBaseline) {
-      const bl = window.WWMBaseline.load();
-      if (bl) window.__WWM_BASELINE = bl;
-    } else {
-      const bl = localStorage.getItem('wwm_baseline_score_v1');
-      if (bl) window.__WWM_BASELINE = JSON.parse(bl);
+    let bl = window.WWMBaseline
+      ? window.WWMBaseline.load()
+      : JSON.parse(localStorage.getItem('wwm_baseline_score_v1') || 'null');
+    if (bl) {
+      const curVer = window.WWM_SCORE_VERSION || 1;
+      if (bl.scoreVer === curVer) {
+        window.__WWM_BASELINE = bl;
+      } else {
+        // scoreVer 不一致 (無し=機能導入前 含む) → baseline 無効化 (再計算せず破棄=drift回避) + 再import促しバナー。
+        // ※マイグレ(無し→現行付与)は廃止: baseline は未リリース(Alpha限定)で旧データ救済不要。loadPreset と挙動統一。
+        window.__WWM_BASELINE = null;
+        try { localStorage.removeItem('wwm_baseline_score_v1'); } catch(_) {}
+        if (typeof window._showScoreBanner === 'function') window._showScoreBanner();
+      }
     }
   } catch(e) {}
   const stored = _loadStored();
