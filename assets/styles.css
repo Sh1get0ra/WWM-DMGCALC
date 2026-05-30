@@ -2981,6 +2981,20 @@ html[data-theme="dark"] .wwm-cmp-modal-a .wwm-cmp-rows {
   box-shadow: inset 0 1px 6px rgba(0,0,0,0.6) !important;
   padding: 4px 6px !important;
 }
+/* ── ダーク 配色: 案B 黒檀朱 (近黒ebony + 朱主役・金従)。border系は現状維持 (col/rows/select 不変) ── */
+html[data-theme="dark"] .wwm-cmp-modal-a {
+  background: linear-gradient(180deg, #130f0d, #0d0a08) !important;
+}
+html[data-theme="dark"] .wwm-cmp-modal-a .wwm-cmp-title-ja { color: #f3e3d4 !important; text-shadow: 0 0 10px rgba(232,81,58,0.3) !important; }
+html[data-theme="dark"] .wwm-cmp-modal-a .wwm-cmp-title-en { color: #e8513a !important; }
+html[data-theme="dark"] .wwm-cmp-modal-a .wwm-cmp-col { background: rgba(255,255,255,0.025) !important; }
+html[data-theme="dark"] .wwm-cmp-modal-a .wwm-cmp-kongfu-header,
+html[data-theme="dark"] .wwm-cmp-modal-a .wwm-cmp-kongfu-select { background: rgba(201,164,90,0.10) !important; color: #e6d6b8 !important; }
+html[data-theme="dark"] .wwm-cmp-modal-a .wwm-cmp-set-header,
+html[data-theme="dark"] .wwm-cmp-modal-a .wwm-cmp-set-select { background: linear-gradient(90deg, rgba(232,81,58,0.30), transparent) !important; color: #ff6b4a !important; text-shadow: 0 0 6px rgba(232,81,58,0.4) !important; }
+html[data-theme="dark"] .wwm-cmp-modal-a .wwm-cmp-name { color: #ecdfd6 !important; }
+html[data-theme="dark"] .wwm-cmp-modal-a .wwm-cmp-val,
+html[data-theme="dark"] .wwm-cmp-modal-a .wwm-cmp-val-input { color: #ffae8a !important; }
 /* 案E Good icon — 親指SVG + 朱赤タイル */
 .wwm-good-icon {
   display: inline-flex; align-items: center; justify-content: center;
