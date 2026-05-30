@@ -87,7 +87,7 @@ function exportImage() {
 
   const isLight = document.documentElement.getAttribute('data-theme') === 'light';
   const C = isLight
-    ? { bg:'#ede2c8', paper:'#1a0e08', dim:'#5a4226', mute:'#8a7350', gold:'#8a6a20', goldHi:'#5e4310', vermilion:'#c83c2b', jade:'#2d5a3a', border:'rgba(40,25,18,0.18)', rowBg:'rgba(58,38,22,0.06)', rowBg2:'rgba(58,38,22,0.10)', headerBg:'linear-gradient(180deg,#f4e8cc,#e8dab8)' }
+    ? { bg:'#ede2c8', paper:'#3a2a20', dim:'#5a4226', mute:'#8a7350', gold:'#8a6a20', goldHi:'#5e4310', vermilion:'#c83c2b', jade:'#2d5a3a', border:'rgba(40,25,18,0.18)', rowBg:'rgba(58,38,22,0.06)', rowBg2:'rgba(58,38,22,0.10)', headerBg:'linear-gradient(180deg,#f4e8cc,#e8dab8)' }
     : { bg:'#0a0608', paper:'#ede4d0', dim:'#8b8170', mute:'#6a6053', gold:'#c9a45a', goldHi:'#f0d28a', vermilion:'#e8513a', jade:'#a8d4b4', border:'rgba(232,215,180,0.12)', rowBg:'rgba(255,255,255,0.03)', rowBg2:'rgba(255,255,255,0.06)', headerBg:'linear-gradient(180deg,rgba(26,20,16,0.95),rgba(15,12,14,0.95))' };
 
   const tierColor = isLight
