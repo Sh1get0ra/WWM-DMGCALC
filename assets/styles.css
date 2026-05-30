@@ -5290,8 +5290,10 @@ html[data-theme="light"] .wwm-anlz-header::after {
   transform: rotate(35deg);
   transform-origin: center;
 }
-html[data-theme="light"] .wwm-anlz-bamboo { opacity: 0.13; }
+html[data-theme="light"] .wwm-anlz-bamboo { opacity: 0.28; }
 .wwm-anlz-bamboo svg { width: 100%; height: 100%; display: block; }
+/* ライト: 竹 SVG fill を暗金茶に上書き (薄背景での視認性UP) */
+html[data-theme="light"] .wwm-anlz-bamboo svg path { fill: #6a3e16 !important; }
 
 .wwm-anlz-header-inner {
   position: relative;
