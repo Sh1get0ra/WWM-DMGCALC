@@ -357,8 +357,11 @@ function loadPreset(i) {
     }
     if (p.baseline) {
       window.__WWM_BASELINE = p.baseline;
-      if (window.WWMBaseline) window.WWMBaseline.save(p.baseline);
-      else { try { localStorage.setItem('wwm_baseline_score_v1', JSON.stringify(p.baseline)); } catch(_) {} }
+      // OBS view (表示専用) では baseline を書き込まない (読込のみ)。
+      if (!document.documentElement.classList.contains('wwm-view-sidebar')) {
+        if (window.WWMBaseline) window.WWMBaseline.save(p.baseline);
+        else { try { localStorage.setItem('wwm_baseline_score_v1', JSON.stringify(p.baseline)); } catch(_) {} }
+      }
     }
   } catch(_) {}
   if (p.importSnap?.data) {

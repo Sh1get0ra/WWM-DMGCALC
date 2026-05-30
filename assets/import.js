@@ -868,8 +868,11 @@ function applyImport(data, importedAt, state) {
         const bonus = (typeof window.__WWM_SET4_BONUS_OF === 'function')
           ? window.__WWM_SET4_BONUS_OF(data) : 0;
         window.__WWM_BASELINE = { expected: res.expected, statusScore: res.statusScore + bonus, tier: res.tier, ts: Date.now() };
-        if (window.WWMBaseline) window.WWMBaseline.save(window.__WWM_BASELINE);
-        else { try { localStorage.setItem('wwm_baseline_score_v1', JSON.stringify(window.__WWM_BASELINE)); } catch(e) {} }
+        // OBS view (表示専用) では baseline を書き込まない (読込のみ)。スコアは変動しないので保存不要、汚染源を断つ。
+        if (!document.documentElement.classList.contains('wwm-view-sidebar')) {
+          if (window.WWMBaseline) window.WWMBaseline.save(window.__WWM_BASELINE);
+          else { try { localStorage.setItem('wwm_baseline_score_v1', JSON.stringify(window.__WWM_BASELINE)); } catch(e) {} }
+        }
         if (window.WWMHero) window.WWMHero.update(params);
         if (window.WWMHistory) window.WWMHistory.record(data, { statusScore: res.statusScore + bonus, expected: res.expected, tier: res.tier });
       }
