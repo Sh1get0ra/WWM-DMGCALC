@@ -4816,6 +4816,9 @@ html[data-theme="light"] .hero-wuxia .hero-tier.tier-C {
 html[data-theme="light"] .hero-wuxia .ink-stroke {
   opacity: 1;
   filter: none;
+  /* 単色stroke の両端を横maskでフェード → ダーク同様の筆の透明感 (平帯解消) */
+  -webkit-mask: linear-gradient(90deg, transparent 0%, #000 16%, #000 80%, transparent 100%);
+  mask: linear-gradient(90deg, transparent 0%, #000 16%, #000 80%, transparent 100%);
 }
 /* light: SVG path stroke を gradient (alpha 0.35 上限) から濃朱単色に置換 */
 html[data-theme="light"] .hero-wuxia .ink-stroke path {
