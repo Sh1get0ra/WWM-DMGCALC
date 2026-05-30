@@ -849,6 +849,30 @@ function applyImport(data, importedAt, state) {
   _saveStored(data, importedAt, state);
   try { localStorage.setItem(IMPORT_STATE_KEY, JSON.stringify(state)); } catch(e) {}
   console.log('[WWM Import] applied:', { data, state });
+  // Tier 基準値 (__WWM_OPT_BEST) を再 import 時にリセット → 直後の opt 完了で再確定。
+  window.__WWM_OPT_BEST = null;
+  window.__WWM_OPT_BEST_LOCKED = false;
+  try { localStorage.removeItem('wwm_opt_best_v1'); } catch(_) {}
+  // virtual に PvP sentinel (999999) 残骸があれば、その slot の affix6 のみ origEq の affix6 で復元 (他 affix は維持)。
+  // 経緯: 前回 PvP装備で affix6 を sentinel にした virtual が PvE再import 後も残り「変更不可」になる事象を解消。
+  try {
+    const PVP_SENTINEL = 999999;
+    const v = window.__WWM_VIRTUAL;
+    if (v && typeof v === 'object') {
+      let touched = false;
+      for (const [slot, vEq] of Object.entries(v)) {
+        const aff = vEq?.exVo?.baseAffixes?.[5]?.equipmentDetails;
+        if (aff && aff[0] === PVP_SENTINEL) {
+          const origAff = data?.wearEquipsDetailed?.[slot]?.exVo?.baseAffixes?.[5]?.equipmentDetails;
+          if (origAff) {
+            vEq.exVo.baseAffixes[5].equipmentDetails = JSON.parse(JSON.stringify(origAff));
+            touched = true;
+          }
+        }
+      }
+      if (touched && typeof window._saveVirtuals === 'function') window._saveVirtuals();
+    }
+  } catch(_) {}
   // stat params 構築 + sidebar 描画
   if (window.WWMStats && window.WWMSidebar) {
     window.WWMStats.buildStatParams(data, state).then(params => {
@@ -991,6 +1015,20 @@ function _autoLoadLastImport() {
         if (typeof window._showScoreBanner === 'function') window._showScoreBanner();
       }
     }
+    // opt_best 復元 (baseline と同じ scoreVer ルール、不一致なら破棄して再 import 時の opt で再確定)
+    try {
+      const obRaw = localStorage.getItem('wwm_opt_best_v1');
+      if (obRaw) {
+        const ob = JSON.parse(obRaw);
+        const curVer = window.WWM_SCORE_VERSION || 1;
+        if (ob && ob.scoreVer === curVer && typeof ob.end === 'number') {
+          window.__WWM_OPT_BEST = ob;
+          window.__WWM_OPT_BEST_LOCKED = true;
+        } else {
+          localStorage.removeItem('wwm_opt_best_v1');
+        }
+      }
+    } catch(_) {}
   } catch(e) {}
   const stored = _loadStored();
   if (!stored?.data) {

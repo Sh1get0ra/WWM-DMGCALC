@@ -95,114 +95,78 @@ async function _checkChangelog() {
       localStorage.setItem(_CHANGELOG_KEY, cl.current);
       return;
     }
-    _showChangelogModal(entries, cl.current, false);
+    _showNoteModal({ defaultTab: 'changelog', entries, persistVer: cl.current });
   } catch (e) {}
 }
-function _showChangelogModal(entries, currentVer, manual) {
-  const m = document.createElement('div');
-  m.className = 'wwm-modal-backdrop';
-  const body = entries.map(e => `
-    <div class="wwm-cl-entry">
-      <div class="wwm-cl-ver">v${e.version}<span class="wwm-cl-date">${e.date || ''}</span></div>
-      <ul class="wwm-cl-items">
-        ${(e.items||[]).map(it => `<li>${it}</li>`).join('')}
+// ── NOTE modal (巻物 UI、 仕様 + 更新履歴 タブ統合) ──────────
+function _ghIssueUrl(kind) {
+  const base = 'https://github.com/Sh1get0ra/WWM-DMGCALC/issues/new?';
+  if (kind === 'bug') {
+    return base + 'labels=bug&title=' + encodeURIComponent('[bug] ')
+      + '&body=' + encodeURIComponent('## 現象\n\n## 再現手順\n\n## 期待動作\n\n## 環境 (OS / ブラウザ / 言語)\n');
+  }
+  return base + 'labels=enhancement&title=' + encodeURIComponent('[request] ')
+    + '&body=' + encodeURIComponent('## 要望内容\n\n## 理由 / ユースケース\n');
+}
+function _specHtml() {
+  return `
+    <div class="wwm-note-section">
+      <h3 class="wwm-note-h3">概要</h3>
+      <p class="wwm-note-p">武格指数は装備/心法/武学/セットを総合してダメージ期待値を <b>固定係数</b> で算出した指標。装備変更や心法 swap の影響を一元的に比較可。</p>
+    </div>
+    <div class="wwm-note-section">
+      <h3 class="wwm-note-h3">固定係数 (全プレイヤー共通)</h3>
+      <ul class="wwm-note-list">
+        <li><b>外功攻撃係数:</b> 1.0 (100%)</li>
+        <li><b>ステータス攻撃係数:</b> 1.5 (150%)</li>
+        <li><b>付加外功:</b> +230</li>
+        <li><b>属性強化 (主):</b> ×1.5 (主属性のみ)</li>
+        <li><b>属性強化 (副):</b> ×1.0</li>
+        <li><b>大世界等級:</b> 14 固定</li>
+        <li><b>武学等級:</b> キャラクター Lv と同一</li>
       </ul>
     </div>
-  `).join('');
-  m.innerHTML = `
-    <div class="wwm-modal wwm-modal-wide wwm-modal-square">
-      <div class="wwm-modal-bg-icon" style="background-image:url('assets/icons/book-cover.svg');"></div>
-      <div class="wwm-modal-header">
-        <h2>${manual ? ((window.T&&T.changelogTitle)||'変更履歴') : '更新内容 (v' + currentVer + ')'}</h2>
-        <button class="wwm-modal-close" aria-label="Close">×</button>
-      </div>
-      <div class="wwm-modal-body">
-        <div class="wwm-cl-notice">${(window.T&&T.changelogLangNotice)||'※ Changelog: Japanese only / 日本語のみ / 일본어 한정'}</div>
-        ${body}
-        <div class="wwm-btn-row" style="margin-top:16px;">
-          <button class="wwm-btn-primary" id="wwmClClose">${(window.T&&T.close)||'閉じる'}</button>
-        </div>
-      </div>
+    <div class="wwm-note-section">
+      <h3 class="wwm-note-h3">敵パラメータ (キャラ Lv 自動連動)</h3>
+      <ul class="wwm-note-list">
+        <li>Lv 95: 敵 Lv 91 (DEF 350 / 審判耐性 1.45)</li>
+        <li>Lv 96-100: 敵 Lv 96 (DEF 405 / 審判耐性 1.65)</li>
+        <li>物理耐性/属性耐性/軽減/デバフ: 0</li>
+      </ul>
     </div>
-  `;
-  document.body.appendChild(m);
-  const close = () => {
-    if (!manual) localStorage.setItem(_CHANGELOG_KEY, currentVer);
-    m.remove();
-  };
-  m.querySelector('.wwm-modal-close').addEventListener('click', close);
-  m.querySelector('#wwmClClose').addEventListener('click', close);
-}
-async function _showAllChangelogs() {
-  try {
-    const cl = await fetch('data/changelog.json').then(r => r.json());
-    _showChangelogModal(cl.entries || [], cl.current, true);
-  } catch (e) {}
-}
-window.WWMChangelog = { check: _checkChangelog, showAll: _showAllChangelogs };
-
-// ── Help / Score Formula 説明 ─────────────────────────────────
-function _showScoreFormula() {
-  const m = document.createElement('div');
-  m.className = 'wwm-modal-backdrop';
-  m.innerHTML = `
-    <div class="wwm-modal wwm-modal-wide">
-      <div class="wwm-modal-header">
-        <h2>武格指数 計算式</h2>
-        <button class="wwm-modal-close" aria-label="Close">×</button>
-      </div>
-      <div class="wwm-modal-body wwm-help-body">
-        <div class="wwm-cl-notice">${(window.T&&T.changelogLangNotice)||'※ Japanese only / 日本語のみ / 일본어 한정'}</div>
-        <h3>概要</h3>
-        <p>武格指数 は装備/心法/武学/セットを総合してダメージ期待値を <b>固定係数</b> で算出した指標。装備変更や心法 swap の影響を一元的に比較可。</p>
-
-        <h3>固定係数 (全プレイヤー共通)</h3>
-        <ul>
-          <li><b>外功攻撃係数:</b> 1.0 (100%)</li>
-          <li><b>ステータス攻撃係数:</b> 1.5 (150%)</li>
-          <li><b>付加外功:</b> +230</li>
-          <li><b>属性強化 (主):</b> ×1.5 (主属性のみ)</li>
-          <li><b>属性強化 (副):</b> ×1.0</li>
-          <li><b>大世界等級:</b> 14 固定</li>
-          <li><b>武学等級:</b> キャラクター Lv と同一</li>
-        </ul>
-
-        <h3>敵パラメータ (キャラ Lv 自動連動)</h3>
-        <ul>
-          <li>Lv 95: 敵 Lv 91 (DEF 350 / 審判耐性 1.45)</li>
-          <li>Lv 96-100: 敵 Lv 96 (DEF 405 / 審判耐性 1.65)</li>
-          <li>物理耐性/属性耐性/軽減/デバフ: 0</li>
-        </ul>
-
-        <h3>反映される効果</h3>
-        <ul>
-          <li>装備 base stat (外功攻撃/属性攻撃 等)</li>
-          <li>装備 オプション (副ステ)</li>
-          <li>武学 effects + derived (会心率上限 +Δ 等)</li>
-          <li>心法 Tier 効果 (Tier ≥ 2 で Tier2 効果、Tier ≥ 5 で Tier5 効果)</li>
-          <li>セット効果 pieces2 (2 個装備で発動)</li>
-          <li>セット効果 pieces4 (4 個装備で +100 score 固定ボーナス、各装備に均等配賦)</li>
-          <li>5行ステ (体/力/防/速/会) → derived (会心率 / 会意率 等)</li>
-          <li>武器固有 derived (主武器/副武器 weaponType 連動)</li>
-        </ul>
-
-        <h3>反映されない効果</h3>
-        <ul>
-          <li>セット効果 pieces4 の条件付効果 (気血/真気/受流/重撃 トリガー等) — 一律 +100 固定</li>
-          <li>観音 (game stat 非影響と判明)</li>
-        </ul>
-
-        <h3>Tier 判定</h3>
-        <ul>
-          <li><b>SS:</b> 6700 以上</li>
-          <li><b>S:</b> 6030 以上 (SS閾値の 90%)</li>
-          <li><b>A:</b> 5360 以上 (80%)</li>
-          <li><b>B:</b> 4020 以上 (60%)</li>
-          <li><b>C:</b> それ未満</li>
-        </ul>
-
-        <h3>計算式 (要約)</h3>
-        <pre class="wwm-help-pre">expected = normalAvg × pNormal
+    <div class="wwm-note-section">
+      <h3 class="wwm-note-h3">反映される効果</h3>
+      <ul class="wwm-note-list">
+        <li>装備 base stat (外功攻撃/属性攻撃 等)</li>
+        <li>装備 オプション (副ステ)</li>
+        <li>武学 effects + derived (会心率上限 +Δ 等)</li>
+        <li>心法 Tier 効果 (Tier ≥ 2 で Tier2 効果、Tier ≥ 5 で Tier5 効果)</li>
+        <li>セット効果 pieces2 (2 個装備で発動)</li>
+        <li>セット効果 pieces4 (4 個装備で +100 score 固定ボーナス、各装備に均等配賦)</li>
+        <li>5行ステ (体/力/防/速/会) → derived (会心率 / 会意率 等)</li>
+        <li>武器固有 derived (主武器/副武器 weaponType 連動)</li>
+      </ul>
+    </div>
+    <div class="wwm-note-section">
+      <h3 class="wwm-note-h3">反映されない効果</h3>
+      <ul class="wwm-note-list">
+        <li>セット効果 pieces4 の条件付効果 (気血/真気/受流/重撃 トリガー等) — 一律 +100 固定</li>
+        <li>観音 (game stat 非影響と判明)</li>
+      </ul>
+    </div>
+    <div class="wwm-note-section">
+      <h3 class="wwm-note-h3">Tier 判定</h3>
+      <ul class="wwm-note-list">
+        <li><b>SS:</b> 6700 以上</li>
+        <li><b>S:</b> 6030 以上 (SS閾値の 90%)</li>
+        <li><b>A:</b> 5360 以上 (80%)</li>
+        <li><b>B:</b> 4020 以上 (60%)</li>
+        <li><b>C:</b> それ未満</li>
+      </ul>
+    </div>
+    <div class="wwm-note-section">
+      <h3 class="wwm-note-h3">計算式 (要約)</h3>
+      <pre class="wwm-note-pre">expected = normalAvg × pNormal
          + critAvg × pCrit
          + sympathyDmg × pSympathy
          + grazeDmg × pGraze
@@ -210,17 +174,121 @@ function _showScoreFormula() {
 各 dmg = (物理 + 属性) × 全武術ダメ × 外功増伤 × ...
 statusScore = expected (固定係数で再計算)
 finalScore = statusScore + 4-set bonus (該当時)</pre>
-
-        <div class="wwm-btn-row" style="margin-top:16px;">
-          <button class="wwm-btn-primary" id="wwmHelpClose">${(window.T&&T.close)||'閉じる'}</button>
+    </div>
+    <div class="wwm-note-section">
+      <h3 class="wwm-note-h3">Tier 判定基準 (動的)</h3>
+      <p class="wwm-note-p">最適化提案を全部適用した時の<b>最大スコア</b>を 100% として、現在の武格指数の比率で判定。</p>
+      <ul class="wwm-note-list">
+        <li><b>SS:</b> 最大の 95% 以上</li>
+        <li><b>S:</b> 90% 以上</li>
+        <li><b>A:</b> 80% 以上</li>
+        <li><b>B:</b> 65% 以上</li>
+        <li><b>C:</b> 未満</li>
+      </ul>
+      <pre class="wwm-note-pre" id="wwmNoteTierLive">読込中...</pre>
+    </div>
+  `;
+}
+// 仕様タブ ライブ Tier 値更新 (open時 / opt完了時に呼ぶ)
+function _updateNoteTierLive() {
+  const el = document.getElementById('wwmNoteTierLive');
+  if (!el) return;
+  const baseline = window.__WWM_BASELINE?.statusScore;
+  const best = window.__WWM_OPT_BEST?.end;
+  if (best == null) {
+    el.textContent = '最適化が未完了です。最適化提案の生成後に最大スコアが確定します。';
+    return;
+  }
+  const cur = (typeof baseline === 'number') ? Math.round(baseline) : null;
+  const ratio = cur != null ? (cur / best * 100).toFixed(1) : '-';
+  el.textContent =
+    '現在の武格指数:  ' + (cur != null ? cur.toLocaleString() : '-') + '\n' +
+    '最大想定スコア:  ' + best.toLocaleString() + '\n' +
+    '比率:            ' + ratio + '%';
+}
+function _changelogHtml(entries) {
+  return entries.map(e => `
+    <div class="wwm-note-cl-entry">
+      <div><span class="wwm-note-cl-ver">v${e.version}</span><span class="wwm-note-cl-date">${e.date || ''}</span></div>
+      <ul class="wwm-note-cl-items">${(e.items||[]).map(it => `<li>${it}</li>`).join('')}</ul>
+    </div>
+  `).join('');
+}
+function _showNoteModal(opts) {
+  opts = opts || {};
+  const defaultTab = opts.defaultTab || 'spec';      // 'spec' | 'changelog'
+  const entries    = opts.entries || [];
+  const persistVer = opts.persistVer || null;        // close時 _CHANGELOG_KEY に保存する version (起動時自動popup用)
+  const T_ = window.T || {};
+  const titleJa = T_.noteTitleJa || '筆記';
+  const seal    = T_.noteSeal    || '記';
+  const tabSpec = T_.noteTabSpec || '仕様';
+  const tabCl   = T_.noteTabChangelog || '更新履歴';
+  const btnBug  = T_.noteBugReport || 'バグ報告';
+  const btnReq  = T_.noteFeatureRequest || '追加要望';
+  const btnClose = T_.close || '閉じる';
+  const ghSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.36-3.87-1.36-.52-1.34-1.28-1.7-1.28-1.7-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.41-5.27 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.21.66.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>';
+  const m = document.createElement('div');
+  m.className = 'wwm-modal-backdrop';
+  m.innerHTML = `
+    <div class="wwm-note-modal-a">
+      <div class="wwm-note-rod wwm-note-rod-top"></div>
+      <div class="wwm-note-paper">
+        <div class="wwm-note-header">
+          <span class="wwm-note-title-ja">${titleJa}</span>
+          <span class="wwm-note-title-en">NOTE</span>
+          <span class="wwm-note-seal">${seal}</span>
+          <div class="wwm-note-header-actions">
+            <a class="wwm-note-btn wwm-note-btn-gh" target="_blank" rel="noopener" href="${_ghIssueUrl('bug')}">${ghSvg}${btnBug}</a>
+            <a class="wwm-note-btn wwm-note-btn-gh" target="_blank" rel="noopener" href="${_ghIssueUrl('req')}">${ghSvg}${btnReq}</a>
+            <button class="wwm-note-btn wwm-note-btn-close" id="wwmNoteClose">${btnClose}</button>
+          </div>
         </div>
+        <div class="wwm-note-divider"></div>
+        <div class="wwm-note-tabs">
+          <button class="wwm-note-tab ${defaultTab==='spec'?'active':''}" data-tab="spec">${tabSpec}</button>
+          <button class="wwm-note-tab ${defaultTab==='changelog'?'active':''}" data-tab="changelog">${tabCl}</button>
+        </div>
+        <div class="wwm-note-body" id="wwmNoteTabSpec" style="display:${defaultTab==='spec'?'block':'none'};">${_specHtml()}</div>
+        <div class="wwm-note-body" id="wwmNoteTabChangelog" style="display:${defaultTab==='changelog'?'block':'none'};">${_changelogHtml(entries)}</div>
       </div>
+      <div class="wwm-note-rod wwm-note-rod-bottom"></div>
     </div>
   `;
   document.body.appendChild(m);
-  const close = () => m.remove();
-  m.querySelector('.wwm-modal-close').addEventListener('click', close);
-  m.querySelector('#wwmHelpClose').addEventListener('click', close);
+  const close = () => {
+    if (persistVer) { try { localStorage.setItem(_CHANGELOG_KEY, persistVer); } catch(_) {} }
+    m.remove();
+  };
+  m.querySelector('#wwmNoteClose').addEventListener('click', close);
+  // 背景 click (modal外) で閉じる
+  m.addEventListener('click', e => { if (e.target === m) close(); });
+  // タブ切替
+  m.querySelectorAll('.wwm-note-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      m.querySelectorAll('.wwm-note-tab').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      const tab = t.dataset.tab;
+      m.querySelector('#wwmNoteTabSpec').style.display      = tab==='spec'     ? 'block' : 'none';
+      m.querySelector('#wwmNoteTabChangelog').style.display = tab==='changelog'? 'block' : 'none';
+      if (tab === 'spec') _updateNoteTierLive();
+    });
+  });
+  _updateNoteTierLive();
+}
+async function _showAllChangelogs() {
+  try {
+    const cl = await fetch('data/changelog.json').then(r => r.json());
+    _showNoteModal({ defaultTab: 'spec', entries: cl.entries || [] });
+  } catch (e) {
+    _showNoteModal({ defaultTab: 'spec', entries: [] });
+  }
+}
+window.WWMChangelog = { check: _checkChangelog, showAll: _showAllChangelogs };
+
+// ── Help / Score Formula 説明 (後方互換: 旧 _showScoreFormula → 新 _showNoteModal('spec')) ─
+function _showScoreFormula() {
+  _showAllChangelogs();
 }
 function _resetAllVirtuals() {
   const hasV = (window.__WWM_VIRTUAL && Object.keys(window.__WWM_VIRTUAL).length)
@@ -663,6 +731,8 @@ async function _renderOptimizationInner(roleInfo, params, opts, root) {
   // abort token: 新しい render 開始時、前回 loop を打切
   const myToken = (window._OPT_TOKEN = (window._OPT_TOKEN || 0) + 1);
   const _aborted = () => window._OPT_TOKEN !== myToken;
+  // opt 中は Tier badge ルーレット (静的 tier 確定までの演出)
+  if (typeof _startTierRoulette === 'function') _startTierRoulette();
   // ★ 重い最適化ループの前に 1 paint を確実に挟む (rAF→setTimeout)。
   //   どの呼出経路 (import/_refreshAll/auto-load) でも、import直後の mini-hero/score/sidebar を
   //   最適化(数秒)が starve する前に描画させる。継続が paint後のmacrotaskで走るのが肝。
@@ -927,6 +997,19 @@ async function _renderOptimizationInner(roleInfo, params, opts, root) {
   // 結果 cache (export 用)
   _OPT_LAST_STEPS = steps;
   _OPT_LAST_SCORES = { start: Math.round(startScore), end: Math.round(curScore), delta: totalDelta, ratio: TARGET_RATIO };
+  // Tier 基準: 最適化最大スコア (= curScore) は import 時に1回だけ確定保存。以降の opt 再計算では値を更新しない。
+  // ※ applyImport で localStorage 削除 + LOCKED 解除 → 再 import で再確定する。
+  if (!window.__WWM_OPT_BEST_LOCKED) {
+    const ver = window.WWM_SCORE_VERSION || 1;
+    window.__WWM_OPT_BEST = { end: Math.round(curScore), ts: Date.now(), scoreVer: ver };
+    window.__WWM_OPT_BEST_LOCKED = true;
+    try { localStorage.setItem('wwm_opt_best_v1', JSON.stringify(window.__WWM_OPT_BEST)); } catch(_) {}
+  }
+  // ルーレット停止 + 静的 tier 描画
+  if (typeof _stopTierRoulette === 'function') _stopTierRoulette();
+  if (window.WWMHero && window.__WWM_PARAMS) { try { window.WWMHero.update(window.__WWM_PARAMS); } catch(_) {} }
+  // NOTE modal が開いてればライブ表示も更新
+  if (typeof _updateNoteTierLive === 'function') _updateNoteTierLive();
   root.innerHTML = `
     <div class="wwm-analysis-card wwm-modal-square">
       <div class="wwm-modal-bg-icon" style="background-image:url('assets/icons/anvil-impact.svg');"></div>
@@ -1313,7 +1396,8 @@ async function renderSidebar(params) {
   // 再render時に score が "-" に消えないよう baseline から直接埋め込む (updateHero タイミング非依存)
   const _bl = window.__WWM_BASELINE;
   const martialScoreStr = (_bl && typeof _bl.statusScore === 'number') ? Math.round(_bl.statusScore).toLocaleString() : '-';
-  const martialTier = (_bl && _bl.tier) ? _bl.tier : '';
+  // tier は __WWM_OPT_BEST 確定後に updateHero で再評価 (opt未完了時 空)。初期 render は空にしておく。
+  const martialTier = '';
   const header = `
     <div class="wwm-sb-mini-hero-card">
       <span class="wwm-sb-l-bl"></span><span class="wwm-sb-l-br"></span>
@@ -3027,6 +3111,36 @@ function openGearEdit(slot) {
   });
 }
 
+// ── Tier badge ルーレット (opt中の演出、 sidebar mini-hero + heroパネル 両対応) ─────
+let _tierRouletteIntv = null;
+const _ROULETTE_GLYPHS = [
+  'SS','S','A','B','C',
+  '★','◆','◇','▲','▼','●','■',
+  '%','&','*','#','@','?','+','×','⚡','✦','✧','♠','♣'
+];
+function _startTierRoulette() {
+  // best 既に確定済 (LOCKED=true、 reload復元含む) → tier 固定値が即出るので演出不要。スキップ。
+  if (window.__WWM_OPT_BEST_LOCKED) return;
+  const sbTb   = document.getElementById('wwmSbTierBadge');
+  const heroTb = document.getElementById('heroTierBadge');
+  if (!sbTb && !heroTb) return;
+  if (_tierRouletteIntv) clearInterval(_tierRouletteIntv);
+  if (sbTb)   sbTb.classList.add('tier-rolling');
+  if (heroTb) heroTb.classList.add('tier-rolling');
+  _tierRouletteIntv = setInterval(() => {
+    const g = _ROULETTE_GLYPHS[Math.floor(Math.random() * _ROULETTE_GLYPHS.length)];
+    if (sbTb)   { sbTb.textContent = g;   sbTb.className   = 'wwm-sb-tier-badge tier-rolling'; }
+    if (heroTb) { heroTb.textContent = g; heroTb.className = 'hero-tier tier-badge tier-rolling'; }
+  }, 55);
+}
+function _stopTierRoulette() {
+  if (_tierRouletteIntv) { clearInterval(_tierRouletteIntv); _tierRouletteIntv = null; }
+  const sbTb   = document.getElementById('wwmSbTierBadge');
+  const heroTb = document.getElementById('heroTierBadge');
+  if (sbTb)   sbTb.classList.remove('tier-rolling');
+  if (heroTb) heroTb.classList.remove('tier-rolling');
+}
+
 // ── Hero block 更新 ────────────────────────────────────────────
 function updateHero(params) {
   if (!params || typeof window.computeExpected !== 'function') return;
@@ -3061,21 +3175,32 @@ function updateHero(params) {
     setText('heroScore', currentScore.toLocaleString());
     setText('heroCompactScore', currentScore.toLocaleString());
   }
-  // current tier badge — 現在装備 (baseline) 基準
-  const wl2 = effRi?.worldLv || 14;
-  const thr2 = 6700 * Math.pow(0.8, 14 - wl2);
-  const curTier = currentScore === null ? ''
-                : currentScore >= thr2 ? 'SS'
-                : currentScore >= thr2*0.9 ? 'S'
-                : currentScore >= thr2*0.8 ? 'A'
-                : currentScore >= thr2*0.6 ? 'B' : 'C';
+  // Tier 判定: 最適化最大スコア (__WWM_OPT_BEST.end、 import時固定) に対する比率で判定。opt未完了/best 無い時は空。
+  // 仮閾値: SS>=95% / S>=90% / A>=80% / B>=65% (確定までに調整予定)
+  const _tierFromBest = (score) => {
+    const best = window.__WWM_OPT_BEST?.end;
+    if (!best || score == null) return '';
+    const r = score / best;
+    if (r >= 0.95) return 'SS';
+    if (r >= 0.90) return 'S';
+    if (r >= 0.80) return 'A';
+    if (r >= 0.65) return 'B';
+    return 'C';
+  };
+  const curTier = _tierFromBest(currentScore);
   const tbCur = document.getElementById('heroTierBadge');
-  if (tbCur) { tbCur.textContent = curTier; tbCur.className = 'hero-tier tier-badge tier-' + curTier; }
-  // sidebar 武格指数行 tier badge + score — 現在の装備 (baseline) 基準
+  // opt実行中はルーレット演出に任せ、updateHero は tier badge を上書きしない (両 badge 共通)
+  if (tbCur && !window.__WWM_OPT_RUNNING) {
+    tbCur.textContent = curTier;
+    tbCur.className = 'hero-tier tier-badge tier-' + curTier;
+  }
+  // sidebar 武格指数行 tier badge + score — baseline 値で再判定 (__WWM_OPT_BEST 基準)
   const sbTb = document.getElementById('wwmSbTierBadge');
   const sbMs = document.getElementById('wwmSbMartialScore');
-  if (sbTb) {
-    const baselineTier = window.__WWM_BASELINE?.tier || curTier;
+  // opt実行中はルーレット演出に任せて、updateHero は tier を上書きしない。
+  if (sbTb && !window.__WWM_OPT_RUNNING) {
+    const baselineScore = window.__WWM_BASELINE?.statusScore;
+    const baselineTier = _tierFromBest(typeof baselineScore === 'number' ? baselineScore : null);
     sbTb.textContent = baselineTier;
     sbTb.className = 'wwm-sb-tier-badge tier-' + baselineTier;
   }
