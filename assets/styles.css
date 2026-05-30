@@ -4023,6 +4023,15 @@ html[data-theme="light"] .wwm-cmp-modal-a .wwm-modal-header { background: transp
 html[data-theme="light"] .wwm-cmp-modal-a .wwm-cmp-title-ja { color: #2a1810 !important; text-shadow: none !important; }
 html[data-theme="light"] .wwm-cmp-modal-a .wwm-cmp-title-en { color: #5a3a20 !important; }
 html[data-theme="light"] .wwm-cmp-modal-a .wwm-modal-close { color: #2a1810 !important; }
+/* ヘッダ下線: ライトは中央加重の赤グラデのみ (full-width 金線は消す)。::after は position:absolute 明示で全幅化 (flex item 化回避) */
+html[data-theme="light"] .wwm-cmp-modal-a .wwm-modal-header { border-bottom-color: transparent !important; }
+html[data-theme="light"] .wwm-cmp-modal-a .wwm-modal-header::after {
+  position: absolute !important;
+  left: 0 !important; right: 0 !important; width: auto !important;
+  height: 2px !important;
+  background: linear-gradient(90deg, transparent 0%, transparent 30%, rgba(232,81,58,0.85) 50%, transparent 70%, transparent 100%) !important;
+  opacity: 1 !important;
+}
 /* cols (現有/新置 パネル) */
 html[data-theme="light"] .wwm-cmp-modal-a .wwm-cmp-col,
 html[data-theme="light"] .wwm-cmp-modal-a .wwm-cmp-current,
