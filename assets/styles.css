@@ -5071,6 +5071,87 @@ html[data-theme="light"] .wwm-error-banner {
   .wwm-score-update-banner, .wwm-score-update-icon, .wwm-score-update-btn, .wwm-score-update-arrow { animation: none !important; }
 }
 
+/* ── DATA IMPORT modal ライトモード コントラスト強化 ───────────
+   背景がクリーム色のため、 各種テキストが薄ピンク/薄ゴールドで埋もれる事象を解消。 */
+html[data-theme="light"] .wwm-equip-section,
+html[data-theme="light"] .wwm-equip-section .wwm-equip-slot,
+html[data-theme="light"] .wwm-equip-section .wwm-equip-slot-header,
+html[data-theme="light"] .wwm-equip-section .wwm-equip-base,
+html[data-theme="light"] .wwm-equip-section .wwm-equip-affix,
+html[data-theme="light"] .wwm-equip-section .wwm-equip-base b,
+html[data-theme="light"] .wwm-equip-section .wwm-equip-affix b,
+html[data-theme="light"] .wwm-equip-section .wwm-stat-name,
+html[data-theme="light"] .wwm-equip-section .wwm-stat-val,
+html[data-theme="light"] .wwm-step2,
+html[data-theme="light"] .wwm-step2 .wwm-step2-section-title,
+html[data-theme="light"] .wwm-step2 .wwm-xinfa-cell,
+html[data-theme="light"] .wwm-step2 .wwm-xinfa-label,
+html[data-theme="light"] .wwm-step2 .wwm-xinfa-effect,
+html[data-theme="light"] .wwm-step2 .wwm-arsenal-tier,
+html[data-theme="light"] .wwm-step2 .wwm-arsenal-lv,
+html[data-theme="light"] .wwm-step2 .wwm-arsenal-peaked-label,
+html[data-theme="light"] .wwm-step2 .wwm-arsenal-preset,
+html[data-theme="light"] .wwm-step2 .wwm-arsenal-custom,
+html[data-theme="light"] .wwm-step2 .wwm-stat-label,
+html[data-theme="light"] .wwm-step2 .wwm-radio-label {
+  color: #3a2010 !important;
+}
+html[data-theme="light"] .wwm-equip-section .wwm-stat-pct {
+  color: #6a4220 !important;
+  opacity: 1 !important;
+}
+/* ライト DATA IMPORT: affix rank別 色 (ダーク gold/purple/blue を ライト背景で視認できる暗色に置換) */
+html[data-theme="light"] .wwm-equip-section .wwm-equip-affix .wwm-rank-gold,
+html[data-theme="light"] .wwm-equip-section .wwm-equip-affix .wwm-rank-gold .wwm-stat-name,
+html[data-theme="light"] .wwm-equip-section .wwm-equip-affix .wwm-rank-gold .wwm-stat-val {
+  color: #b85a14 !important; /* 暗オレンジ */
+}
+html[data-theme="light"] .wwm-equip-section .wwm-equip-affix .wwm-rank-purple,
+html[data-theme="light"] .wwm-equip-section .wwm-equip-affix .wwm-rank-purple .wwm-stat-name,
+html[data-theme="light"] .wwm-equip-section .wwm-equip-affix .wwm-rank-purple .wwm-stat-val {
+  color: #6a2e8a !important; /* 暗紫 */
+}
+html[data-theme="light"] .wwm-equip-section .wwm-equip-affix .wwm-rank-blue,
+html[data-theme="light"] .wwm-equip-section .wwm-equip-affix .wwm-rank-blue .wwm-stat-name,
+html[data-theme="light"] .wwm-equip-section .wwm-equip-affix .wwm-rank-blue .wwm-stat-val {
+  color: #1e5a9e !important; /* 暗青 */
+}
+html[data-theme="light"] .wwm-step2 .wwm-step2-section-title {
+  color: #5a1e10 !important;
+  font-weight: 900 !important;
+}
+html[data-theme="light"] .wwm-step2 .wwm-muted {
+  color: #6a4220 !important;
+  opacity: 0.95 !important;
+}
+html[data-theme="light"] .wwm-step2 .wwm-num-input {
+  color: #3a2010 !important;
+  background: rgba(255,255,255,0.5) !important;
+}
+/* ライト: 心法Tier / 武庫 セクションの薄黄ボーダーを暗茶に置換 (背景に溶けない) */
+html[data-theme="light"] .wwm-step2 .wwm-step2-section-title {
+  border-bottom-color: rgba(120,60,20,0.45) !important;
+}
+html[data-theme="light"] .wwm-step2 .wwm-xinfa-cell {
+  border-bottom: 1px dashed rgba(120,60,20,0.25);
+  padding-bottom: 4px;
+}
+html[data-theme="light"] .wwm-step2 .wwm-arsenal-tier {
+  border: 1px solid rgba(120,60,20,0.3) !important;
+  background: rgba(255,240,210,0.4) !important;
+}
+/* ダーク 武庫 tier 行も視認性向上 (カード化) */
+html[data-theme="dark"] .wwm-step2 .wwm-arsenal-tier,
+html:not([data-theme="light"]) .wwm-step2 .wwm-arsenal-tier {
+  border: 1px solid rgba(212,175,55,0.25);
+  background: rgba(40,28,16,0.55);
+}
+/* ライト: サイドバー各ステ名 (パラメータ名) を僅かに太く+濃く (レイアウト維持のため font-weight 500 + opacity up) */
+html[data-theme="light"] .wwm-sb-label {
+  font-weight: 500 !important;
+  opacity: 0.95 !important;
+}
+
 /* PvP定音ロック行 (武具対照 affix6): val 入力欄を非表示 (編集不可、行レイアウト維持) */
 .wwm-cmp-modal-a .wwm-cmp-pvp-locked .wwm-cmp-val-input,
 .wwm-cmp-modal-a .wwm-cmp-pvp-locked .wwm-cmp-unit,
