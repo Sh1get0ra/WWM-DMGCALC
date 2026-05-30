@@ -2059,7 +2059,13 @@ html[data-theme="light"] .wwm-sb-top { background: #f5ead0; }
   display: flex; flex-direction: column;
   gap: var(--space-half);
 }
-.wwm-sb-power, .wwm-sb-martial { font-size: var(--text-sm); }
+.wwm-sb-power, .wwm-sb-martial {
+  font-size: var(--text-sm);
+  display: flex; align-items: center;
+  line-height: 1.25;
+}
+/* 武格指数 row: SSバッジ縮小 + 中央揃え (base) で row を上げ、3行を等間隔に。top:0 で -2px浮き解除 */
+.wwm-sb-martial .wwm-sb-tier-badge { font-size: 13px; padding: 0 6px; top: 0; }
 .wwm-sb-power b, .wwm-sb-martial b { color: var(--accent, #d4af37); font-weight: var(--fw-bold); margin-left: 4px; }
 .wwm-sb-import-btn {
   flex-shrink: 0;

@@ -21,3 +21,4 @@ data/extract_tier2_stat.js
 data/apply_47_48.js
 data/xinfa_attribute_buff_template.csv
 server.js
+.playwright-mcp/
