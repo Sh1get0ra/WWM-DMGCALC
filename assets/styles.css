@@ -2004,6 +2004,11 @@ html[data-theme="light"] .wwm-sb-mini-hero-card {
 html[data-theme="light"] .wwm-sb-mini-hero-ink {
   background: linear-gradient(90deg, rgba(184,134,11,0), rgba(184,134,11,0.16), rgba(184,134,11,0));
 }
+/* light mini-hero: 総合武力/武格指数 の label/値を濃色化 (cream上で gold/muted が低コントラストのため) */
+html[data-theme="light"] .wwm-sb-mini-hero-card .wwm-sb-power b,
+html[data-theme="light"] .wwm-sb-mini-hero-card .wwm-sb-martial b { color: #8a5212 !important; text-shadow: none !important; }
+html[data-theme="light"] .wwm-sb-mini-hero-card .wwm-sb-power .wwm-muted,
+html[data-theme="light"] .wwm-sb-mini-hero-card .wwm-sb-martial .wwm-muted { color: #5a4326 !important; opacity: 0.85 !important; }
 /* mini-hero card 内の sb-top: sticky/border 解除 */
 .wwm-sb-mini-hero-card .wwm-sb-top {
   position: relative !important;
