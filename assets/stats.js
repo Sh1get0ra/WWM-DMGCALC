@@ -263,6 +263,8 @@ async function buildStatParams(roleInfo, state) {
   r._activePath = activePath;
   r._subPath = subPath;
 
+  // 8.1 path別 DMG boost は L515 で集計 (心法/武術の各path別 dmg → 計算=active path total / 表示=MAX(5path))。
+
   // 8.5 kongfu derived (主+副 両方 適用、ただし crit/affinity 系は 主のみ重複防止)
   const derivedDedupKeys = new Set(['crit','critRate','affinity','sympathyRate']);
   const derivedSeen = new Set();
@@ -287,6 +289,11 @@ async function buildStatParams(roleInfo, state) {
       if (applyKey === 'elemPen') {
         const penMap = { bellstrike:'bellstrikePen', stonesplit:'stonesplitPen', silkbind:'silkbindPen', bamboocut:'bamboocutPen', voidPath:'voidPen' };
         applyKey = penMap[activePath] || 'bamboocutPen';
+      }
+      // 武術の属性ダメ強化 = その武術自身の path のみ (ユーザー仕様: 武術boostはその武術のpath属性のみ)
+      if (applyKey === 'elemAtkBoost') {
+        const dmgMap = { bellstrike:'bellstrikeDmgBoost', stonesplit:'stonesplitDmgBoost', silkbind:'silkbindDmgBoost', bamboocut:'bamboocutDmgBoost', voidPath:'voidDmgBoost' };
+        applyKey = dmgMap[kf.path] || applyKey;
       }
       const finalKey = _CALCJS_TO_WWM[applyKey] || applyKey;
       if (fromVal >= (d.thresholdValue || 0)) {
@@ -459,7 +466,8 @@ async function buildStatParams(roleInfo, state) {
   r._specMartialBoostScore = specBoostScore;  // calc.js / score 用 (全 加算)
 
   // 10. 属性増強 = 全 5path 貫通の合計 (sidebar表示用、calc.js elemBoostMain と別key)
-  r.attrBoostSum = (r.bellstrikePen||0) + (r.stonesplitPen||0) + (r.silkbindPen||0) + (r.bamboocutPen||0) + (r.voidPen||0);
+  // 属性増強 (表示) = generic(attrPen) + MAX(各path貫通) + 無相貫通(全path共通)。 ゲーム仕様: 単純SUMでなく MAX+無相。
+  r.attrBoostSum = (r.attrPen||0) + Math.max(r.bellstrikePen||0, r.stonesplitPen||0, r.silkbindPen||0, r.bamboocutPen||0) + (r.voidPen||0);
 
   // 11. 固定値
   r.maxQi = 100;
@@ -506,7 +514,26 @@ async function buildStatParams(roleInfo, state) {
   r.elemPen         = (r.attrPen || 0) + _activePathPen + (activePath !== 'voidPath' ? (r.voidPen || 0) : 0);
   r.weaponBonus     = r.physDmgBonus   || 0;
   // elemBoostMain/Sub は L549-550 で 1.5/1.0 に上書きされる (旧 1/1 dead代入削除)
-  r.elemAtkBoost    = r.attrDmgBonus   || 0;
+  // 属性攻撃強化 = path別 (ゲーム仕様: 表示=MAX(5path)、計算=active path total)。generic(attrDmgBonus)は本来0。
+  const _PDMG = { bellstrike:'bellstrikeDmgBoost', stonesplit:'stonesplitDmgBoost', silkbind:'silkbindDmgBoost', bamboocut:'bamboocutDmgBoost', voidPath:'voidDmgBoost' };
+  ['bellstrikeDmgBoost','stonesplitDmgBoost','silkbindDmgBoost','bamboocutDmgBoost','voidDmgBoost'].forEach(k => { r[k] = r[k] || 0; });
+  const _genElemDmg = r.attrDmgBonus || 0;
+  const _pathDmgTotals = {
+    bellstrike: _genElemDmg + r.bellstrikeDmgBoost,
+    stonesplit: _genElemDmg + r.stonesplitDmgBoost,
+    silkbind:   _genElemDmg + r.silkbindDmgBoost,
+    bamboocut:  _genElemDmg + r.bamboocutDmgBoost,
+    voidPath:   _genElemDmg + r.voidDmgBoost,
+  };
+  r._elemDmgByPath = _pathDmgTotals;                                    // 内訳表示用 (path→total)
+  r.elemAtkBoost     = _pathDmgTotals[activePath] || _genElemDmg;       // 計算: active path total
+  r.elemAtkBoostDisp = Math.max(0, ...Object.values(_pathDmgTotals));   // 表示: MAX(5path)
+  // 内訳 (展開表示) 用 path別キー
+  r.elemDmgBellstrike = _pathDmgTotals.bellstrike;
+  r.elemDmgStonesplit = _pathDmgTotals.stonesplit;
+  r.elemDmgSilkbind   = _pathDmgTotals.silkbind;
+  r.elemDmgBamboocut  = _pathDmgTotals.bamboocut;
+  r.elemDmgVoid       = _pathDmgTotals.voidPath;
   r.allMartialBoost  = r.allWeaponDmg  || 0;
   r.specMartialBoost = r._specMartialBoostScore || 0;
   r.bossBoost       = r.bossDmg        || 0;

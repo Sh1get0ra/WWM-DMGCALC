@@ -1812,7 +1812,36 @@ function openXinfaEdit(slotIdx) {
     directCrit:      { tkey: 'addCritRate',     pct: true },
     addSympathyRate: { tkey: 'addSympathyRate', pct: true },
     directAffinity:  { tkey: 'addSympathyRate', pct: true },
-    fixedScoreBonus: { tkey: 'martialIndex',    pct: false, scoreCustom: true }
+    fixedScoreBonus: { tkey: 'martialIndex',    pct: false, scoreCustom: true },
+    // path別 攻撃 (min/max 共通ラベル、 値で区別)
+    minBellstrike:   { tkey: 'pathAtkBellstrike', pct: false },
+    maxBellstrike:   { tkey: 'pathAtkBellstrike', pct: false },
+    minStonesplit:   { tkey: 'pathAtkStonesplit', pct: false },
+    maxStonesplit:   { tkey: 'pathAtkStonesplit', pct: false },
+    minSilkbind:     { tkey: 'pathAtkSilkbind',   pct: false },
+    maxSilkbind:     { tkey: 'pathAtkSilkbind',   pct: false },
+    minBamboocut:    { tkey: 'pathAtkBamboocut',  pct: false },
+    maxBamboocut:    { tkey: 'pathAtkBamboocut',  pct: false },
+    minVoid:         { tkey: 'pathAtkVoid',       pct: false },
+    maxVoid:         { tkey: 'pathAtkVoid',       pct: false },
+    // path別 貫通
+    bellstrikePen:   { tkey: 'pathPenBellstrike', pct: false },
+    stonesplitPen:   { tkey: 'pathPenStonesplit', pct: false },
+    silkbindPen:     { tkey: 'pathPenSilkbind',   pct: false },
+    bamboocutPen:    { tkey: 'pathPenBamboocut',  pct: false },
+    voidPen:         { tkey: 'pathPenVoid',       pct: false },
+    // path別 ダメージ強化
+    bellstrikeDmgBoost: { tkey: 'pathDmgBellstrike', pct: true },
+    stonesplitDmgBoost: { tkey: 'pathDmgStonesplit', pct: true },
+    silkbindDmgBoost:   { tkey: 'pathDmgSilkbind',   pct: true },
+    bamboocutDmgBoost:  { tkey: 'pathDmgBamboocut',  pct: true },
+    voidDmgBoost:       { tkey: 'pathDmgVoid',       pct: true }
+  };
+  // ダメージ計算に関与しない statType (effects空、 ゲームはステ表示するが計算外) → localized名 + (計算外)
+  const _XINFA_STATTYPE_LABEL = {
+    'Max HP': 'stMaxHp',
+    'Physical Defense': 'stPhysDef',
+    'Critical Healing Bonus': 'stCritHeal',
   };
   function _xinfaFmtEffect(k, v) {
     const T = window.T || {};
@@ -1843,7 +1872,7 @@ function openXinfaEdit(slotIdx) {
       const def = x.attributeBuff[`tier${t}`];
       const isActive = t <= tier;
       if (!def) {
-        lines.push(`<div class="wwm-cmp-tier-line wwm-tier-empty">T${t}: <span class="wwm-tier-dash">—</span></div>`);
+        lines.push(`<div class="wwm-cmp-tier-row wwm-tier-empty"><span class="wwm-cmp-tier-num">T${t}</span><span class="wwm-cmp-tier-eff wwm-tier-dash">—</span></div>`);
         continue;
       }
       const isTwoFive = (t === 2 || t === 5);
@@ -1872,7 +1901,11 @@ function openXinfaEdit(slotIdx) {
               }
               return _xinfaFmtEffect(k, v);
             }).join(', ')
-          : (def.raw || '-');
+          : (() => {
+              const stKey = def.statType && _XINFA_STATTYPE_LABEL[def.statType];
+              if (stKey) return (window.T && window.T[stKey]) || def.statType;
+              return def.raw || '-';
+            })();
       } else {
         effStr = def.raw || '-';
       }
@@ -1880,42 +1913,52 @@ function openXinfaEdit(slotIdx) {
       let warn = '';
       if (!isActive) { cls = 'wwm-tier-unrel'; warn = ' <span class="wwm-tier-warn" title="未解放">⏳</span>'; }
       else if (needsKf && !kfOk) { cls = 'wwm-tier-kfmiss'; warn = ' <span class="wwm-tier-warn" title="武器条件未満">⚠</span>'; }
-      lines.push(`<div class="wwm-cmp-tier-line ${cls}">T${t}${warn}: ${effStr}</div>`);
+      lines.push(`<div class="wwm-cmp-tier-row ${cls}"><span class="wwm-cmp-tier-num">T${t}</span><span class="wwm-cmp-tier-eff">${effStr}${warn}</span></div>`);
     }
     return lines.join('');
   }
   const origName = _xName(origPassive[slotIdx]);
   const m = document.createElement('div');
   m.className = 'wwm-modal-backdrop';
+  const _T = window.T || {};
+  const _bgIc = origRi?._xinfaIconsBase64?.[slotIdx] || origRi?._xinfaIcons?.[slotIdx];
+  const _bgIconHtml = _bgIc ? `<div class="wwm-cmp-modal-bg-icon" style="background-image: url('${_bgIc}');"></div>` : '';
   m.innerHTML = `
-    <div class="wwm-modal wwm-modal-square">
+    <div class="wwm-modal wwm-modal-square wwm-cmp-modal-a">
+      <span class="wwm-cmp-l-bracket-tl"></span><span class="wwm-cmp-l-bracket-tr"></span>
+      <span class="wwm-cmp-l-bracket-bl"></span><span class="wwm-cmp-l-bracket-br"></span>
       <div class="wwm-modal-header">
-        <h2>${(window.T&&T.xinfaCompareTitle)||'心法比較 / COMPARISON'}</h2>
+        <h2><span class="wwm-cmp-title-ja">${_T.xinfaTitleJa||'心法対照'}</span><span class="wwm-cmp-title-en">${_T.cmpTitleEn||'COMPARISON'}</span><span class="wwm-cmp-seal">心</span></h2>
         <button class="wwm-modal-close" aria-label="Close">×</button>
       </div>
       <div class="wwm-modal-body">
+        ${_bgIconHtml}
         <div class="wwm-cmp-grid">
           <div class="wwm-cmp-col wwm-cmp-current">
-            ${(() => { const _ic = origRi?._xinfaIconsBase64?.[slotIdx] || origRi?._xinfaIcons?.[slotIdx]; return _ic ? `<div class="wwm-cmp-bg-icon" style="background-image: url('${_ic}');"></div>` : ''; })()}
-            <h3 class="wwm-cmp-title">現在の心法</h3>
+            <h3 class="wwm-cmp-title" data-seal="${_T.cmpCurrent||'現有'}"><span class="wwm-cmp-title-text">${_T.cmpCurrent||'現有'}</span></h3>
             <div class="wwm-cmp-kongfu-header">${origName}</div>
-            <div class="wwm-cmp-set-header">Tier ${origTier}<div class="wwm-cmp-set-effect">${_effectsText(origPassive[slotIdx], origTier)}</div></div>
+            <div class="wwm-cmp-set-header">Tier ${origTier}</div>
+            <div class="wwm-cmp-rows wwm-cmp-xinfa-rows">${_effectsText(origPassive[slotIdx], origTier)}</div>
           </div>
+          <div class="wwm-cmp-divider"></div>
           <div class="wwm-cmp-col wwm-cmp-new" id="wwmCmpXinfaNewCol">
-            <h3 class="wwm-cmp-title">新しい心法</h3>
+            <h3 class="wwm-cmp-title" data-seal="${_T.cmpNew||'新置'}"><span class="wwm-cmp-title-text">${_T.cmpNew||'新置'}</span></h3>
             <select class="wwm-cmp-kongfu-select" id="wwmCmpXinfaSel">${_xinfaOptions(newXinfaId)}</select>
             <select class="wwm-cmp-set-select" id="wwmCmpXinfaTierSel">${[0,1,2,3,4,5,6].map(t => `<option value="${t}" ${t===newTier?'selected':''}>Tier ${t}</option>`).join('')}</select>
-            <div class="wwm-cmp-set-effect" id="wwmCmpXinfaEffect">${_effectsText(newXinfaId, newTier)}</div>
+            <div class="wwm-cmp-rows wwm-cmp-xinfa-rows" id="wwmCmpXinfaEffect">${_effectsText(newXinfaId, newTier)}</div>
           </div>
         </div>
-        <div class="wwm-cmp-preview" id="wwmCmpPreview">
-          <span class="wwm-cmp-preview-label">Δ Score:</span>
-          <span class="wwm-cmp-preview-value" id="wwmCmpPreviewDelta">計算中...</span>
-        </div>
-        <div class="wwm-btn-row" style="margin-top:12px;">
-          <button class="wwm-btn-primary" id="wwmXinfaApply">適用 (sidebar反映)</button>
-          <button class="wwm-btn-secondary" id="wwmXinfaReset">元に戻す</button>
-          <button class="wwm-btn-secondary" id="wwmXinfaCancel">キャンセル</button>
+        <div class="wwm-cmp-footer-a">
+          <div class="wwm-cmp-delta-block">
+            <span class="wwm-cmp-delta-label">${_T.cmpDeltaLabel||'武格変動'}</span>
+            <span class="wwm-cmp-preview-value" id="wwmCmpXinfaPreviewDelta">+0</span>
+            <span class="wwm-cmp-delta-base" id="wwmCmpXinfaPreviewBase">—</span>
+          </div>
+          <div class="wwm-btn-row wwm-cmp-btn-row">
+            <button class="wwm-btn-primary" id="wwmXinfaApply">${_T.cmpApply||'採用'}</button>
+            <button class="wwm-btn-secondary" id="wwmXinfaReset">${_T.cmpReset||'復元'}</button>
+            <button class="wwm-btn-secondary" id="wwmXinfaCancel">${_T.cmpCancel||'離脱'}</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1927,7 +1970,7 @@ function openXinfaEdit(slotIdx) {
   let _t = null;
   function _schedule() { if (_t) clearTimeout(_t); _t = setTimeout(_runPreview, 250); }
   async function _runPreview() {
-    const el = m.querySelector('#wwmCmpPreviewDelta');
+    const el = m.querySelector('#wwmCmpXinfaPreviewDelta');
     if (!el) return;
     try {
       // baseline = effective (現状適用済)
@@ -1949,8 +1992,10 @@ function openXinfaEdit(slotIdx) {
       const vScore = _scoreWithBonus(vRi);
       const delta = Math.round(vScore - baseScore);
       const sign = delta > 0 ? '+' : '';
-      el.textContent = `${sign}${delta.toLocaleString()} (${Math.round(vScore).toLocaleString()})`;
+      el.textContent = `${sign}${delta.toLocaleString()}`;
       el.className = 'wwm-cmp-preview-value ' + (delta > 0 ? 'pos' : delta < 0 ? 'neg' : 'zero');
+      const baseEl = m.querySelector('#wwmCmpXinfaPreviewBase');
+      if (baseEl) baseEl.textContent = `${Math.round(baseScore).toLocaleString()} → ${Math.round(vScore).toLocaleString()}`;
     } catch (e) { el.textContent = 'error'; }
   }
 

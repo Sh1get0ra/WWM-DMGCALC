@@ -1063,7 +1063,7 @@
         "needsManualInput": false,
         "statType": "Bellstrike Attack",
         "raw": "Bellstrike Attack (Solo Mode Level scaled, rank=purple)",
-        "effects": {},
+        "effects": {"minBellstrike":10.9,"maxBellstrike":21.7},
         "weaponSpecific": "bellstrike",
         "pendingImplementation": true,
         "minPathATK": 10.9,
@@ -1092,7 +1092,7 @@
       },
       "tier5": {
         "permanent": true,
-        "effects": {},
+        "effects": {"bellstrikePen":6},
         "raw": "Bellstrike Penetration +6",
         "weaponSpecific": "bellstrike",
         "pendingImplementation": true
@@ -1255,7 +1255,7 @@
       "tier5": {
         "permanent": true,
         "effects": {
-          "elemAtkBoost": 0.052
+          "sympathyBoost": 0.052
         },
         "raw": "Affinity DMG Bonus +5.2%"
       },
@@ -1419,7 +1419,7 @@
       "tier5": {
         "permanent": true,
         "effects": {
-          "elemAtkBoost": 0.052
+          "sympathyBoost": 0.052
         },
         "raw": "Affinity DMG Bonus +5.2%"
       },
@@ -1489,7 +1489,7 @@
         "needsManualInput": false,
         "statType": "Max Bellstrike Attack",
         "raw": "Max Bellstrike Attack (Solo Mode Level scaled, rank=purple)",
-        "effects": {},
+        "effects": {"maxBellstrike":32.6},
         "weaponSpecific": "bellstrike",
         "pendingImplementation": true,
         "minPathATK": 32.6,
@@ -1534,7 +1534,7 @@
       },
       "tier5": {
         "permanent": true,
-        "effects": {},
+        "effects": {"bellstrikeDmgBoost":0.03},
         "raw": "Bellstrike DMG Bonus +3%",
         "weaponSpecific": "bellstrike",
         "pendingImplementation": true
@@ -1806,7 +1806,7 @@
       },
       "tier5": {
         "permanent": true,
-        "effects": {},
+        "effects": {"silkbindPen":6},
         "raw": "Silkbind Penetration +6",
         "weaponSpecific": "silkbind",
         "pendingImplementation": true
@@ -2200,7 +2200,7 @@
         "needsManualInput": false,
         "statType": "Min Silkbind Attack",
         "raw": "Min Silkbind Attack (Solo Mode Level scaled, rank=purple)",
-        "effects": {},
+        "effects": {"minSilkbind":32.6},
         "weaponSpecific": "silkbind",
         "pendingImplementation": true,
         "minPathATK": 32.6,
@@ -2608,7 +2608,7 @@
         "needsManualInput": false,
         "statType": "Rock Splitting Attack",
         "raw": "Rock Splitting Attack (Solo Mode Level scaled, rank=purple)",
-        "effects": {},
+        "effects": {"minStonesplit":10.9,"maxStonesplit":21.7},
         "weaponSpecific": "stonesplit",
         "pendingImplementation": true,
         "minPathATK": 10.9,
@@ -2637,7 +2637,7 @@
       },
       "tier5": {
         "permanent": true,
-        "effects": {},
+        "effects": {"stonesplitPen":6},
         "raw": "Rock Splitting Penetration +6",
         "weaponSpecific": "stonesplit",
         "pendingImplementation": true
@@ -3597,7 +3597,7 @@
         "permanent": true,
         "worldLv": 14,
         "needsManualInput": false,
-        "effects": {},
+        "effects": {"minStonesplit":10.9,"maxStonesplit":21.7},
         "raw": "砕岩攻撃力 +10.9 ~ +21.7",
         "weaponSpecific": "stonesplit",
         "pendingImplementation": true,
@@ -3642,7 +3642,7 @@
       },
       "tier5": {
         "permanent": true,
-        "effects": {},
+        "effects": {"stonesplitPen":6},
         "raw": "砕岩貫通 +6",
         "weaponSpecific": "stonesplit",
         "pendingImplementation": true
