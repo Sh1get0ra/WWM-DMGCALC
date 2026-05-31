@@ -884,10 +884,6 @@ function applyImport(data, importedAt, state) {
       if (window.WWMDiag) window.WWMDiag.render(data, params);
       if (window.WWMRanking) window.WWMRanking.render(data, params);
       if (window.WWMHero) window.WWMHero.update(params);
-      // calc.js の calculate() (DOM 由来) 先に実行 → donut DOM 上書きされる
-      if (typeof window.calculate === 'function') window.calculate();
-      // computeExpected 再実行で effective params で donut 上書き戻す
-      if (window.WWMHero) window.WWMHero.update(params);
       // Phase 1: import 直後 baseline score 保存
       const res = window.__WWM_LAST_RESULT;
       if (res) {

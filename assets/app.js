@@ -81,8 +81,6 @@ function setLang(lang) {
 
   try { localStorage.setItem('wwm_lang', lang); } catch(e) {}
   renderPresetSlots();
-  renderSkillPresetSelect();
-  calculate();
   if (typeof window._refreshAll === 'function') window._refreshAll();
   // import前でも sidebar empty state を再render (翻訳反映)
   if (window.WWMSidebar?.render && !window.__WWM_ROLEINFO) {
@@ -229,25 +227,6 @@ function updateLuopanArc(physRatio, elemRatio) {
   aE.setAttribute('stroke-dashoffset', -lp);
 }
 window.updateLuopanArc = updateLuopanArc;
-
-// ── エネミー切替 ──────────────────────────────────────────────────
-function bindEnemySelect() {
-  document.getElementById('enemyLevel').addEventListener('change', function() {
-    const isManual = this.value === 'manual';
-    ['PhysDef','JudgeRes','PhysRes','ElemRes'].forEach(f => {
-      document.getElementById('disp' + f).style.display = isManual ? 'none' : '';
-      document.getElementById('man'  + f).style.display = isManual ? ''     : 'none';
-    });
-    if (!isManual) {
-      const e = ENEMY_PRESET[this.value];
-      document.getElementById('manPhysDef').value  = e.physDef;
-      document.getElementById('manJudgeRes').value = e.judgeRes;
-      document.getElementById('manPhysRes').value  = e.physRes;
-      document.getElementById('manElemRes').value  = e.elemRes;
-    }
-    calculate();
-  });
-}
 
 // ── ダークモード ──────────────────────────────────────────────────
 function toggleHero() {
@@ -397,124 +376,6 @@ function initPresets() {
   renderPresetSlots();
 }
 
-// ── スキルプリセット（4番パネル専用・無制限スロット） ────────────
-const SKILL_PRESET_KEY = 'wwm_skill_presets_v2';
-const SKILL_PRESET_FIELDS = ['outerCoeff', 'outerAdd', 'statusCoeff'];
-let skillPresets = [];
-
-function renderSkillPresetSelect() {
-  const sel = document.getElementById('skillPresetSelect');
-  if (!sel) return;
-  const cur = sel.value;
-  const ph = (T && T.skillPresetPlaceholder) || '— 選択 —';
-  let html = '<option value="">' + ph + '</option>';
-  skillPresets.forEach(function(p) {
-    html += '<option value="' + encodeURIComponent(p.name) + '">' + p.name + '</option>';
-  });
-  sel.innerHTML = html;
-  if (cur && skillPresets.some(function(p) { return encodeURIComponent(p.name) === cur; })) {
-    sel.value = cur;
-  }
-  const delBtn = document.getElementById('skillPresetDelBtn');
-  if (delBtn) delBtn.disabled = !sel.value;
-}
-function saveSkillPreset() {
-  const nameInp = document.getElementById('skillPresetName');
-  const sel = document.getElementById('skillPresetSelect');
-  let name = (nameInp.value || '').trim();
-  // 名前欄空 + プルダウン選択中 → 選択中プリセットを上書き
-  if (!name && sel && sel.value) {
-    name = decodeURIComponent(sel.value);
-  }
-  if (!name) { showToast((T && T.skillPresetNeedName) || '名前を入力してください'); return; }
-  const data = {};
-  SKILL_PRESET_FIELDS.forEach(function(id) {
-    const el = document.getElementById(id);
-    if (el) data[id] = el.value;
-  });
-  const idx = skillPresets.findIndex(function(p) { return p.name === name; });
-  if (idx >= 0) skillPresets[idx] = { name: name, data: data };
-  else           skillPresets.push({ name: name, data: data });
-  try { localStorage.setItem(SKILL_PRESET_KEY, JSON.stringify(skillPresets)); } catch(e) {}
-  renderSkillPresetSelect();
-  if (sel) sel.value = encodeURIComponent(name);
-  const delBtn = document.getElementById('skillPresetDelBtn');
-  if (delBtn) delBtn.disabled = false;
-  nameInp.value = '';
-  showToast(((T && T.toastSaved) || '{name} を保存しました').replace('{name}', name));
-}
-function loadSkillPresetByName(name) {
-  const p = skillPresets.find(function(x) { return x.name === name; });
-  if (!p) return;
-  SKILL_PRESET_FIELDS.forEach(function(id) {
-    if (p.data[id] !== undefined) {
-      const el = document.getElementById(id);
-      if (el) el.value = p.data[id];
-    }
-  });
-  saveInputs();
-  calculate();
-  showToast(((T && T.toastLoaded) || '{name} を読み込みました').replace('{name}', name));
-}
-function deleteSkillPreset() {
-  const sel = document.getElementById('skillPresetSelect');
-  if (!sel || !sel.value) return;
-  const name = decodeURIComponent(sel.value);
-  skillPresets = skillPresets.filter(function(p) { return p.name !== name; });
-  try { localStorage.setItem(SKILL_PRESET_KEY, JSON.stringify(skillPresets)); } catch(e) {}
-  renderSkillPresetSelect();
-  showToast(((T && T.toastDeleted) || '{name} を削除しました').replace('{name}', name));
-}
-function initSkillPresets() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(SKILL_PRESET_KEY));
-    if (Array.isArray(saved)) skillPresets = saved;
-  } catch(e) {}
-  renderSkillPresetSelect();
-  const sel = document.getElementById('skillPresetSelect');
-  if (sel) {
-    sel.addEventListener('change', function() {
-      const delBtn = document.getElementById('skillPresetDelBtn');
-      if (delBtn) delBtn.disabled = !sel.value;
-      if (sel.value) loadSkillPresetByName(decodeURIComponent(sel.value));
-    });
-  }
-}
-
-// ── 入力の保存・復元 ──────────────────────────────────────────────
-const STORAGE_KEY = 'wwm_calc_v1';
-function saveInputs() {
-  const data = {};
-  document.querySelectorAll('input[id], select[id]').forEach(el => {
-    data[el.id] = el.value;
-  });
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
-}
-function loadInputs() {
-  let data;
-  try { data = JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch(e) {}
-  if (!data) return;
-  document.querySelectorAll('input[id], select[id]').forEach(el => {
-    if (data[el.id] !== undefined) el.value = data[el.id];
-  });
-  reflectEnemyDisplay();
-}
-function reflectEnemyDisplay() {
-  const sel = document.getElementById('enemyLevel').value;
-  const isManual = sel === 'manual';
-  ['PhysDef','JudgeRes','PhysRes','ElemRes'].forEach(f => {
-    document.getElementById('disp' + f).style.display = isManual ? 'none' : '';
-    document.getElementById('man'  + f).style.display = isManual ? ''     : 'none';
-  });
-  if (!isManual) {
-    const e = ENEMY_PRESET[sel];
-    document.getElementById('dispPhysDef').textContent  = e.physDef;
-    document.getElementById('dispJudgeRes').textContent = e.judgeRes;
-    document.getElementById('dispPhysRes').textContent  = e.physRes;
-    document.getElementById('dispElemRes').textContent  = e.elemRes;
-  }
-}
-
 // ── データインポート ──────────────────────────────────────────────
 function importData() {
   if (window.WWMImport && typeof window.WWMImport.openSetup === 'function') {
@@ -531,28 +392,7 @@ function init() {
   initTheme();
   initHeroCollapse();
   _loadSavedLang();
-  loadInputs();
-  initEffMaxVals();
   initPresets();
-  initSkillPresets();
-  bindEnemySelect();
-
-  document.querySelectorAll('input, select').forEach(el => {
-    el.addEventListener('input',  () => { calculate(); saveInputs(); });
-    el.addEventListener('change', () => { calculate(); saveInputs(); });
-  });
-
-  document.getElementById('effTbody').addEventListener('change', function(e) {
-    const inp = e.target;
-    if (!inp.classList.contains('eff-max-input')) return;
-    const idx   = parseInt(inp.dataset.idx, 10);
-    const isPct = inp.dataset.ispct === 'true';
-    const val   = parseFloat(inp.value);
-    if (isNaN(val) || val < 0) return;
-    effMaxVals[idx] = isPct ? val / 100 : val;
-    saveEffMaxVals();
-    if (_lastEffParams !== null) buildEfficiencyTable(_lastEffParams, _lastBaseExpected);
-  });
 
   // 数値入力フィールド：全角→半角自動変換 + 数字以外ブロック
   function isNumericField(el) {
@@ -600,8 +440,6 @@ function init() {
       try { e.target.setSelectionRange(newPos, newPos); } catch (err) {}
     }
   }, true);
-
-  calculate();
 }
 
 document.addEventListener('DOMContentLoaded', init);
