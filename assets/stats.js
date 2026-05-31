@@ -22,12 +22,12 @@ const _ENHANCE_MAX = {
 
 async function _ensureDicts() {
   const tasks = [];
-  if (!window.WWM_LV95_BASE) tasks.push(fetch('data/lv95_base.json').then(r=>r.json()).then(d=>window.WWM_LV95_BASE=d).catch(()=>{}));
-  if (!window.WWM_KONGFU)    tasks.push(fetch('data/kongfu.json').then(r=>r.json()).then(d=>window.WWM_KONGFU=d).catch(()=>{}));
-  if (!window.WWM_XINFA)     tasks.push(fetch('data/xinfa.json').then(r=>r.json()).then(d=>window.WWM_XINFA=d).catch(()=>{}));
-  if (!window.WWM_SETS)      tasks.push(fetch('data/sets.json').then(r=>r.json()).then(d=>window.WWM_SETS=d).catch(()=>{}));
-  if (!window.WWM_AFFIX)     tasks.push(fetch('data/affix.json').then(r=>r.json()).then(d=>window.WWM_AFFIX=d).catch(()=>{}));
-  if (!window.WWM_EQUIP_BASE_BY_LV) tasks.push(fetch('data/equip_base_by_lv.json').then(r=>r.json()).then(d=>window.WWM_EQUIP_BASE_BY_LV=d).catch(()=>{}));
+  if (!window.WWM_LV95_BASE) tasks.push(fetch('data/lv95_base.json?v=' + (window.WWM_SCORE_VERSION || 7)).then(r=>r.json()).then(d=>window.WWM_LV95_BASE=d).catch(()=>{}));
+  if (!window.WWM_KONGFU)    tasks.push(fetch('data/kongfu.json?v=' + (window.WWM_SCORE_VERSION || 7)).then(r=>r.json()).then(d=>window.WWM_KONGFU=d).catch(()=>{}));
+  if (!window.WWM_XINFA)     tasks.push(fetch('data/xinfa.json?v=' + (window.WWM_SCORE_VERSION || 7)).then(r=>r.json()).then(d=>window.WWM_XINFA=d).catch(()=>{}));
+  if (!window.WWM_SETS)      tasks.push(fetch('data/sets.json?v=' + (window.WWM_SCORE_VERSION || 7)).then(r=>r.json()).then(d=>window.WWM_SETS=d).catch(()=>{}));
+  if (!window.WWM_AFFIX)     tasks.push(fetch('data/affix.json?v=' + (window.WWM_SCORE_VERSION || 7)).then(r=>r.json()).then(d=>window.WWM_AFFIX=d).catch(()=>{}));
+  if (!window.WWM_EQUIP_BASE_BY_LV) tasks.push(fetch('data/equip_base_by_lv.json?v=' + (window.WWM_SCORE_VERSION || 7)).then(r=>r.json()).then(d=>window.WWM_EQUIP_BASE_BY_LV=d).catch(()=>{}));
   await Promise.all(tasks);
 }
 

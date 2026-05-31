@@ -80,7 +80,7 @@ function _semver(a, b) {
 }
 async function _checkChangelog() {
   try {
-    const cl = await fetch('data/changelog.json').then(r => r.json());
+    const cl = await fetch('data/changelog.json?v=' + (window.WWM_SCORE_VERSION || 7)).then(r => r.json());
     if (!cl?.current) return;
     const seen = localStorage.getItem(_CHANGELOG_KEY);
     // 初回起動 (seen無し): modal出さず current版を保存 → 以降差分のみ
@@ -275,7 +275,7 @@ function _showNoteModal(opts) {
 }
 async function _showAllChangelogs() {
   try {
-    const cl = await fetch('data/changelog.json').then(r => r.json());
+    const cl = await fetch('data/changelog.json?v=' + (window.WWM_SCORE_VERSION || 7)).then(r => r.json());
     _showNoteModal({ defaultTab: 'spec', entries: cl.entries || [] });
   } catch (e) {
     _showNoteModal({ defaultTab: 'spec', entries: [] });
@@ -1303,7 +1303,7 @@ if (!document.documentElement.classList.contains('wwm-view-sidebar')) {
 
 async function _loadConfig() {
   if (_STAT_CONFIG) return _STAT_CONFIG;
-  try { _STAT_CONFIG = await fetch('data/stat_display.json').then(r=>r.json()); } catch(e){}
+  try { _STAT_CONFIG = await fetch('data/stat_display.json?v=' + (window.WWM_SCORE_VERSION || 7)).then(r=>r.json()); } catch(e){}
   return _STAT_CONFIG;
 }
 
@@ -2428,7 +2428,7 @@ const _SLOT6_PEN_STATS = ['physPen', 'voidPen', 'physResist'];
 let _EQUIP_MAX = null;
 async function _loadEquipMax() {
   if (_EQUIP_MAX) return _EQUIP_MAX;
-  try { _EQUIP_MAX = await fetch('data/equip_max.json').then(r=>r.json()); } catch(e){}
+  try { _EQUIP_MAX = await fetch('data/equip_max.json?v=' + (window.WWM_SCORE_VERSION || 7)).then(r=>r.json()); } catch(e){}
   return _EQUIP_MAX;
 }
 // 装備Lv → tier 関数 (equip_max.json _schema 由来)

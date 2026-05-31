@@ -483,10 +483,10 @@ async function _loadDicts() {
   if (window.WWM_KONGFU && window.WWM_XINFA && window.WWM_SETS && window.WWM_AFFIX) return;
   try {
     const [kr, xr, sr, ar] = await Promise.all([
-      window.WWM_KONGFU ? Promise.resolve(window.WWM_KONGFU) : fetch('data/kongfu.json').then(r => r.json()),
-      window.WWM_XINFA  ? Promise.resolve(window.WWM_XINFA)  : fetch('data/xinfa.json').then(r => r.json()),
-      window.WWM_SETS   ? Promise.resolve(window.WWM_SETS)   : fetch('data/sets.json').then(r => r.json()),
-      window.WWM_AFFIX  ? Promise.resolve(window.WWM_AFFIX)  : fetch('data/affix.json').then(r => r.json())
+      window.WWM_KONGFU ? Promise.resolve(window.WWM_KONGFU) : fetch('data/kongfu.json?v=' + (window.WWM_SCORE_VERSION || 7)).then(r => r.json()),
+      window.WWM_XINFA  ? Promise.resolve(window.WWM_XINFA)  : fetch('data/xinfa.json?v=' + (window.WWM_SCORE_VERSION || 7)).then(r => r.json()),
+      window.WWM_SETS   ? Promise.resolve(window.WWM_SETS)   : fetch('data/sets.json?v=' + (window.WWM_SCORE_VERSION || 7)).then(r => r.json()),
+      window.WWM_AFFIX  ? Promise.resolve(window.WWM_AFFIX)  : fetch('data/affix.json?v=' + (window.WWM_SCORE_VERSION || 7)).then(r => r.json())
     ]);
     window.WWM_KONGFU = kr;
     window.WWM_XINFA = xr;
