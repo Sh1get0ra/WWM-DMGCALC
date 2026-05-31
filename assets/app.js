@@ -89,6 +89,13 @@ function setLang(lang) {
 }
 function _loadSavedLang() {
   try {
+    // OBS view (?view=sidebar): URL paramの lang を優先、 picker は表示しない (独立ブラウザインスタンス想定)
+    const isObs = document.documentElement.classList.contains('wwm-view-sidebar');
+    if (isObs) {
+      const urlLang = new URLSearchParams(location.search).get('lang');
+      if (urlLang && ['ja','en','zh','ko'].includes(urlLang) && urlLang !== 'ja') setLang(urlLang);
+      return;
+    }
     const saved = localStorage.getItem('wwm_lang');
     if (saved && ['ja','en','zh','ko'].includes(saved) && saved !== 'ja') setLang(saved);
     else if (!saved) _showLangPicker();

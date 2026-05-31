@@ -1112,7 +1112,8 @@ function _shareBuildUrl() {
     const t2 = (t2Hex || '#f0d28a').replace('#','');
     const ac = (acHex || '#c9a45a').replace('#','');
     const lbg = (lbgHex || '#d4af37').replace('#','');
-    return location.origin + location.pathname + '?view=sidebar&op=' + opPct + '&bg=' + bg + '&t1=' + t1 + '&t2=' + t2 + '&ac=' + ac + '&lbg=' + lbg + '#build=' + b64;
+    const curLang = (typeof _curLang === 'function') ? _curLang() : 'ja';
+    return location.origin + location.pathname + '?view=sidebar&lang=' + curLang + '&op=' + opPct + '&bg=' + bg + '&t1=' + t1 + '&t2=' + t2 + '&ac=' + ac + '&lbg=' + lbg + '#build=' + b64;
   };
   // 過去の overlay 設定 復元
   const OVL_KEY = 'wwm_overlay_settings_v1';
