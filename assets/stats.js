@@ -88,9 +88,12 @@ async function buildStatParams(roleInfo, state) {
   const base = window.WWM_LV95_BASE?.stats || {};
   const r = Object.assign({}, base);
   // roleInfo の 5行ステ override (ranking 力/速/会 シミュ用)
-  for (const k of ['body','momentum','defense','agility','power']) {
+  // ゲーム公式 roleInfo API では momentum ↔ power が ゲーム内表示 (力/会) と逆で返るため取り込み時に swap
+  for (const k of ['body','defense','agility']) {
     if (typeof roleInfo?.[k] === 'number') r[k] = roleInfo[k];
   }
+  if (typeof roleInfo?.momentum === 'number') r.power    = roleInfo.momentum;
+  if (typeof roleInfo?.power    === 'number') r.momentum = roleInfo.power;
 
   // 1. 装備 baseAttrs (+ 装備個別Lv 逆引き)
   const eqDet = roleInfo?.wearEquipsDetailed || {};

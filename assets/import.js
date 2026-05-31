@@ -540,7 +540,7 @@ const _STAT_LABELS_I18N = {
     unfetteredRopeDartQ: '浮雲の縄 Q強化', unfetteredRopeDartCharged: '浮雲の縄 チャージ強化', unfetteredRopeDartSpecial: '浮雲の縄 特殊強化'
   },
   en: {
-    body: 'Body', power: 'Power', agility: 'Agi', momentum: 'Mom', defense: 'Def',
+    body: 'Body', power: 'Momentum', agility: 'Agi', momentum: 'Power', defense: 'Def',
     maxHp: 'HP Max', minPhys: 'Phys ATK Min', maxPhys: 'Phys ATK Max',
     physDef: 'Phys DEF', physPen: 'Phys Pen', physResist: 'Phys Res',
     minBellstrike: 'Bell ATK Min', maxBellstrike: 'Bell ATK Max', bellstrikePen: 'Bell Pen',
