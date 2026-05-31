@@ -88,13 +88,12 @@ async function buildStatParams(roleInfo, state) {
   const base = window.WWM_LV95_BASE?.stats || {};
   const r = Object.assign({}, base);
   // roleInfo の 5行ステ override (ranking 力/速/会 シミュ用)
-  // 内部 key (ja意味基準): momentum=会、 power=力
-  // ゲーム公式 roleInfo API は 内部とは逆対応で値を返す (API momentum=力の値、 API power=会の値) ため 取り込み時に swap。
-  for (const k of ['body','defense','agility']) {
+  // 内部 key (ja意味基準): momentum=会、 power=力 (8199224 全swap後の命名)
+  // 直接マッピング (API key名 = 内部key名 一致前提)
+  // ※ swap版 (0732bfd) も入替報告あり、 確実診断のため直接マッピング戻し
+  for (const k of ['body','defense','agility','momentum','power']) {
     if (typeof roleInfo?.[k] === 'number') r[k] = roleInfo[k];
   }
-  if (typeof roleInfo?.momentum === 'number') r.power    = roleInfo.momentum;  // API momentum (=力) → 内部 power (=力)
-  if (typeof roleInfo?.power    === 'number') r.momentum = roleInfo.power;     // API power (=会) → 内部 momentum (=会)
 
   // 1. 装備 baseAttrs (+ 装備個別Lv 逆引き)
   const eqDet = roleInfo?.wearEquipsDetailed || {};
