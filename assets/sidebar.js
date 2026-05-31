@@ -737,7 +737,10 @@ async function _renderOptimizationInner(roleInfo, params, opts, root) {
   if (_aborted()) return;
   // 保存された ratio (slider 値) 取得
   const savedRatio = parseFloat(localStorage.getItem('wwm_opt_target_ratio_v1')) || 0.94;
-  const TARGET_RATIO = opts.ratio ?? savedRatio;
+  // best 確定中 (LOCKED未) は ratio=0.94 強制 (= 承音システムの全OP育成 max値、 現実的な装備上限)。
+  // ratio=1.0 (= OP 100%×6種) は ゲーム仕様上 ほぼ不可能 → best基準厳しすぎる。
+  // ユーザーが ratio=0.9 設定後 再import すると best が低い値で固定され、 Tier判定が緩くなるバグ防止。
+  const TARGET_RATIO = window.__WWM_OPT_BEST_LOCKED ? (opts.ratio ?? savedRatio) : 0.94;
   const MAX_ITER = 20; // best=null で自動停止、上限保険
   // 微改善打切閾値 (localStorage 永続化、UI で変更可)
   if (typeof window._OPT_MIN_DELTA === 'undefined' || window._OPT_MIN_DELTA == null) {
@@ -762,9 +765,9 @@ async function _renderOptimizationInner(roleInfo, params, opts, root) {
         <label class="wwm-opt-ratio-label">${T_.optTargetRatio||'目標'} <span id="wwmOptRatioVal">${Math.round(TARGET_RATIO*100)}%</span>
           <input type="range" id="wwmOptRatio" min="90" max="100" step="1" value="${Math.round(TARGET_RATIO*100)}">
         </label>
-        <button type="button" class="wwm-opt-btn" id="wwmOptRecalc" title="${T_.optRecalc||'再計算'}">↻</button>
         <label class="wwm-opt-ratio-label" title="${T_.optMinDeltaTip||'これ未満のΔで打切'}">Δ<input type="number" id="wwmOptMinDelta" min="2" max="50" step="1" value="${window._OPT_MIN_DELTA}" style="width:40px;background:var(--surf-shade);color:var(--paper);border:1px solid var(--ink-2);border-radius:3px;padding:2px 4px;font-family:var(--f-mono);"></label>
-        <button type="button" class="wwm-opt-btn wwm-opt-btn-apply" id="wwmOptApplyAll">${T_.optApplyAll||'全適用'}</button>
+        <button type="button" class="wwm-opt-btn" id="wwmOptToggleAll" title="${T_.optToggleAllTip||'全選択/全解除 切替'}">☑</button>
+        <button type="button" class="wwm-opt-btn wwm-opt-btn-apply" id="wwmOptApplyAll">${T_.optApplySelected||'選択適用'}</button>
       </div>
     </div>
     <div class="wwm-opt-progress" id="wwmOptProgress"></div>
@@ -788,8 +791,6 @@ async function _renderOptimizationInner(roleInfo, params, opts, root) {
         renderOptimization(roleInfo, params, { ratio: v });
       });
     }
-    const reEl = root.querySelector('#wwmOptRecalc');
-    if (reEl) reEl.addEventListener('click', () => renderOptimization(roleInfo, params));
     const mdEl = root.querySelector('#wwmOptMinDelta');
     if (mdEl) mdEl.addEventListener('change', () => {
       const v = parseInt(mdEl.value, 10);
@@ -800,23 +801,35 @@ async function _renderOptimizationInner(roleInfo, params, opts, root) {
       }
     });
     const apEl = root.querySelector('#wwmOptApplyAll');
-    if (apEl) apEl.addEventListener('click', () => _applyOptSteps(_OPT_LAST_STEPS || []));
+    if (apEl) apEl.addEventListener('click', () => {
+      const checkedIdxs = Array.from(root.querySelectorAll('.wwm-opt-check:checked'))
+        .map(cb => parseInt(cb.dataset.optStep, 10))
+        .filter(i => !isNaN(i));
+      const sel = (_OPT_LAST_STEPS || []).filter((_, i) => checkedIdxs.includes(i));
+      _applyOptSteps(sel);
+    });
+    const tgEl = root.querySelector('#wwmOptToggleAll');
+    if (tgEl) tgEl.addEventListener('click', () => {
+      const cbs = root.querySelectorAll('.wwm-opt-check');
+      const anyUnchecked = Array.from(cbs).some(cb => !cb.checked);
+      cbs.forEach(cb => { cb.checked = anyUnchecked; });
+      tgEl.textContent = anyUnchecked ? '☐' : '☑';
+    });
     const slEl = root.querySelector('#wwmOptSlot');
     if (slEl) slEl.addEventListener('change', () => {
       localStorage.setItem('wwm_opt_slot_filter_v1', slEl.value);
       renderOptimization(roleInfo, params, { slotFilter: slEl.value });
     });
-    root.querySelectorAll('[data-opt-step]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const i = parseInt(btn.dataset.optStep, 10);
-        const step = _OPT_LAST_STEPS?.[i];
-        if (step) _applyOptSteps([step]);
-      });
-    });
   }
   // 計算中表示
   root.innerHTML = `<div class="wwm-analysis-card wwm-modal-square"><div class="wwm-modal-bg-icon" style="background-image:url('assets/icons/anvil-impact.svg');"></div>${headerHtml}<div class="wwm-opt-loading">計算中...</div></div>`;
   _bindControls();
+  // 計算中: ヘッダ入力 (目標ratio / minDelta / slotFilter / 再計算) を一時 disable
+  // → 中間状態で別ratio入力 → 結果startScoreがズレる/baseline壊れる バグ防止
+  ['#wwmOptRatio', '#wwmOptMinDelta', '#wwmOptSlot', '#wwmOptApplyAll', '#wwmOptToggleAll'].forEach(sel => {
+    const el = root.querySelector(sel);
+    if (el) { el.disabled = true; el.classList.add('wwm-opt-busy'); }
+  });
   // progress表示は .wwm-opt-loading に一本化 (#wwmOptProgress は使わず二重回避)
   const setProgress = (label) => {
     const el = root.querySelector('.wwm-opt-loading');
@@ -987,7 +1000,7 @@ async function _renderOptimizationInner(roleInfo, params, opts, root) {
       <span class="wwm-opt-change">${changeCol}</span>
       <span class="wwm-opt-delta">+${Math.round(s.delta).toLocaleString()}</span>
       ${s.tierUp ? `<span class="wwm-opt-tierup">★ ${s.tierUp}</span>` : '<span></span>'}
-      <button type="button" class="wwm-opt-btn wwm-opt-btn-step" data-opt-step="${i}" title="この swap だけ適用">${(window.T&&T.optApplyOne)||'適用'}</button>
+      <label class="wwm-opt-check-wrap" title="${(window.T&&T.optSelectOne)||'選択'}"><input type="checkbox" class="wwm-opt-check" data-opt-step="${i}" checked></label>
     </div>
   `;}).join('') : `<div class="wwm-opt-empty">${stopReason || '改善余地なし'}</div>`;
   const reasonHtml = stopReason && steps.length ? `<div class="wwm-opt-reason">${stopReason}</div>` : '';

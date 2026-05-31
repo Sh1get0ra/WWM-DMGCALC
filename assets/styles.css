@@ -3218,6 +3218,21 @@ html[data-theme="light"] .wwm-opt-loading {
 .wwm-opt-btn-step {
   font-size: var(--text-xs); padding: 1px 6px;
 }
+.wwm-opt-check-wrap {
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; padding: 2px 6px;
+}
+.wwm-opt-check {
+  width: 16px; height: 16px;
+  cursor: pointer;
+  accent-color: var(--gold-bright, #f0d28a);
+  margin: 0;
+}
+html[data-theme="light"] .wwm-opt-check {
+  accent-color: var(--vermilion, #c83c2b);
+}
+/* 計算中: ヘッダ操作 disable 視覚化 */
+.wwm-opt-busy { opacity: 0.4; cursor: wait !important; pointer-events: none; }
 .wwm-opt-btn-apply { color: var(--jade-bright); border-color: rgba(168,212,180,0.4); }
 .wwm-opt-btn-apply:hover { background: rgba(168,212,180,0.1); border-color: var(--jade-bright); }
 .wwm-opt-pos { font-family: var(--f-latin); font-weight: var(--fw-extra); color: var(--gold); text-align: center; }
