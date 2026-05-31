@@ -472,6 +472,19 @@
     "description": "浮雲の縄 (縄鏢・遠距離攻撃・瞬嵐塵)。瞬嵐ステータス上昇 (固定 +80~160) + 瞬嵐ダメージ上昇 (cap 9.0%) + 会心率上昇 (cap 6.8%)。溜め連撃強化/失魂会心上昇/属性ダメ強化は未実装。",
     "path": "bamboocut"
   },
+  "20703": {
+    "names": {
+      "ja": "千機の縄",
+      "en": "Skygrasp Rope Dart",
+      "zh": "千机索天",
+      "ko": "천기의 사슬"
+    },
+    "weaponType": "ropeDart",
+    "effects": {},
+    "description": "千機の縄 (縄鏢、Skygrasp Rope Dart、 2026年7月実装予定)。 瞬嵐属性。 effects/derived は実装後に追記。",
+    "path": "bamboocut",
+    "_pendingImplementation": true
+  },
   "20801": {
     "names": {
       "ja": "斬雪の刀",
@@ -503,6 +516,19 @@
         "_inferred": "toStat=attrDmgBonus相当=elemAtkBoost"
       }
     ]
+  },
+  "20901": {
+    "names": {
+      "ja": "天志の拳",
+      "en": "Heavenwill Gauntlet",
+      "zh": "天志垂象",
+      "ko": "천지의 주먹"
+    },
+    "weaponType": "gauntlet",
+    "effects": {},
+    "description": "天志の拳 (手甲、Heavenwill Gauntlet、 2026年7月実装予定、 新武器種)。 瞬嵐属性。 effects/derived は実装後に追記。",
+    "path": "bamboocut",
+    "_pendingImplementation": true
   },
   "_schema": "ID → 武術名 + 武器タイプ + 説明。武術自体は直接 effects 値を持たず、武術ツリー進行度 (xiuWeiKungFu) と武器ボーナスに集約される。",
   "_lastUpdated": "2026-05-25",
