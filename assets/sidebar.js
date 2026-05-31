@@ -3173,8 +3173,6 @@ function updateHero(params) {
   const effRi = _getEffectiveRoleInfo();
   const statusScore = Math.round((result.statusScore || 0) + _set4Bonus(effRi));
   const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-  setText('heroExpected', Math.round(total).toLocaleString());
-  setText('hbExp', Math.round(total).toLocaleString());
   // hero-current = baseline (import時固定) または statusScore (baseline未取得時)
   const _baseline = window.__WWM_BASELINE;
   // baseline (import時固定) があればそれ。無効/未取得時は null → 武格指数 "-" (再import促し)。
@@ -3183,13 +3181,10 @@ function updateHero(params) {
   const currentScore = _hasBaseline ? Math.round(_baseline.statusScore) : null;
   if (currentScore === null) {
     setText('heroScore', '-');
-    setText('heroCompactScore', '-');
   } else if (typeof window.countUp === 'function') {
     window.countUp('heroScore', currentScore, 0);
-    window.countUp('heroCompactScore', currentScore, 0);
   } else {
     setText('heroScore', currentScore.toLocaleString());
-    setText('heroCompactScore', currentScore.toLocaleString());
   }
   // Tier 判定: 最適化最大スコア (__WWM_OPT_BEST.end、 import時固定) に対する比率で判定。opt未完了/best 無い時は空。
   // 仮閾値: SS>=95% / S>=90% / A>=80% / B>=65% (確定までに調整予定)
@@ -3251,8 +3246,6 @@ function updateHero(params) {
     numEl.style.textShadow = '';
   }
   // compact tier badge: 廃止 (heroCompactTierBadge hidden)
-  setText('heroCompactDmg', Math.round(total).toLocaleString());
-  setText('heroCompactExp', Math.round(total).toLocaleString());
   // NEXT 側 = 仮想装備込みの statusScore (即時反映 + countUp再同期)
   const baseline = window.__WWM_BASELINE;
   const baseEl = document.getElementById('heroScoreBaseline');
